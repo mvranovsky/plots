@@ -1,0 +1,4 @@
+/star/u/mvranovsk/plots/build/CMakeFiles/rebuild_cache.dir
+/star/u/mvranovsk/plots/build/CMakeFiles/edit_cache.dir
+/star/u/mvranovsk/plots/build/CMakeFiles/PlotsManager.dir
+/star/u/mvranovsk/plots/build/CMakeFiles/upc-reader.dir

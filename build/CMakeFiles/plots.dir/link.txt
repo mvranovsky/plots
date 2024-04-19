@@ -1,0 +1,1 @@
+/usr/bin/c++   -pthread -m32 -I/afs/rhic.bnl.gov/star/ROOT/5.34.38/.sl73_gcc485/rootdeb/include   CMakeFiles/plots.dir/src/Util.cxx.o CMakeFiles/plots.dir/src/Plot.cxx.o CMakeFiles/plots.dir/src/PlotsManager.cxx.o  -o plots  -L/afs/rhic.bnl.gov/star/ROOT/5.34.38/.sl73_gcc485/rootdeb/lib 
