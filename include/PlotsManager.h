@@ -4,6 +4,8 @@
 
 #include "/star/u/mvranovsk/star-upcDst/work/include/RunDef.h"
 #include "PlotAnaV0.h"
+#include "PlotGeneral.h"
+#include "PlotV0SingleState.h"
 #include <TFile.h>
 #include <TKey.h>
 #include <TClass.h>
@@ -12,378 +14,213 @@ using namespace std;
 //using namespace UTIL;
 
 
-TFile *mOutFile;
+TFile *mOutFile, *file1, *file2;
 const char* nameOfTree;
 std::vector<std::pair<TString, bool>> plots;
-//------------------------------------------------
-//only temporary until RunDefPlots.h works
-/*
-const char* nameOfTree = "recTreeV0";
-std::vector<std::pair<TString, bool>> plots = {
-    {"invMassK0s", true},
-    {"invMassLambda", true},
-    {"hNSigmaPiPcorr", false},
-    {"hNSigmaPiKcorr",false},
-    {"hNSigmaPKcorr",false},
-    {"hNPairV0", true},
-    {"hPosZ", true},
-    {"hPosZCut", true},
-    {"hVtxDiff", true},
-    {"hDcaDaughters", true},
-    {"hDcaDaughtersCut", true},
-    {"hDcaBeamline", true},
-    {"hDcaBeamlineCut", true},
-    {"hPointingAngle", true},
-    {"hPointingAngleCut", true},
-    {"hDecayLength", true},
-    {"hDecayLengthCut", true},
-    {"hEta",true},
-    {"hPt",true},
-    {"hNfitHits",true},
-    {"hNhitsDEdx", true},
-    {"hAnalysisFlow", true},
-    {"hDecayLPointingA", true},
-    {"hDecayLPointingACut", true}
 
-};
-bool runAnaV0 = true;
-const char* YAxisDescription = "counts";
-///-----------------------------------------
-*/
+std::vector<std::pair<TH1D*, TString>> hists1D;
+std::vector<std::pair<TH2F*, TString>> hists2D;
+
 Int_t nInputFiles;
 
-TH2F *hDecayLPointingA, *hDecayLPointingACut;
+TH2F *hDecayLPointingA, *hDecayLPointingACut, *hArmenterosPodolanski, *hInvMassEta;
 TH2F *hNSigmaPiPcorr, *hNSigmaPiKcorr, *hNSigmaPKcorr;
 TH1D *hNPairV0, *hPosZ, *hPosZCut, *hVtxDiff;
 TH1D *hPt, *hEta, *hNhitsDEdx, *hNfitHits, *hAnalysisFlow;
 //topologyCuts
 TH1D *hDcaDaughters, *hDcaBeamline, *hPointingAngle, *hDecayLength;
 TH1D *hDcaDaughtersCut, *hDcaBeamlineCut, *hPointingAngleCut, *hDecayLengthCut;
+TH1D *hNSigmaPi, *hNSigmaP, *hNSigmaK;
 
 vector<TH2F*> PIDplots;
 vector<TH1D*> histograms;
 
-PlotAnaV0* mPlot;
+Plot* mPlot;
 
 TFile *CreateOutputFile(const string& out);
-bool ConnectInputHist(int argc, char** argv);
-//bool defineAnalysis();
-bool DefineHists(const string& input); 
-bool fillHist(const string& input);
 void Clear();
 bool saveHists();
+bool connectHists(int argc, char *argv[]);
+vector<pair<TH2F*, TString>> GetAllTH2FHistograms(const string& fileName);
+vector<pair<TH1D*, TString>> GetAllTH1DHistograms(const string& fileName);
 
 
-
-bool ConnectInputHist(int argc, char** argv){
-	//add histograms together if there are multiple input .root files
+bool connectHists(int argc, char *argv[]) {
 
    const string& input = argv[1];
    TFile *inFile;
    if(input.find(".root") != string::npos){
-    	cout << "Input from only one root file." << endl;
+      cout << "Input from only one root file." << endl;
 
-      DefineHists(input);
+      hists1D = GetAllTH1DHistograms(input);
+      hists2D = GetAllTH2FHistograms(input);
 
-      if(!fillHist(input.c_str())){
-         cerr << "Couldn't properly fill histograms from the only file." << endl;
+      if(hists1D.size() == 0 || hists2D.size() == 0){
+         cerr << "Did not load histograms, couldn't find any." << endl;
          return false;
       }
-
-    	return true;
-   } 
-   else if(input.find(".list") != string::npos){
-    	
-
-    	ifstream instr(input.c_str());
+   } else if(input.find(".list") != string::npos){
+      ifstream instr(input.c_str());
       if (!instr.is_open()){
-        	cout<< "Couldn't open: "<< input.c_str() <<endl;
+         cout<< "Couldn't open: "<< input.c_str() <<endl;
          return false;
       }
-      //cout << "Input from: " << input.c_str() << endl;
 
       int iFile = 0;
       string line;
-    	while(getline(instr, line)) {
+      while(getline(instr, line)) {
          if (line.empty())
             continue;
 
          //define histograms based on the first file
          if(iFile == 0){
-            DefineHists(line);
+            hists1D = GetAllTH1DHistograms(line);
+            hists2D = GetAllTH2FHistograms(line);
             ++iFile;
             continue;
          }
 
-	      inFile = TFile::Open(line.c_str(), "read");
-	      if(!inFile){
-	         cout << "Couldn't open: " << line.c_str() << endl;
-	         return false;
-	      } 
-
-         if(!fillHist(line)){
-            cerr << "Couldn't properly fill histograms from file: " << line.c_str() << endl;
+         vector<pair<TH1D*, TString>> hists1D_current = GetAllTH1DHistograms(line);
+         if(hists1D.size() != hists1D_current.size()){
+            cerr << "Size of hists1D is not equal to hists1D_current for file: " << line << endl;
             return false;
          }
-         inFile->Close();
 
-	   }//while
+         for (int i = 0; i < hists1D.size(); ++i){
+            for (int j = 0; j < hists1D_current.size(); ++j){  
+               if(hists1D_current[j].second == hists1D[i].second)
+                  hists1D[i].first->Add(hists1D_current[j].first);
+            }//current1D loop
+         }//hists1D loop
 
+         vector<pair<TH2F*, TString>> hists2D_current = GetAllTH2FHistograms(line);
+         if(hists2D.size() != hists2D_current.size()){
+            cerr << "Size of hists2D is not equal to hists2D_current for file: " << line << endl;
+            return false;
+         }
+         for (int i = 0; i < hists2D.size(); ++i){
+            for (int j = 0; j < hists2D_current.size(); ++j){  
+               if(hists2D_current[j].second == hists2D[i].second)
+                  hists2D[i].first->Add(hists2D_current[j].first);
+            }//current2D loop
+         }//hists2D loop
+
+
+      }//while
+      cout << "we behind while" << endl;
    }
    else{
-   	cerr << "Didn't find .list or .root in input file. Returning..." << endl;
-   	return false;
+      cerr << "Didn't find .list or .root in input file. Returning..." << endl;
+      return false;
    }
-
-	saveHists();
-
-	return true;
+   
+   if(saveHists()){
+      return true;
+   } else {
+      return false;
+   }
 }
 
-bool fillHist(const string& input){
-
-   TH1D *hist;
-   TH2F *PIDplot;
-
-   TFile* inputFile = TFile::Open(input.c_str(), "read");
-
-   if(!inputFile){
-      cout << "Couldn't open: " << input.c_str() << endl;
-      return false;
-   } 
-
-   for (unsigned int iHist = 2; iHist < plots.size(); ++iHist){
-   	if (!plots[iHist].second)
-   		continue;
-
-	  	if (iHist == 2 || iHist == 3 || iHist == 4 || iHist == 20 || iHist == 21 || iHist == 22){ //considering only 3 PID plots
-         inputFile->cd("/PID");
-         PIDplot = (TH2F*)gDirectory->Get( plots[iHist].first );
-         hist = (TH1D*)gDirectory->Get( plots[iHist].first );
-	  		if (PIDplot){
-	  		   PIDplots[iHist-2]->Add(PIDplot);
-	  		} else if(hist){
-            histograms[iHist-17]->Add(hist);
-         }else{
-	  			cerr << "Couldn't get PID histogram " << plots[iHist].first << " from file."<< endl;
-	  			return false;
-         }
-
-	  	} else if(iHist == 22 || iHist == 23){
-         inputFile->cd("/topologyCuts");
-         PIDplot = (TH2F*)gDirectory->Get( plots[iHist].first);
-         if (!PIDplot){
-            cerr << "Couldn't get PID histogram " << plots[iHist].first << " from file."<< endl;
-            return false;
-         }
-         PIDplots[iHist-19]->Add(PIDplot);
-
-      }else {
-         inputFile->cd("/cuts");
-	  		hist = (TH1D*)gDirectory->Get( plots[iHist].first);
-	  		if(!hist){
-            inputFile->cd("/topologyCuts");
-            hist = (TH1D*)gDirectory->Get(plots[iHist].first);
-         }
-         if(!hist){
-            inputFile->cd();
-            hist = (TH1D*)gDirectory->Get( plots[iHist].first);
-         }
-         if(!hist){   
-	  			cerr << "Couldn't get histogram " << plots[iHist].first << " from file."<< endl;
-	  			return false;
-	  		}
-	  		histograms[iHist-5]->Add(hist);
-	  	}//else
-      //cout << "Just added histogram: " << plots[iHist].first << " from: " << input.c_str() << endl;
-	}//for
-   inputFile->Close();
-   return true;
-}//fillHist
-
-/*
-bool histDefinition(const string& input) {
-   vector<TString> hists;
-   vector<TH1D*> hists1D;
-   vector<TH2F*> hists2D;
-
-   // open input file
-   TFile* inputFile = TFile::Open(input.c_str(), "read");
-   if(!inputFile){
-      cout << "Couldn't open: " << input.c_str() << endl;
-      return false;
-   }  
 
 
-   TList* list = file->GetListOfKeys();
-   TIter next(list);
-   TKey* key;
-   // Iterate over all keys in the file and if its TH1D*, save them 
-   while ((key = dynamic_cast<TKey*>(next()))) {
-      TObject* obj = key->ReadObj();
+vector<pair<TH2F*, TString>> GetAllTH2FHistograms(const string& fileName) {
+    // Open the ROOT file
+   TString inputFileName = fileName;
 
-      // Check if the object is a TH1D
-      if (dynamic_cast<TH1D*>(obj)) {
-         TH1D* h1 = dynamic_cast<TH1D*>(obj);
-         TString name = h1->GetName();
-         hists.push_back(name);
-         hists1D.push_back(h1);
+   file2 = TFile::Open(inputFileName);
+   if (!file2 || file2->IsZombie()) {
+      std::cerr << "Error opening file: " << fileName << std::endl;
+      return {};
+   }
+
+   // Vector to store pointers to TH1D histograms
+   vector<pair<TH2F*,TString>> histograms;
+
+   // Iterate over all keys in the file
+   TKey *key;
+   TIter next(file2->GetListOfKeys());
+   while ((key = (TKey*)next())) {
+      // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
+      TObject *obj = key->ReadObj();
+      if (TH2F *h1 = dynamic_cast<TH2F*>(obj)) {
+         // If the object is a TH2F histogram, add it to the vector
+         histograms.push_back(make_pair(h1, h1->GetName()));
+      } else {
+         // If not a TH1D, delete the object to free memory
+         delete obj;
       }
    }
 
-   while ((key = dynamic_cast<TKey*>(next()))) {
-      TObject* obj = key->ReadObj();
+   return histograms;
+}
 
-      // Check if the object is a TH2F
-      else if (dynamic_cast<TH2F*>(obj)) {
-         TH2F* h2 = dynamic_cast<TH2F*>(obj);
-         TString name = h2->GetName();
-         h2File->cd();
-         h2->Write();
-         h2Names.push_back(name);
+
+vector<pair<TH1D*, TString>> GetAllTH1DHistograms(const string& fileName) {
+    // Open the ROOT file
+   TString inputFileName = fileName;
+   file1 = TFile::Open(inputFileName);
+   if (!file1 || file1->IsZombie()) {
+      std::cerr << "Error opening file: " << fileName << std::endl;
+      return {};
+   }
+
+   // Vector to store pointers to TH1D histograms
+   vector<pair<TH1D*,TString>> histograms;
+
+   // Iterate over all keys in the file
+   TKey *key;
+   TIter next(file1->GetListOfKeys());
+   while ((key = (TKey*)next())) {
+      // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
+      TObject *obj = key->ReadObj();
+      if (TH1D *h1 = dynamic_cast<TH1D*>(obj)) {
+         // If the object is a TH2F histogram, add it to the vector
+         histograms.push_back(make_pair(h1, h1->GetName()));
+      } else {
+         // If not a TH1D, delete the object to free memory
+         delete obj;
       }
+
    }
 
-
+   return histograms;
 }
-*/
-
-bool DefineHists(const string& input){
-
-	//mOutFile->mkdir("PID")->cd();
-
-   TFile* inputFile = TFile::Open(input.c_str(), "read");
-   if(!inputFile){
-      cout << "Couldn't open: " << input.c_str() << endl;
-      return false;
-   }  
-
-	inputFile->cd("/PID");
-
-   hNSigmaPiPcorr = (TH2F*)gDirectory->Get(plots[2].first);
-   PIDplots.push_back(hNSigmaPiPcorr);
-
-   hNSigmaPiKcorr = (TH2F*)gDirectory->Get(plots[3].first);
-   PIDplots.push_back(hNSigmaPiKcorr);
-
-   hNSigmaPKcorr = (TH2F*)gDirectory->Get(plots[4].first);
-   PIDplots.push_back(hNSigmaPKcorr);
-
-   for (int i = 0; i < PIDplots.size(); ++i){
-      if(!PIDplots[i])
-         cout << "Did not get PID " << i << endl; 
-   }
-
-   inputFile->cd("/cuts");
-
-   hNPairV0 = (TH1D*)gDirectory->Get(plots[5].first);
-   histograms.push_back(hNPairV0);
-
-   hPosZ = (TH1D*)gDirectory->Get(plots[6].first);
-   histograms.push_back(hPosZ);
-
-   hPosZCut = (TH1D*)gDirectory->Get(plots[7].first);
-   histograms.push_back(hPosZCut);
-
-   hVtxDiff = (TH1D*)gDirectory->Get(plots[8].first);
-   histograms.push_back(hVtxDiff);
-
-   inputFile->cd("/topologyCuts");
-
-   hDcaDaughters = (TH1D*)gDirectory->Get(plots[9].first);
-   histograms.push_back(hDcaDaughters);
-
-   hDcaDaughtersCut = (TH1D*)gDirectory->Get(plots[10].first);
-   histograms.push_back(hDcaDaughtersCut);
-
-   hDcaBeamline = (TH1D*)gDirectory->Get(plots[11].first);
-   histograms.push_back(hDcaBeamline);
-
-   hDcaBeamlineCut = (TH1D*)gDirectory->Get(plots[12].first);
-   histograms.push_back(hDcaBeamlineCut);
-
-   hPointingAngle = (TH1D*)gDirectory->Get(plots[13].first);
-   histograms.push_back(hPointingAngle);
-
-   hPointingAngleCut = (TH1D*)gDirectory->Get(plots[14].first);
-   histograms.push_back(hPointingAngleCut);
-
-   hDecayLength = (TH1D*)gDirectory->Get(plots[15].first);
-   histograms.push_back(hDecayLength);
-
-   hDecayLengthCut = (TH1D*)gDirectory->Get(plots[16].first);
-   histograms.push_back(hDecayLengthCut);
-
-   inputFile->cd("/cuts");
-
-   hEta = (TH1D*)gDirectory->Get(plots[17].first);
-   histograms.push_back(hEta);
-
-   hPt = (TH1D*)gDirectory->Get(plots[18].first);
-   histograms.push_back(hPt);
-
-   hNfitHits = (TH1D*)gDirectory->Get(plots[19].first);
-   histograms.push_back(hNfitHits);
-
-   hNhitsDEdx = (TH1D*)gDirectory->Get(plots[20].first);
-   histograms.push_back(hNhitsDEdx);
-
-   inputFile->cd();
-
-   hAnalysisFlow = (TH1D*)gDirectory->Get(plots[21].first);
-   histograms.push_back(hAnalysisFlow);
-
-   inputFile->cd("/topologyCuts");
-
-   hDecayLPointingA = (TH2F*)gDirectory->Get(plots[22].first);
-   PIDplots.push_back(hDecayLPointingA);
-
-   hDecayLPointingACut = (TH2F*)gDirectory->Get(plots[23].first);
-   PIDplots.push_back(hDecayLPointingACut);
-
-   return true;
-}
-
-
-bool defineAnalysis(){
-	//define which analysis ran and what histograms are needed to be plotted
-
-	if (runAnaV0){
-    	nameOfTree =nameOfAnaV0Tree;
-    	plots = plotsV0;
-    	return true;
-    } else if (runAnaBP){
-    	nameOfTree = nameOfAnaBPTree;	
-    	plots = plotsBP;
-    	return true;
-    } else if (runAnaV0Control){
-	    nameOfTree = nameOfAnaV0ControlTree;
-	    plots = plotsV0Control;
-	    return true;	
-    } else {
-    	cout << "All analyses set to false. Returning..." << endl;
-    	return false;
-    }
-}//defineAnalysis
-
 
 bool saveHists() {
+
+   if (!mOutFile || mOutFile->IsZombie()) {
+    std::cerr << "Error: Output file is not open or is corrupted." << std::endl;
+    return false; // or handle the error appropriately
+   } else{
+      cout << "outfile good" << endl;
+   }
+
    mOutFile->cd();
 
-   for (int i = 0; i < PIDplots.size(); ++i){
-      PIDplots[i]->Write();
+   
+   for (int i = 0; i < hists1D.size(); ++i){
+      //cout << "histogram with name " << hists1D[i].first->GetName() << endl;
+
+      if(hists1D[i].first){
+         hists1D[i].first->Write();
+      }else{
+         return false;
+      }
    }
 
-   for (int i = 0; i < histograms.size(); ++i){
-      histograms[i]->Write();
+   for (int i = 0; i < hists2D.size(); ++i){
+      hists2D[i].first->Write();
    }
+
+   
+   return true;
 }
 
 
 //_____________________________________________________________________________
 TFile *CreateOutputFile(const string& out) {
 
-   TFile *outputFile = TFile::Open(out.c_str(), "recreate");
+   TFile *outputFile = TFile::Open(out.c_str(), "RECREATE");
    if(!outputFile) 
       return 0x0;
 
@@ -397,9 +234,18 @@ void Clear() {
       delete mOutFile;
    }
 
+   if(file1){
+      file1->Close();
+      delete file1;
+   }
+   if(file2){
+      file2->Close();
+      delete file2;
+   }
 }
 
 
 
 #endif
+
 

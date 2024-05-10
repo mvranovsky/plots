@@ -9,7 +9,7 @@ using namespace std;
 
 class Plot{
 	public: 
-		Plot(TFile* mOutFile, const string mInputList, const char* filePath/*, const char* treeName, std::vector<std::pair<TString, bool>> plotsFromManager*/);
+		Plot(TFile* mOutFile, const string mInputList, const char* filePath);
 		virtual ~Plot();
 
 
@@ -35,6 +35,11 @@ class Plot{
 		void DrawSTARpp510(double xl = 0.2, double yl = 0.9, double xr = 0.4, double yr = 0.9);
 		int fitGaussPol2(TH1D **histToFit, Int_t binWidth, Double_t minRange, Double_t maxRange, Double_t pol0 = 0.01, Double_t pol1 = 0.01, Double_t pol2 = 0.01, Double_t amp = 10000,Double_t mean = 0.497, Double_t sigma = 0.001);
 		bool defineAnalysis();
+		vector<pair<TH1D*, TString>> GetAllTH1D();
+		vector<pair<TH2F*, TString>> GetAllTH2F();
+		void TH1DGeneral(TString nameOfHist,TH1D* hist);
+		void TH2FGeneral(TString nameOfHist , TH2F* hist);
+		void Clear();
 
 		//bool defineAnalysis();
 		

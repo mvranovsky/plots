@@ -1,6 +1,6 @@
 #include "../include/Plot.h"
 
-Plot::Plot(TFile *mOutFile, const string mInputList, const char* filePath/*, const char* treeName, std::vector<std::pair<TString, bool>> plotsFromManager*/){
+Plot::Plot(TFile *mOutFile, const string mInputList, const char* filePath){
    inFile = mOutFile;
    outputPosition = filePath;
    inputPosition = mInputList;
@@ -137,7 +137,7 @@ void Plot::SetGPad(bool isLogY, double left, double right, double bottom, double
    gPad->SetTickx();
    gPad->SetTicky(); 
    if (isLogY)
-      gPad->SetLogy(0);
+      gPad->SetLogy();
    gStyle->SetOptStat("");   
 }
 
@@ -256,18 +256,22 @@ bool Plot::defineAnalysis(){
       nameOfTree =nameOfAnaV0Tree;
       plots = plotsV0;
       return true;
-    } else if (runAnaBP){
+   } else if (runAnaBP){
       nameOfTree = nameOfAnaBPTree; 
       plots = plotsBP;
       return true;
-    } else if (runAnaV0Control){
-       nameOfTree = nameOfAnaV0ControlTree;
-       plots = plotsV0Control;
-       return true;  
-    } else {
+   } else if (runAnaV0Control){
+      nameOfTree = nameOfAnaV0ControlTree;
+      plots = plotsV0Control;
+      return true;  
+   } else if(runAnaV0SingleState){
+      nameOfTree = nameOfAnaV0SingleStateTree;
+      plots = plotsV0;
+      return true;  
+   } else {
       cout << "All analyses set to false. Returning..." << endl;
       return false;
-    }
+   }
 }//defineAnalysis
 
 
@@ -281,7 +285,7 @@ bool Plot::ConnectInputTree(const string& input) {
    TFile *inputFile;
    chain = new TChain(nameOfTree);
 
-   cout << "Input file: " << input.c_str() << endl;
+   //cout << "Input file: " << input.c_str() << endl;
    if(input.find(".root") != string::npos){
          cout << "Input from root file: "<< input << endl;
       inputFile = TFile::Open(input.c_str(), "read");
@@ -336,3 +340,109 @@ bool Plot::ConnectInputTree(const string& input) {
 
 
 
+vector<pair<TH2F*, TString>> Plot::GetAllTH2F() {
+    // Open the ROOT file
+   if (!inFile || inFile->IsZombie()) {
+      cerr << "Error opening file1 to get TH2F." << endl;
+      return {};
+   }
+
+   // Vector to store pointers to TH1D histograms
+   vector<pair<TH2F*,TString>> histograms;
+
+   // Iterate over all keys in the file
+   TKey *key;
+   TIter next(inFile->GetListOfKeys());
+   while ((key = (TKey*)next())) {
+      // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
+      TObject *obj = key->ReadObj();
+      if (TH2F *h1 = dynamic_cast<TH2F*>(obj)) {
+         // If the object is a TH2F histogram, add it to the vector
+         histograms.push_back(make_pair(h1, h1->GetName()));
+      }
+   }
+
+   return histograms;
+}
+
+
+vector<pair<TH1D*, TString>> Plot::GetAllTH1D() {
+    // Open the ROOT file
+   if (!inFile || inFile->IsZombie()) {
+      cerr << "Error opening inFile to get TH1D." << endl;
+      return {};
+   }
+
+   // Vector to store pointers to TH1D histograms
+   vector<pair<TH1D*,TString>> histograms;
+
+   // Iterate over all keys in the file
+   TKey *key;
+   TIter next(inFile->GetListOfKeys());
+   while ((key = (TKey*)next())) {
+      // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
+      TObject *obj = key->ReadObj();
+      if (TH1D *h1 = dynamic_cast<TH1D*>(obj)) {
+         // If the object is a TH2F histogram, add it to the vector
+         histograms.push_back(make_pair(h1, h1->GetName()));
+      }
+   }
+
+   return histograms;
+}
+
+
+
+void Plot::TH1DGeneral(TString nameOfHist,TH1D* hist) {
+
+   CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
+
+   if (!hist){
+      cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
+      return;
+   }
+   canvas->Clear();
+   SetHistStyle(hist, kBlack, markerStyleTypical);
+
+
+   hist->Draw("same");
+   if(nameOfHist == "hAnalysisFlow"){
+      SetGPad(true, 0.14, 0.05,0.11,0.06);
+      DrawSTARpp510(0.6,0.9,0.9,0.9);
+   }else{
+      SetGPad(false, 0.14, 0.05,0.11,0.06);
+      DrawSTARpp510();
+   }
+
+   outFile->cd();
+   canvas->Write();
+   hist->Write();
+}
+
+
+void Plot::TH2FGeneral(TString nameOfHist , TH2F* hist){
+   CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
+   SetGPad(false,0.12, 0.16,0.11, 0.06 );
+   if (!hist){
+      cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
+      return;
+   }
+   canvas->Clear();
+   SetTH2Style(hist);
+   hist->Draw("COLZ");
+   DrawSTARpp510();
+
+   outFile->cd();
+   canvas->Write();
+   hist->Write();
+}
+
+void Plot::Clear(){
+   if(inFile){
+      inFile->Close();
+   }
+
+   if(outFile){
+      outFile->Close();
+   }
+}

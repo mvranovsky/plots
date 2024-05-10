@@ -6,6 +6,8 @@ set (SRCS
   #src/PlotsManager.cxx
   src/Plot.cxx
   src/PlotAnaV0.cxx
+  src/PlotGeneral.cxx
+  src/PlotV0SingleState.cxx
   )
 
 #name of LIB_READER

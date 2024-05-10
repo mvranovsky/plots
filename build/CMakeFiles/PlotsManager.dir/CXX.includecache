@@ -136,11 +136,27 @@ Util.h
 Plot.h
 /star/u/mvranovsk/plots/include/Plot.h
 
+/star/u/mvranovsk/plots/include/PlotGeneral.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+
+/star/u/mvranovsk/plots/include/PlotV0SingleState.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+
 /star/u/mvranovsk/plots/include/PlotsManager.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 -
 PlotAnaV0.h
 /star/u/mvranovsk/plots/include/PlotAnaV0.h
+PlotGeneral.h
+/star/u/mvranovsk/plots/include/PlotGeneral.h
+PlotV0SingleState.h
+/star/u/mvranovsk/plots/include/PlotV0SingleState.h
 TFile.h
 -
 TKey.h

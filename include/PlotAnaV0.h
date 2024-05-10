@@ -31,6 +31,9 @@ class PlotAnaV0 : public Plot {
       	void fitLambda(Double_t minRange, Double_t maxRange, int nBins);
 		void general2f(TString nameOfHist , TString cutDescription);
 
+		
+
+
 
 };
 

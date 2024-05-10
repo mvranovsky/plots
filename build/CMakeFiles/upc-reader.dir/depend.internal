@@ -13,3 +13,17 @@ CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o
  /star/u/mvranovsk/plots/include/Util.h
  /star/u/mvranovsk/plots/src/PlotAnaV0.cxx
  /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o
+ /star/u/mvranovsk/plots/include/Libraries.h
+ /star/u/mvranovsk/plots/include/Plot.h
+ /star/u/mvranovsk/plots/include/PlotGeneral.h
+ /star/u/mvranovsk/plots/include/Util.h
+ /star/u/mvranovsk/plots/src/PlotGeneral.cxx
+ /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.o
+ /star/u/mvranovsk/plots/include/Libraries.h
+ /star/u/mvranovsk/plots/include/Plot.h
+ /star/u/mvranovsk/plots/include/PlotV0SingleState.h
+ /star/u/mvranovsk/plots/include/Util.h
+ /star/u/mvranovsk/plots/src/PlotV0SingleState.cxx
+ /star/u/mvranovsk/star-upcDst/work/include/RunDef.h

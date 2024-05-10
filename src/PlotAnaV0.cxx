@@ -9,14 +9,14 @@ void PlotAnaV0::Make(){
 	//1. plot invMassK0s
 	if (plots[0].second){
 		invMassK0s(0.3, 1., 70);
-		fitK0s(0.45, 0.54, 100);
+		fitK0s(0.46, 0.53, 100);
 		cout << "Successfully created invariant mass plot and fit of peak for K0S..." << endl;
 	}
 
 	//2. plot invMassLambda
 	if (plots[1].second){
 		invMassLambda(0.9,1.7,80);
-		fitLambda(1.1, 1.14, 80);
+		fitLambda(1.1, 1.133, 60);
 		cout << "Successfully created invariant mass plot and fit of peak for Lambda..." << endl;
 	}
 
@@ -29,8 +29,9 @@ void PlotAnaV0::Make(){
 	}
 
 	for (int iHist = 5; iHist < plots.size(); ++iHist){
-		if (iHist == 22 || 23){
+		if (iHist == 25 || iHist == 26 || iHist == 27 || iHist == 28){
 			general2f(plots[iHist].first, cutDescriptions[iHist-5]);
+			cout << "Successfully created " << plots[iHist].first << " plot..." << endl;
 			continue;
 		}
 
@@ -67,7 +68,7 @@ void PlotAnaV0::Init(){
 void PlotAnaV0::general2f(TString nameOfHist , TString cutDescription){
 	//TCanvas* canvas;
 	CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
-	SetGPad(false,0.12, 0.12,0.11, 0.06 );
+	SetGPad(false,0.12, 0.16,0.11, 0.06 );
 	TH2F* hist = (TH2F*)inFile->Get(nameOfHist);
 	if (!hist){
 		cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
@@ -111,8 +112,9 @@ void PlotAnaV0::nSigmaCorr(){
 void PlotAnaV0::histGeneral(TString nameOfHist, TString cutDescription) {
 
 	//TCanvas* canvas;
+	//cout << "Creating " << nameOfHist << " in histGeneral." << endl;
 	CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
-	SetGPad(false, 0.14, 0.05,0.11,0.06);
+
 	TH1D* hist = (TH1D*)inFile->Get(nameOfHist);
 	if (!hist){
 		cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
@@ -120,15 +122,18 @@ void PlotAnaV0::histGeneral(TString nameOfHist, TString cutDescription) {
 	}
 	canvas->Clear();
 	SetHistStyle(hist, kBlack, markerStyleTypical);
+
+
+	hist->Draw("same");
 	if(nameOfHist == "hAnalysisFlow"){
+		SetGPad(true, 0.14, 0.05,0.11,0.06);
 		DrawSTARpp510(0.6,0.9,0.9,0.9);
-      	gPad->SetLogy();
 	}else{
+		SetGPad(false, 0.14, 0.05,0.11,0.06);
 		DrawSTARpp510();
 	}
-	hist->Draw();
 
-	CreateText(cutDescription, 0.1, 0.8,0.4,0.8);
+	//CreateText(cutDescription, 0.1, 0.8,0.4,0.8);
 
 	outFile->cd();
 	canvas->Write();
@@ -266,8 +271,8 @@ void PlotAnaV0::fitK0s(Double_t minRange, Double_t maxRange, int nBins) {
 	SetHistStyle(signalFinal, kBlack, markerStyleTypical);
 	signalFinal->SetMarkerStyle(markerStyleTypical);
     signalFinal->Draw();
-	//int y = fitGaussPol2(&signalFinal,(maxRange-minRange)/nBins, minRange, maxRange);
-    //CreateText("Yield: " + to_string(y), 0.7, 0.93,0.85,0.93);
+	int y = fitGaussPol2(&signalFinal,(maxRange-minRange)/nBins, minRange, maxRange);
+    CreateText("Yield: " + to_string(y), 0.7, 0.85,0.85,0.85);
 
     DrawSTARpp510();
     CreateLegend(&legend,0.15, 0.85, 0.4, 0.7);
@@ -300,8 +305,8 @@ void PlotAnaV0::fitLambda(Double_t minRange, Double_t maxRange, int nBins) {
 	SetHistStyle(signalFinal, kBlack, markerStyleTypical);
 	signalFinal->GetYaxis()->SetTitleOffset(1.5);
     signalFinal->Draw();
-	//int y = fitGaussPol2(&signalFinal,(maxRange-minRange)/nBins, minRange, maxRange, 0.01, 0.01, 0.01, 5000, 1.15, 0.01);
-    //CreateText("Yield: " + to_string(y), 0.15, 0.8,0.4,0.8);
+	int y = fitGaussPol2(&signalFinal,(maxRange-minRange)/nBins, minRange, maxRange, 0.01, 0.01, 0.01, 5000, 1.15, 0.01);
+    CreateText("Yield: " + to_string(y), 0.15, 0.8,0.4,0.8);
 
     DrawSTARpp510();
     CreateLegend(&legend,0.15, 0.7, 0.5, 0.6);

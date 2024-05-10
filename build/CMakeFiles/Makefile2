@@ -76,7 +76,7 @@ all: CMakeFiles/PlotsManager.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/PlotsManager.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /star/u/mvranovsk/plots/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /star/u/mvranovsk/plots/build/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/PlotsManager.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /star/u/mvranovsk/plots/build/CMakeFiles 0
 .PHONY : CMakeFiles/PlotsManager.dir/rule
@@ -103,7 +103,7 @@ clean: CMakeFiles/PlotsManager.dir/clean
 CMakeFiles/upc-reader.dir/all:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/depend
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=3,4,5 "Built target upc-reader"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=3,4,5,6,7 "Built target upc-reader"
 .PHONY : CMakeFiles/upc-reader.dir/all
 
 # Include target in all.
@@ -113,7 +113,7 @@ all: CMakeFiles/upc-reader.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/upc-reader.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /star/u/mvranovsk/plots/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /star/u/mvranovsk/plots/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/upc-reader.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /star/u/mvranovsk/plots/build/CMakeFiles 0
 .PHONY : CMakeFiles/upc-reader.dir/rule

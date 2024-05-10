@@ -11,11 +11,6 @@ int main(int argc, char *argv[]){
 	}
 	const char* inputPosition = argv[1];
 	const char* outputPosition = argv[2];
-
-	if (!defineAnalysis()){
-		cout << "Cannot define analysis from the possible choices." << endl;
-		return 1;
-	}
 	
    	//create and open output file
    	mOutFile = CreateOutputFile("AnalysisOutput.root"); 
@@ -26,7 +21,7 @@ int main(int argc, char *argv[]){
    	cout << "Output file created..." << endl;
 
 
-    if (!ConnectInputHist(argc, argv)){
+    if (!connectHists(argc, argv)){
     	cout << "Couldn't connect all histograms." << endl;
     	return 1;
     }
@@ -36,6 +31,13 @@ int main(int argc, char *argv[]){
     if( runAnaV0 ){
     	cout << "Creating plots from AnaV0..." << endl;
     	mPlot = new PlotAnaV0(mOutFile, inputPosition, outputPosition);
+    }else if( runAnaV0SingleState ){
+    	cout << "Creating plots from AnaV0 Single state..." << endl;
+    	mPlot = new PlotV0SingleState(mOutFile, inputPosition, outputPosition);
+    } else{
+    	cout << "No plots to run. Leaving..." << endl;
+    	Clear();
+    	return 1;
     }
 
     mPlot->Init();
