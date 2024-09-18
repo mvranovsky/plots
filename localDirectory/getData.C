@@ -22,10 +22,11 @@ vector<TString> ListTCanvasInFile() {
             if (obj->InheritsFrom("TCanvas")) {
                 TCanvas* canvas = (TCanvas*)obj;
                 canvasName.push_back( canvas->GetName() );
+                cout << "good "<< canvas->GetName() <<endl;
             }
-            if(obj){
-                delete obj;
-            }
+            //if(obj){
+                //delete obj;
+            //}
         }
     }
 
@@ -78,7 +79,7 @@ void getData(const TString& inputTag) {
    	TCanvas *c;
    	for (int i = 0; i < canvasList.size(); ++i) {
    		
-   		c = dynamic_cast<TCanvas*>(file->Get( canvasList[i] + TString(";1")) ); //+ TString(";1") //the ;1 is there because there are histograms saved with the same name but with ";2"
+   		c = dynamic_cast<TCanvas*>(file->Get( canvasList[i] ) ); //+ TString(";1") //the ;1 is there because there are histograms saved with the same name but with ";2"
    		if(!c) {
    			cerr << "Couldn't get canvas with the name " << canvasList[i] << ". Skipping." << endl;
    			continue;

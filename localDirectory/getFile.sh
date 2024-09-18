@@ -32,7 +32,6 @@ if [ "$#" -ne 1 ]; then
 fi
 
 echo "Downloading .root file from RCF with tag: $1 and saved as /$1/AnalysisOutput.root"
-rm -r $1
 mkdir $1
 get $1
 echo "Successfully downloaded .root file. Running script getData.C to save the downloaded canvases to directory $1/"
