@@ -43,6 +43,8 @@ algorithm
 -
 set
 -
+iomanip
+-
 TGraphAsymmErrors.h
 /star/u/mvranovsk/plots/include/TGraphAsymmErrors.h
 TEfficiency.h
@@ -122,6 +124,26 @@ TVirtualFitter.h
 TPolyLine3D.h
 -
 Math/Vector3D.h
+-
+RooRealVar.h
+-
+RooDataHist.h
+-
+RooGaussian.h
+-
+RooPolynomial.h
+-
+RooAddPdf.h
+-
+RooPlot.h
+-
+RooFitResult.h
+-
+RooDataHist.h
+-
+RooCBShape.h
+-
+RooArgList.h
 -
 
 /star/u/mvranovsk/plots/include/Plot.h

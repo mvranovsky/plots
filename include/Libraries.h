@@ -20,6 +20,8 @@
 #include <unordered_map>
 #include <algorithm>
 #include <set>
+#include <iomanip>
+
 
 
 // ROOT headers
@@ -64,5 +66,19 @@
 #include <TVirtualFitter.h>
 #include <TPolyLine3D.h>
 #include <Math/Vector3D.h>
+
+//RooFit headers
+#include <RooRealVar.h>
+#include <RooDataHist.h>
+#include <RooGaussian.h>
+#include <RooPolynomial.h>
+#include <RooAddPdf.h>
+#include <RooPlot.h>
+#include <RooFitResult.h>
+#include <RooDataHist.h>
+#include <RooCBShape.h>
+#include <RooArgList.h>
+
+
 
 #endif

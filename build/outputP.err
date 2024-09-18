@@ -1,0 +1,81 @@
+SysError in <TFile::WriteBuffer>: error writing to file /gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaV0Control_15.8.24/merged/AnalysisOutput.root (-1) (Disk quota exceeded)
+Warning in <TCanvas::Constructor>: Deleting canvas with same name: fitK0s
+Warning in <Fit>: Abnormal termination of minimization.
+Warning in <TFile::Append>: Replacing existing TH1: histCheck (Potential memory leak).
+Warning in <TCanvas::Constructor>: Deleting canvas with same name: fitLambda
+Warning in <TFile::Append>: Replacing existing TH1: invMassLambdaSignalFit (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: histCheck (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are filled with weights
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TEfficiency::GetEfficiencyErrorLow>: frequentist confidence intervals for weights are only supported by the normal approximation
+Info in <TEfficiency::GetEfficiencyErrorLow>: setting statistic option to kFNormal
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are filled with weights
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TEfficiency::GetEfficiencyErrorLow>: frequentist confidence intervals for weights are only supported by the normal approximation
+Info in <TEfficiency::GetEfficiencyErrorLow>: setting statistic option to kFNormal
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are filled with weights
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TEfficiency::GetEfficiencyErrorLow>: frequentist confidence intervals for weights are only supported by the normal approximation
+Info in <TEfficiency::GetEfficiencyErrorLow>: setting statistic option to kFNormal
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are filled with weights
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TEfficiency::GetEfficiencyErrorLow>: frequentist confidence intervals for weights are only supported by the normal approximation
+Info in <TEfficiency::GetEfficiencyErrorLow>: setting statistic option to kFNormal
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are filled with weights
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TEfficiency::GetEfficiencyErrorLow>: frequentist confidence intervals for weights are only supported by the normal approximation
+Info in <TEfficiency::GetEfficiencyErrorLow>: setting statistic option to kFNormal
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are filled with weights
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TEfficiency::GetEfficiencyErrorLow>: frequentist confidence intervals for weights are only supported by the normal approximation
+Info in <TEfficiency::GetEfficiencyErrorLow>: setting statistic option to kFNormal
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Warning in <TFile::Append>: Replacing existing TH1: tryout (Potential memory leak).
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are filled with weights
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TEfficiency::GetEfficiencyErrorLow>: frequentist confidence intervals for weights are only supported by the normal approximation
+Info in <TEfficiency::GetEfficiencyErrorLow>: setting statistic option to kFNormal
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are filled with weights
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TH1D::Sumw2>: Sum of squares of weights structure already created
+Warning in <TEfficiency::GetEfficiencyErrorLow>: frequentist confidence intervals for weights are only supported by the normal approximation
+Info in <TEfficiency::GetEfficiencyErrorLow>: setting statistic option to kFNormal

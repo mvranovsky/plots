@@ -5,7 +5,11 @@
 #include "Libraries.h"
 #include "/star/u/mvranovsk/star-upcDst/work/include/RunDef.h"
 
+
+
 using namespace std;
+
+
 
 class Plot{
 	public: 
@@ -32,7 +36,7 @@ class Plot{
 		void SetGPad(bool isLogY = false, double left = 0.14, double right = 0.07, double bottom = 0.11, double top = 0.06 ); // (Float_t left, Float_t right, Float_t bottom, Float_t top)
 		void DrawFiducial();
 		void SetLineStyle(TLine* line);
-		void DrawSTARpp510(double xl = 0.2, double yl = 0.9, double xr = 0.4, double yr = 0.9);
+		void DrawSTARpp510(double xl = 0.2, double yl = 0.85, double xr = 0.4, double yr = 0.85, double textSizeRel = 0.);
 		int fitGaussPol2(TH1D **histToFit, Int_t binWidth, Double_t minRange, Double_t maxRange, Double_t pol0 = 0.01, Double_t pol1 = 0.01, Double_t pol2 = 0.01, Double_t amp = 10000,Double_t mean = 0.497, Double_t sigma = 0.001);
 		bool defineAnalysis();
 		vector<pair<TH1D*, TString>> GetAllTH1D();
@@ -55,49 +59,9 @@ class Plot{
 		const char* outputPosition;
 		string inputPosition;
 
-		/*
-		//------------------------------------------------
-		//only temporary until RunDefPlots.h works
-		const char* nameOfTree = "recTreeV0";
-		std::vector<std::pair<TString, bool>> plots = {
-		    {"invMassK0s", true},
-		    {"invMassLambda", true},
-		    {"hNSigmaPiPcorr", true},
-		    {"hNSigmaPiKcorr",true},
-		    {"hNSigmaPKcorr",true},
-		    {"hNPairV0", true},
-		    {"hPosZ", true},
-		    {"hPosZCut", true},
-		    {"hVtxDiff", true},
-		    {"hDcaDaughters", true},
-		    {"hDcaDaughtersCut", true},
-		    {"hDcaBeamline", true},
-		    {"hDcaBeamlineCut", true},
-		    {"hPointingAngle", true},
-		    {"hPointingAngleCut", true},
-		    {"hDecayLength", true},
-		    {"hDecayLengthCut", true},
-		    {"hEta",true},
-		    {"hPt",true},
-		    {"hNfitHits",true},
-		    {"hNhitsDEdx", true},
-		    {"hAnalysisFlow", true},
-		    {"hDecayLPointingA", true},
-    		{"hDecayLPointingACut", true}
-		};
-		bool runAnaV0 = true;
-		///-----------------------------------------
-		
-		TH2F *hNSigmaPiPcorr, *hNSigmaPiKcorr, *hNSigmaPKcorr;
-		TH1D *hNPairV0, *hPosZ, *hPosZCut, *hVtxDiff;
-		TH1D *hPt, *hEta, *hNhitsDEdx, *hNfitHits;
-		//topologyCuts
-		TH1D *hDcaDaughters, *hDcaBeamline, *hPointingAngle, *hDecayLength;
-		TH1D *hDcaDaughtersCut, *hDcaBeamlineCut, *hPointingAngleCut, *hDecayLengthCut;
-		*/
 
 		TCanvas *canvas;
-		TLegend *legend;
+		TLegend *legend, *legend2;
 		TPaveText *text;
 		TTree *tree;
 		TChain *chain;

@@ -11,14 +11,16 @@ int main(int argc, char *argv[]){
 	}
 	const char* inputPosition = argv[1];
 	const char* outputPosition = argv[2];
-	
+
+
    	//create and open output file
    	mOutFile = CreateOutputFile("AnalysisOutput.root"); 
    	if(!mOutFile) {
-      	cout << "Can not open output file." << endl; 
+      	cout << "Cannot open output file." << endl; 
       	return 1;
    	}
    	cout << "Output file created..." << endl;
+
 
 
     if (!connectHists(argc, argv)){

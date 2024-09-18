@@ -57,9 +57,9 @@ void Plot::SetHistStyle(TH1* hist, Int_t color, Int_t markStyle)
    hist->SetLineColor(color);
    hist->SetLineStyle(1);
    hist->SetLineWidth(1);  
-   hist->SetMarkerSize(1);
+   hist->SetMarkerSize(2);
    hist->SetMarkerColor(color);
-   hist->SetMarkerStyle(markStyle);
+   hist->SetMarkerStyle(markerStyle);
 }//SetHistStyle
 
 void Plot::SetTH2Style(TH2* hist)
@@ -87,6 +87,7 @@ void Plot::CreateLegend(TLegend **legend, double xl, double yl, double xr, doubl
    *legend = new TLegend(xl, yl,xr, yr);
    (*legend)->SetFillStyle(0);
    (*legend)->SetBorderSize(0);
+   (*legend)->SetTextAlign(11);
    (*legend)->SetTextSize(textSize);
    (*legend)->SetTextFont(42);
    (*legend)->SetMargin(0.1);   
@@ -103,11 +104,12 @@ void Plot::DrawSTARInternal(double xl, double yl, double xr, double yr)
    textSTAR -> Draw("same");
 }
 
-void Plot::DrawSTARpp510(double xl, double yl, double xr, double yr){
+void Plot::DrawSTARpp510(double xl, double yl, double xr, double yr, double textSizeRel){
    
    TPaveText *textpp510;
    textpp510 = new TPaveText(xl, yl, xr, yr,"brNDC");
-   textpp510 -> SetTextSize(textSize);
+   textpp510 -> SetTextSize(textSize + textSizeRel);
+   textpp510 -> SetTextAlign(11);
    textpp510 -> SetFillColor(0);
    textpp510 -> SetTextFont(62);
    textpp510->AddText(ppSTAR);
@@ -121,7 +123,7 @@ void Plot::CreateText(TString writtenText, double xl, double yl, double xr, doub
    text -> SetTextSize(textSize);
    text -> SetFillColor(0);
    text -> SetTextFont(textFont);
-   text -> SetTextAlign(32);   
+   text -> SetTextAlign(11);   
    text -> AddText(writtenText);
    text -> Draw("same");
 }
@@ -395,28 +397,44 @@ vector<pair<TH1D*, TString>> Plot::GetAllTH1D() {
 
 void Plot::TH1DGeneral(TString nameOfHist,TH1D* hist) {
 
-   CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
-
    if (!hist){
       cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
       return;
    }
+   
+   if (nameOfHist = "") {
+      CreateCanvas(&canvas, hist->GetName(), widthTypical, heightTypical );      
+   }else{
+      CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
+   }
+
    canvas->Clear();
    SetHistStyle(hist, kBlack, markerStyleTypical);
+   hist->Draw("same E hist");
+   //canvas->SetLogy();
 
 
-   hist->Draw("same");
-   if(nameOfHist == "hAnalysisFlow"){
-      SetGPad(true, 0.14, 0.05,0.11,0.06);
-      DrawSTARpp510(0.6,0.9,0.9,0.9);
+   if(strcmp(hist->GetName(), "hAnalysisFlow") == 0){
+      canvas->SetLogy();
+      SetGPad(false, 0.14, 0.05,0.11,0.06);
+      DrawSTARpp510(0.6,0.85,0.9,0.85, 0.02);
+
+     hist->GetXaxis()->SetBinLabel(3, TString("pre-selection"));
+     hist->GetXaxis()->SetBinLabel(4, TString("Good quality tracks"));
+     hist->GetXaxis()->SetBinLabel(7, TString("|V_{Z}| < 60 cm"));
+     hist->GetXaxis()->SetBinLabel(8, TString("Q_{tot} = 0"));
+
+
    }else{
       SetGPad(false, 0.14, 0.05,0.11,0.06);
-      DrawSTARpp510();
+      DrawSTARpp510(0.6,0.85,0.9,0.85, 0.02);
    }
+
+   canvas->Update();
 
    outFile->cd();
    canvas->Write();
-   hist->Write();
+   //hist->Write();
 }
 
 
@@ -434,7 +452,7 @@ void Plot::TH2FGeneral(TString nameOfHist , TH2F* hist){
 
    outFile->cd();
    canvas->Write();
-   hist->Write();
+   //hist->Write();
 }
 
 void Plot::Clear(){

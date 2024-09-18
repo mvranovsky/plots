@@ -107,7 +107,6 @@ bool connectHists(int argc, char *argv[]) {
 
 
       }//while
-      cout << "we behind while" << endl;
    }
    else{
       cerr << "Didn't find .list or .root in input file. Returning..." << endl;
@@ -192,7 +191,7 @@ bool saveHists() {
     std::cerr << "Error: Output file is not open or is corrupted." << std::endl;
     return false; // or handle the error appropriately
    } else{
-      cout << "outfile good" << endl;
+      cout << "outfile connected successfully." << endl;
    }
 
    mOutFile->cd();

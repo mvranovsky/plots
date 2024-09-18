@@ -219,7 +219,7 @@ star-upc_SOURCE_DIR:STATIC=/star/u/mvranovsk/plots
 upc-reader_BINARY_DIR:STATIC=/star/u/mvranovsk/plots/build
 
 //Dependencies for the target
-upc-reader_LIB_DEPENDS:STATIC=general;Core;general;EG;general;Hist;general;Physics;general;RIO;general;Tree;general;MathCore;
+upc-reader_LIB_DEPENDS:STATIC=general;Core;general;EG;general;Hist;general;Physics;general;RIO;general;Tree;general;MathCore;general;RooFit;general;RooFitCore;
 
 //Value Computed by CMake
 upc-reader_SOURCE_DIR:STATIC=/star/u/mvranovsk/plots

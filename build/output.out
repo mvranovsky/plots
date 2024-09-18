@@ -1,0 +1,98 @@
+
+[1mRooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby[0m 
+                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
+                All rights reserved, please read http://roofit.sourceforge.net/license.txt
+
+Starting the analysis...
+Output file created...
+outfile connected successfully.
+Successfully added all histograms together...
+Creating plots from AnaV0 Single state...
+Input from root list: /gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaV0_10.9.24/merged/StRP_production.list
+Input from 4 files...
+Created canvas for 1D histogram hAnalysisFlow
+Created canvas for 1D histogram TriggerBits
+Created canvas for 1D histogram hNSigmaPi
+Created canvas for 1D histogram hNSigmaP
+Created canvas for 1D histogram hNSigmaK
+Created canvas for 1D histogram hDEdxSignal
+Created canvas for 1D histogram NumberRPTracks
+Created canvas for 1D histogram NumberGlobalTracks
+Created canvas for 1D histogram hPt
+Created canvas for 1D histogram hEta
+Created canvas for 1D histogram hDcaZ
+Created canvas for 1D histogram hDcaXY
+Created canvas for 1D histogram hNfitHits
+Created canvas for 1D histogram hNhitsDEdx
+Created canvas for 1D histogram hVtxDiff
+Created canvas for 1D histogram hPosZ
+Created canvas for 1D histogram hPosZCut
+Created canvas for 1D histogram hGlobalVtx
+Created canvas for 1D histogram hNVertices
+Created canvas for 1D histogram hNPairV0
+Created canvas for 1D histogram TotQ
+Created canvas for 1D histogram hSameTrackPair
+Created canvas for 1D histogram hBothFlags
+Created canvas for 1D histogram hDecayLength
+Created canvas for 1D histogram hDecayLengthCut
+Created canvas for 1D histogram hPointingAngle
+Created canvas for 1D histogram hPointingAngleCut
+Created canvas for 1D histogram hDcaDaughters
+Created canvas for 1D histogram hDcaDaughtersCut
+Created canvas for 1D histogram hDcaBeamline
+Created canvas for 1D histogram hDcaBeamlineCut
+Created canvas for 1D histogram hNSigmaPiProbe1
+Created canvas for 1D histogram hNSigmaPiTag1
+Created canvas for 1D histogram hNSigmaPProbe1
+Created canvas for 1D histogram hNSigmaPTag1
+Created canvas for 1D histogram hNSigmaKProbe1
+Created canvas for 1D histogram hNSigmaKTag1
+Created canvas for 1D histogram hNSigmaEProbe1
+Created canvas for 1D histogram hNSigmaETag1
+Created canvas for 1D histogram hNSigmaPiProbe2
+Created canvas for 1D histogram hNSigmaPiTag2
+Created canvas for 1D histogram hNSigmaPProbe2
+Created canvas for 1D histogram hNSigmaPTag2
+Created canvas for 1D histogram hNSigmaKProbe2
+Created canvas for 1D histogram hNSigmaKTag2
+Created canvas for 1D histogram hNSigmaEProbe2
+Created canvas for 1D histogram hNSigmaETag2
+Created canvas for 2D histogram hNSigmaPiPcorr
+Created canvas for 2D histogram hNSigmaPiKcorr
+Created canvas for 2D histogram hNSigmaPiecorr
+Created canvas for 2D histogram hNSigmaPPicorr
+Created canvas for 2D histogram hNSigmaPKcorr
+Created canvas for 2D histogram hNSigmaPecorr
+Created canvas for 2D histogram hNSigmaKPicorr
+Created canvas for 2D histogram hNSigmaKPcorr
+Created canvas for 2D histogram hNSigmaKecorr
+Created canvas for 2D histogram hRPcorr
+Created canvas for 2D histogram hRPcorr_fid
+Created canvas for 2D histogram hRPcorrWest
+Created canvas for 2D histogram hRPcorrWest_fid
+Created canvas for 2D histogram hRPcorrEast
+Created canvas for 2D histogram hRPcorrEast_fid
+Created canvas for 2D histogram hEtaPhi
+Created canvas for 2D histogram hDecayLPointingA
+Created canvas for 2D histogram hDecayLPointingACut
+Created canvas for 2D histogram hArmenterosPodolanski
+Created canvas for 2D histogram hInvMassEta
+Created canvas for 2D histogram hPtPhiTagAround0
+Created canvas for 2D histogram hPtVzTagAround0
+Created canvas for 2D histogram hVzPhiTagAround0
+Created canvas for 2D histogram hInvMassPhiTagAround0
+Created canvas for 2D histogram hInvMassVzTagAround0
+Created canvas for 2D histogram hInvMassPtTagAround0
+Created canvas for 2D histogram hPtPhiProbeAround0
+Created canvas for 2D histogram hPtVzProbeAround0
+Created canvas for 2D histogram hVzPhiProbeAround0
+Created canvas for 2D histogram hInvMassPhiProbeAround0
+Created canvas for 2D histogram hInvMassVzProbeAround0
+Created canvas for 2D histogram hInvMassPtProbeAround0
+Created canvas for 2D histogram hEtaPhiProbeYesToFAround0
+Created canvas for 2D histogram hEtaPhiProbeNoToFAround0
+Created canvas for 2D histogram hEtaPhiProbeYesToF
+Created canvas for 2D histogram hEtaPhiProbeNoToF
+All histograms successfully saved to canvases...
+The output file is saved: /gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaV0_10.9.24/merged/AnalysisOutput.root
+Ending analysis. All plots created. Goodbye...

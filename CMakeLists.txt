@@ -8,6 +8,7 @@ set (SRCS
   src/PlotAnaV0.cxx
   src/PlotGeneral.cxx
   src/PlotV0SingleState.cxx
+  #src/PlotV0SingleStatePrimary.cxx
   )
 
 #name of LIB_READER
@@ -35,7 +36,8 @@ string(REPLACE "\n" "" ROOT_FLAGS "${ROOT_FLAGS_CMD}")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_FLAGS}")
 
 #libraries
-set(ROOT_DEPS Core EG Hist Physics RIO Tree MathCore)
+set(ROOT_DEPS Core EG Hist Physics RIO Tree MathCore RooFit RooFitCore)
+
 
 #include dir
 execute_process(COMMAND root-config --libdir OUTPUT_VARIABLE ROOT_LIBDIR_CMD)
