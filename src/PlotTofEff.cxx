@@ -1,10 +1,11 @@
-#include "../include/PlotV0SingleState.h"
+#include "../include/PlotTofEff.h"
 
 
-PlotV0SingleState::PlotV0SingleState(TFile *mOutFile, const string mInputList, const char* filePath): Plot(mOutFile, mInputList, filePath){}
+PlotTofEff::PlotTofEff(TFile *mOutFile, const string mInputList, const char* filePath): Plot(mOutFile, mInputList, filePath){}
 
-void PlotV0SingleState::Make(){
+void PlotTofEff::Make(){
 
+	
 	TH1D* h1 = (TH1D*)inFile->Get("hInvMassTof1");
 	TH1D* h2 = (TH1D*)inFile->Get("hInvMassTof2");
 
@@ -14,17 +15,6 @@ void PlotV0SingleState::Make(){
 		h2->Write();
 	}else{
 		cout << "Did not get h1, h2" << endl;
-	}
-
-	TH1D* h3 = (TH1D*)inFile->Get("hInvMassTof1AfterPicking1");
-	TH1D* h4 = (TH1D*)inFile->Get("hInvMassTof2AfterPicking1");
-
-	if(h3 && h4){
-		outFile->cd();
-		h3->Write();
-		h4->Write();
-	}else{
-		cout << "Did not get h3, h4" << endl;
 	}
 	
 
@@ -38,6 +28,7 @@ void PlotV0SingleState::Make(){
 	}
 
 	cout << "Successfully created invariant mass plot and fit of peak for K0S..." << endl;
+    /*
 
 	// create invariant mass plots for Lambda
 	if ( inputPosition.find("MC") != string::npos ){
@@ -55,7 +46,6 @@ void PlotV0SingleState::Make(){
 	efficiency(3,0); //pT
 	efficiency(4,0); //Vz
 
-    /*
 
 	// efficiencies
 	efficiency(1,1); //eta
@@ -108,6 +98,7 @@ void PlotV0SingleState::Make(){
 		cout << "Created canvas for 2D histogram " << hists2D[i].second << endl;
 	}
 
+
 	/*
     TList* keys = outFile->GetListOfKeys();
     if(!keys || sizeof(keys) == 0){
@@ -130,7 +121,7 @@ void PlotV0SingleState::Make(){
 
 }
 
-void PlotV0SingleState::Init(){
+void PlotTofEff::Init(){
 	//define the output file which will store all the canvases
 	outFile = new TFile(outputPosition, "recreate");
 
@@ -176,7 +167,8 @@ void PlotV0SingleState::Init(){
 }
 
 
-void PlotV0SingleState::fitK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
+
+void PlotTofEff::fitK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
 
     TH1D *signalFinal = new TH1D("fitPeakK0sSignalFit", "fitPeakK0sSignalFit", numBins, minRange, maxRange);
     TH1D *histCheck = new TH1D("histCheck", "", numBins, minRange, maxRange);
@@ -200,7 +192,7 @@ void PlotV0SingleState::fitK0s(Double_t minRange, Double_t maxRange, int numBins
    		tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 < 0");
    		histCheck->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
    		if(histCheck->GetEntries() != 0){
-   			cerr << "somethings wrong with histCheck. Number of entries: "<< histCheck->GetEntries() << endl;
+   			cerr << "somethings wrong with histCheck. Leaving..." << endl;
    			return;
    		}
 	}
@@ -214,7 +206,7 @@ void PlotV0SingleState::fitK0s(Double_t minRange, Double_t maxRange, int numBins
     }
 }
 
-void PlotV0SingleState::fitLambda(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
+void PlotTofEff::fitLambda(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
 
     TH1D *signalFinal = new TH1D("invMassLambdaSignalFit", "invMassLambdaSignalFit", numBins, minRange, maxRange);
     TH1D *histCheck = new TH1D("histCheck", "", numBins, minRange, maxRange);
@@ -246,7 +238,7 @@ void PlotV0SingleState::fitLambda(Double_t minRange, Double_t maxRange, int numB
     }
 }
 
-double PlotV0SingleState::GoodnessOfFit(RooPlot*& frame, RooAddPdf& model, RooDataHist& data){
+double PlotTofEff::GoodnessOfFit(RooPlot*& frame, RooAddPdf& model, RooDataHist& data){
     double chiSquare = frame->chiSquare();  // This calculates chi-square per degree of freedom
 
     int numBins = frame->GetNbinsX();  // Number of bins used in the histogram
@@ -257,7 +249,7 @@ double PlotV0SingleState::GoodnessOfFit(RooPlot*& frame, RooAddPdf& model, RooDa
 }
 
 
-TString PlotV0SingleState::convertToString(double val) {
+TString PlotTofEff::convertToString(double val) {
 
     ostringstream streamA;
     streamA << fixed << setprecision(1) << val;
@@ -266,13 +258,13 @@ TString PlotV0SingleState::convertToString(double val) {
     return formattedA;
 }
 
-int PlotV0SingleState::makeInt(double val) {
+int PlotTofEff::makeInt(double val) {
 	int result = val;
 	return result;
 }
 
 
-vector<pair<int,double>> PlotV0SingleState::effFit(int Switch ,double Min, double Max,Double_t signalGuess1, Double_t signalGuess2, Double_t polGuess1[2], Double_t polGuess2[2], int runSeparatePions){
+vector<pair<int,double>> PlotTofEff::effFit(int Switch ,double Min, double Max,Double_t signalGuess1, Double_t signalGuess2, Double_t polGuess1[2], Double_t polGuess2[2], int runSeparatePions){
 	// function which integrates the signal, it is a universal function for all variables
 
 	// switcher
@@ -559,7 +551,7 @@ vector<pair<int,double>> PlotV0SingleState::effFit(int Switch ,double Min, doubl
 }
 
 
-void PlotV0SingleState::efficiency(int switcher, int runSeparatePions = 0) {
+void PlotTofEff::efficiency(int switcher, int runSeparatePions = 0) {
 	// runSeparatePions = 0: no
 	// runSeparatePions = 1: yes, run pi +
 	// runSeparatePions = 2: yes, run pi -
@@ -779,7 +771,7 @@ void PlotV0SingleState::efficiency(int switcher, int runSeparatePions = 0) {
 }
 
 
-void PlotV0SingleState::invMassLambda(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF){
+void PlotTofEff::invMassLambda(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF){
 
    	//TCanvas* canvas;
 	CreateCanvas(&canvas,"invMassLambda", widthTypical, heightTypical);
@@ -845,7 +837,7 @@ void PlotV0SingleState::invMassLambda(Double_t minRange, Double_t maxRange, int 
 }
 
 
-void PlotV0SingleState::invMassK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF){
+void PlotTofEff::invMassK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF){
 	//TCanvas* canvas;
 	CreateCanvas(&canvas,"invMassK0s", widthTypical, heightTypical);
 	SetGPad(); //might set log y scale, watchout

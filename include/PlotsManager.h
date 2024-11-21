@@ -6,6 +6,8 @@
 #include "PlotAnaV0.h"
 #include "PlotGeneral.h"
 #include "PlotV0SingleState.h"
+#include "PlotTofEff.h"
+#include "PlotTofEffMult.h"
 #include <TFile.h>
 #include <TKey.h>
 #include <TClass.h>

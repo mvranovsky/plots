@@ -6,6 +6,8 @@ CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o
  /star/u/mvranovsk/plots/include/Plot.h
  /star/u/mvranovsk/plots/include/PlotAnaV0.h
  /star/u/mvranovsk/plots/include/PlotGeneral.h
+ /star/u/mvranovsk/plots/include/PlotTofEff.h
+ /star/u/mvranovsk/plots/include/PlotTofEffMult.h
  /star/u/mvranovsk/plots/include/PlotV0SingleState.h
  /star/u/mvranovsk/plots/include/PlotsManager.h
  /star/u/mvranovsk/plots/include/Util.h

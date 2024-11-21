@@ -36,7 +36,13 @@ int main(int argc, char *argv[]){
     }else if( runAnaV0SingleState ){
     	cout << "Creating plots from AnaV0 Single state..." << endl;
     	mPlot = new PlotV0SingleState(mOutFile, inputPosition, outputPosition);
-    } else{
+    } else if( runTofEff ){
+    	cout << "Creating plots from TofEff..." << endl;
+    	mPlot = new PlotTofEff(mOutFile, inputPosition, outputPosition);
+    } else if( runTofEffMult ){
+        cout << "Creating plots from TofEffMult..." << endl;
+        mPlot = new PlotTofEffMult(mOutFile, inputPosition, outputPosition);
+    }else{
     	cout << "No plots to run. Leaving..." << endl;
     	Clear();
     	return 1;

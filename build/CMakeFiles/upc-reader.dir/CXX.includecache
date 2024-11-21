@@ -164,6 +164,18 @@ Util.h
 Plot.h
 /star/u/mvranovsk/plots/include/Plot.h
 
+/star/u/mvranovsk/plots/include/PlotTofEff.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+
+/star/u/mvranovsk/plots/include/PlotTofEffMult.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+
 /star/u/mvranovsk/plots/include/PlotV0SingleState.h
 Util.h
 /star/u/mvranovsk/plots/include/Util.h
@@ -185,6 +197,14 @@ Libraries.h
 /star/u/mvranovsk/plots/src/PlotGeneral.cxx
 ../include/PlotGeneral.h
 /star/u/mvranovsk/plots/include/PlotGeneral.h
+
+/star/u/mvranovsk/plots/src/PlotTofEff.cxx
+../include/PlotTofEff.h
+/star/u/mvranovsk/plots/include/PlotTofEff.h
+
+/star/u/mvranovsk/plots/src/PlotTofEffMult.cxx
+../include/PlotTofEffMult.h
+/star/u/mvranovsk/plots/include/PlotTofEffMult.h
 
 /star/u/mvranovsk/plots/src/PlotV0SingleState.cxx
 ../include/PlotV0SingleState.h

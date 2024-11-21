@@ -270,6 +270,14 @@ bool Plot::defineAnalysis(){
       nameOfTree = nameOfAnaV0SingleStateTree;
       plots = plotsV0;
       return true;  
+   }else if(runTofEff){
+      nameOfTree = nameOfAnaTofEff;
+      plots = plotsV0;
+      return true;
+   }else if(runTofEffMult){
+      nameOfTree = nameOfAnaTofEffMult;
+      plots = plotsV0;
+      return true;
    } else {
       cout << "All analyses set to false. Returning..." << endl;
       return false;
@@ -418,12 +426,6 @@ void Plot::TH1DGeneral(TString nameOfHist,TH1D* hist) {
       canvas->SetLogy();
       SetGPad(false, 0.14, 0.05,0.11,0.06);
       DrawSTARpp510(0.6,0.85,0.9,0.85, 0.02);
-
-     hist->GetXaxis()->SetBinLabel(3, TString("pre-selection"));
-     hist->GetXaxis()->SetBinLabel(4, TString("Good quality tracks"));
-     hist->GetXaxis()->SetBinLabel(7, TString("|V_{Z}| < 60 cm"));
-     hist->GetXaxis()->SetBinLabel(8, TString("Q_{tot} = 0"));
-
 
    }else{
       SetGPad(false, 0.14, 0.05,0.11,0.06);

@@ -8,7 +8,8 @@ set (SRCS
   src/PlotAnaV0.cxx
   src/PlotGeneral.cxx
   src/PlotV0SingleState.cxx
-  #src/PlotV0SingleStatePrimary.cxx
+  src/PlotTofEff.cxx
+  src/PlotTofEffMult.cxx
   )
 
 #name of LIB_READER

@@ -1,5 +1,5 @@
-#ifndef PlotV0SingleState_h
-#define PlotV0SingleState_h
+#ifndef PlotTofEffMult_h
+#define PlotTofEffMult_h
 
 
 #include "Util.h"
@@ -9,11 +9,11 @@ using namespace RooFit;
 using namespace std;
 using namespace UTIL;
 
-class PlotV0SingleState : public Plot {
+class PlotTofEffMult : public Plot {
 	public:
 		//accessible from outside the class
-		PlotV0SingleState(TFile *mOutFile, const string mInputList, const char* filePath);
-      	~PlotV0SingleState(){};
+		PlotTofEffMult(TFile *mOutFile, const string mInputList, const char* filePath);
+      	~PlotTofEffMult(){};
       
       	//overrides the original Make() from class Plot
       	void Make() override;
@@ -42,7 +42,9 @@ class PlotV0SingleState : public Plot {
 		int makeInt(double val);
 		void plotBcgFit(TH1D*& hist1, TH1D*& hist2, double Min, double Max, TString variable);
 		vector<pair<int,double>> effFit(int Switch ,double Min, double Max,Double_t signalGuess1, Double_t signalGuess2, Double_t polGuess1[2], Double_t polGuess2[2], int runSeparatePions);
-
+		void efficiencyFromHists(TH1D* hist1, TH1D* hist2);
+		vector<TString> getConditions(int Switch, int idx, double Min, double Max);
+		TH1D* getHist(int Switch, double Min, double Max, bool is2TOF, int runSeparatePions, bool runFirstOnly);
 
 		TH1D *hMean1, *hSigma1, *hN1, *hAlpha1;
 		TH1D *hMean2, *hSigma2, *hN2, *hAlpha2;

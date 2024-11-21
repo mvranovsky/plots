@@ -217,6 +217,60 @@ src/PlotGeneral.cxx.s:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.s
 .PHONY : src/PlotGeneral.cxx.s
 
+src/PlotTofEff.o: src/PlotTofEff.cxx.o
+
+.PHONY : src/PlotTofEff.o
+
+# target to build an object file
+src/PlotTofEff.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o
+.PHONY : src/PlotTofEff.cxx.o
+
+src/PlotTofEff.i: src/PlotTofEff.cxx.i
+
+.PHONY : src/PlotTofEff.i
+
+# target to preprocess a source file
+src/PlotTofEff.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.i
+.PHONY : src/PlotTofEff.cxx.i
+
+src/PlotTofEff.s: src/PlotTofEff.cxx.s
+
+.PHONY : src/PlotTofEff.s
+
+# target to generate assembly for a file
+src/PlotTofEff.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.s
+.PHONY : src/PlotTofEff.cxx.s
+
+src/PlotTofEffMult.o: src/PlotTofEffMult.cxx.o
+
+.PHONY : src/PlotTofEffMult.o
+
+# target to build an object file
+src/PlotTofEffMult.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o
+.PHONY : src/PlotTofEffMult.cxx.o
+
+src/PlotTofEffMult.i: src/PlotTofEffMult.cxx.i
+
+.PHONY : src/PlotTofEffMult.i
+
+# target to preprocess a source file
+src/PlotTofEffMult.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.i
+.PHONY : src/PlotTofEffMult.cxx.i
+
+src/PlotTofEffMult.s: src/PlotTofEffMult.cxx.s
+
+.PHONY : src/PlotTofEffMult.s
+
+# target to generate assembly for a file
+src/PlotTofEffMult.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.s
+.PHONY : src/PlotTofEffMult.cxx.s
+
 src/PlotV0SingleState.o: src/PlotV0SingleState.cxx.o
 
 .PHONY : src/PlotV0SingleState.o
@@ -290,6 +344,12 @@ help:
 	@echo "... src/PlotGeneral.o"
 	@echo "... src/PlotGeneral.i"
 	@echo "... src/PlotGeneral.s"
+	@echo "... src/PlotTofEff.o"
+	@echo "... src/PlotTofEff.i"
+	@echo "... src/PlotTofEff.s"
+	@echo "... src/PlotTofEffMult.o"
+	@echo "... src/PlotTofEffMult.i"
+	@echo "... src/PlotTofEffMult.s"
 	@echo "... src/PlotV0SingleState.o"
 	@echo "... src/PlotV0SingleState.i"
 	@echo "... src/PlotV0SingleState.s"

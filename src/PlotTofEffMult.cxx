@@ -1,10 +1,11 @@
-#include "../include/PlotV0SingleState.h"
+#include "../include/PlotTofEffMult.h"
 
 
-PlotV0SingleState::PlotV0SingleState(TFile *mOutFile, const string mInputList, const char* filePath): Plot(mOutFile, mInputList, filePath){}
+PlotTofEffMult::PlotTofEffMult(TFile *mOutFile, const string mInputList, const char* filePath): Plot(mOutFile, mInputList, filePath){}
 
-void PlotV0SingleState::Make(){
+void PlotTofEffMult::Make(){
 
+	
 	TH1D* h1 = (TH1D*)inFile->Get("hInvMassTof1");
 	TH1D* h2 = (TH1D*)inFile->Get("hInvMassTof2");
 
@@ -15,19 +16,8 @@ void PlotV0SingleState::Make(){
 	}else{
 		cout << "Did not get h1, h2" << endl;
 	}
-
-	TH1D* h3 = (TH1D*)inFile->Get("hInvMassTof1AfterPicking1");
-	TH1D* h4 = (TH1D*)inFile->Get("hInvMassTof2AfterPicking1");
-
-	if(h3 && h4){
-		outFile->cd();
-		h3->Write();
-		h4->Write();
-	}else{
-		cout << "Did not get h3, h4" << endl;
-	}
 	
-
+	/*
 	// create invariant mass plots for K0s
 	if( inputPosition.find("MC") != string::npos ){
 		fitK0s(0.46, 0.53, 35, true);
@@ -49,7 +39,7 @@ void PlotV0SingleState::Make(){
 	}
 
 	cout << "Successfully created invariant mass plot and fit of peak for Lambda..." << endl;
-	
+	*/
 	efficiency(1,0); //eta
 	efficiency(2,0); //phi
 	efficiency(3,0); //pT
@@ -108,6 +98,7 @@ void PlotV0SingleState::Make(){
 		cout << "Created canvas for 2D histogram " << hists2D[i].second << endl;
 	}
 
+
 	/*
     TList* keys = outFile->GetListOfKeys();
     if(!keys || sizeof(keys) == 0){
@@ -130,7 +121,7 @@ void PlotV0SingleState::Make(){
 
 }
 
-void PlotV0SingleState::Init(){
+void PlotTofEffMult::Init(){
 	//define the output file which will store all the canvases
 	outFile = new TFile(outputPosition, "recreate");
 
@@ -176,10 +167,10 @@ void PlotV0SingleState::Init(){
 }
 
 
-void PlotV0SingleState::fitK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
+
+void PlotTofEffMult::fitK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
 
     TH1D *signalFinal = new TH1D("fitPeakK0sSignalFit", "fitPeakK0sSignalFit", numBins, minRange, maxRange);
-    TH1D *histCheck = new TH1D("histCheck", "", numBins, minRange, maxRange);
 
     signalFinal->GetXaxis()->SetTitle("m_{#pi^{+} #pi^{-}} [GeV/c^{2}]");
     
@@ -187,23 +178,19 @@ void PlotV0SingleState::fitK0s(Double_t minRange, Double_t maxRange, int numBins
     cout << "fitting peak for K0S" << endl;
 
     //draw the pairs invMasses which satisfy condition
-    cmd = TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange);
 
-   	tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 > 0");
-	signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-   	tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 > 0");
-   	signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-	if(!is2TOF){
-   		tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 < 0");
-   		signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+    for (int i = 0; i < 5; ++i){
 
-   		tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 < 0");
-   		histCheck->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-   		if(histCheck->GetEntries() != 0){
-   			cerr << "somethings wrong with histCheck. Number of entries: "<< histCheck->GetEntries() << endl;
-   			return;
-   		}
-	}
+	   	tree->Draw(TString::Format("invMass%d>>hist(%d, %f, %f)", i,numBins, minRange,maxRange), TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0", i,2*i, 2*i +1) );
+		signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+	   	tree->Draw(TString::Format("invMass%d>>hist(%d, %f, %f)", i, numBins, minRange,maxRange), TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0", i,2*i+1, 2*i) );
+	   	signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+
+		if(!is2TOF){
+	   		tree->Draw(TString::Format("invMass%d>>hist(%d, %f, %f)",i, numBins, minRange,maxRange),TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0", i,2*i,  2*i +1) );
+	   		signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+		}
+    }
 
 
     outFile->cd();
@@ -214,7 +201,7 @@ void PlotV0SingleState::fitK0s(Double_t minRange, Double_t maxRange, int numBins
     }
 }
 
-void PlotV0SingleState::fitLambda(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
+void PlotTofEffMult::fitLambda(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
 
     TH1D *signalFinal = new TH1D("invMassLambdaSignalFit", "invMassLambdaSignalFit", numBins, minRange, maxRange);
     TH1D *histCheck = new TH1D("histCheck", "", numBins, minRange, maxRange);
@@ -246,7 +233,7 @@ void PlotV0SingleState::fitLambda(Double_t minRange, Double_t maxRange, int numB
     }
 }
 
-double PlotV0SingleState::GoodnessOfFit(RooPlot*& frame, RooAddPdf& model, RooDataHist& data){
+double PlotTofEffMult::GoodnessOfFit(RooPlot*& frame, RooAddPdf& model, RooDataHist& data){
     double chiSquare = frame->chiSquare();  // This calculates chi-square per degree of freedom
 
     int numBins = frame->GetNbinsX();  // Number of bins used in the histogram
@@ -257,7 +244,7 @@ double PlotV0SingleState::GoodnessOfFit(RooPlot*& frame, RooAddPdf& model, RooDa
 }
 
 
-TString PlotV0SingleState::convertToString(double val) {
+TString PlotTofEffMult::convertToString(double val) {
 
     ostringstream streamA;
     streamA << fixed << setprecision(1) << val;
@@ -266,88 +253,115 @@ TString PlotV0SingleState::convertToString(double val) {
     return formattedA;
 }
 
-int PlotV0SingleState::makeInt(double val) {
+int PlotTofEffMult::makeInt(double val) {
 	int result = val;
 	return result;
 }
 
+vector<TString> PlotTofEffMult::getConditions(int Switch, int i, double Min, double Max){
+	vector<TString> cond;
+	if(Switch == 1){
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && etaHadron%d > %f && etaHadron%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && etaHadron%d > %f && etaHadron%d < %f", i, 2*i, 2*i + 1, 2*i, Min, 2*i, Max) );
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0 && etaHadron%d > %f && etaHadron%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
+	}else if(Switch == 2){
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && phiHadron%d > %f && phiHadron%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min*TMath::Pi()/180, 2*i + 1, Max*TMath::Pi()/180) );
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && phiHadron%d > %f && phiHadron%d < %f", i, 2*i, 2*i + 1, 2*i, Min*TMath::Pi()/180, 2*i, Max*TMath::Pi()/180) );
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0 && phiHadron%d > %f && phiHadron%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min*TMath::Pi()/180, 2*i + 1, Max*TMath::Pi()/180) );
+	}else if(Switch == 3){
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && pTInGev%d > %f && pTInGev%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && pTInGev%d > %f && pTInGev%d < %f", i, 2*i, 2*i + 1, 2*i, Min, 2*i, Max) );
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0 && pTInGev%d > %f && pTInGev%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
+	}else if(Switch == 4){
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && vertexZInCm > %f && vertexZInCm < %f", i, 2*i, 2*i + 1, Min, Max) );
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && vertexZInCm > %f && vertexZInCm < %f", i, 2*i, 2*i + 1, Min, Max) );
+		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0 && vertexZInCm > %f && vertexZInCm < %f", i, 2*i, 2*i + 1, Min, Max) );
+	}
 
-vector<pair<int,double>> PlotV0SingleState::effFit(int Switch ,double Min, double Max,Double_t signalGuess1, Double_t signalGuess2, Double_t polGuess1[2], Double_t polGuess2[2], int runSeparatePions){
+	return cond;
+
+}
+
+
+TH1D* PlotTofEffMult::getHist(int Switch, double Min, double Max, bool is2TOF, int runSeparatePions, bool runFirstOnly){
+
 	// function which integrates the signal, it is a universal function for all variables
-
-	// switcher
     TString variable, variableString, condition1, condition2;
     if( Switch == 1){//eta
     	variable = "eta";
     	variableString = "#eta";
-    	condition1 = TString::Format("etaHadron1 > %f && etaHadron1 < %f",Min,Max );
-  	    condition2 = TString::Format("etaHadron0 > %f && etaHadron0 < %f",Min,Max );
     } else if( Switch == 2){
     	variable = "phi";
     	variableString = "#phi";
-    	condition1 = TString::Format("phiHadron1 > %f && phiHadron1 < %f",Min*TMath::Pi()/180, Max*TMath::Pi()/180 ); // phi in range(-3.14, 3.14)
-  	    condition2 = TString::Format("phiHadron0 > %f && phiHadron0 < %f", Min*TMath::Pi()/180, Max*TMath::Pi()/180);
     } else if(Switch == 3){
     	variable = "pT";
     	variableString = "p_{T}";
-    	condition1 = TString::Format("pTInGev1 > %f && pTInGev1 < %f",Min,Max );
-  	    condition2 = TString::Format("pTInGev0 > %f && pTInGev0 < %f",Min,Max );
-    }else if(Switch == 4){
+	}else if(Switch == 4){
     	variable = "Vz";
     	variableString = "V_{Z}";
-    	condition1 = TString::Format("vertexZInCm > %f && vertexZInCm < %f",Min,Max );
-  	    condition2 = TString::Format("vertexZInCm > %f && vertexZInCm < %f",Min,Max );
     } 
 
-    // aree we running all, or only separate ones
-    if(runSeparatePions == 1){
-    	condition1 = TString("charge1 > 0 && ") + condition1;
-    	condition2 = TString("charge0 > 0 && ") + condition2;
-    } else if(runSeparatePions ==2){
-    	condition1 = TString("charge1 < 0 && ") + condition1;
-    	condition2 = TString("charge0 < 0 && ") + condition2; 	
+	TH1D* hist;
+    // create histograms
+    if(is2TOF){
+   		hist = new TH1D("effK0s2" + variable + convertToString( Min ) + TString("to") + convertToString( Max ), "fit peak for a specific bin;m_{#pi^{+} #pi^{-}} [GeV/c^{2}]; counts", nBins, lowRange, topRange);
+    }else{
+   		hist = new TH1D("effK0s1" + variable + convertToString( Min ) + TString("to") + convertToString( Max ), "fit peak for a specific bin;m_{#pi^{+} #pi^{-}} [GeV/c^{2}]; counts", nBins, lowRange, topRange);
+   	}
+	
+
+   	for (int i = 0; i < 5; ++i){
+   		vector<TString> conditions = getConditions(Switch, i, Min, Max);
+
+   		cout << conditions[0] << endl;
+   		cout << conditions[1] << endl;
+   		cout << conditions[2] << endl;
+
+   		tree->Draw( TString::Format("invMass%d>>hist(%d, %f, %f)",i, nBins, lowRange, topRange) , conditions[0] );
+   		tree->Draw( TString::Format("invMass%d>>+hist", i), conditions[1] );
+   		if(!is2TOF){
+   			tree->Draw( TString::Format("invMass%d>>+hist", i), conditions[2] );
+   		}
+
+		hist->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+		if(runFirstOnly)
+			break;
+   	}
+
+
+    cout << "Entries in hist: " << hist->GetEntries() <<  endl;
+
+    if(hist->GetEntries() == 0){
+    	return nullptr;
+    }else{
+    	return hist;
     }
 
 
-    // create histograms
-   	TH1D *hist1 = new TH1D("effK0s1" + variable + convertToString( Min ) + TString("to") + convertToString( Max ), "fit peak for a specific bin;m_{#pi^{+} #pi^{-}} [GeV/c^{2}]; counts", nBins, lowRange, topRange);
-   	TH1D *hist2 = new TH1D("effK0s2" + variable + convertToString( Min ) + TString("to") + convertToString( Max ), "fit peak for a specific bin;m_{#pi^{+} #pi^{-}} [GeV/c^{2}]; counts", nBins, lowRange, topRange);
-   	TH1D *hist3 = new TH1D("tryout", "tryout", nBins, lowRange, topRange);
+}
 
-   	cout << "condition1: " << TString("pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 > 0 && ") << condition1 << endl;
-   	cout << "condition2: " << TString("pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 > 0 && ") << condition2 << endl;
-   	cout << "condition3: " << TString("pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 < 0 && ") << condition1 << endl;
 
-    tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", nBins, lowRange, topRange), TString("pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 > 0 && ") + condition1); // considering that particle 0 is the probe in events with 2 ToF hits
-	hist2->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-	hist1->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-    tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", nBins, lowRange, topRange), TString("pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 > 0 && ") + condition2); // considering that particle 1 is the probe in events with 2 ToF hits
-	hist2->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-	hist1->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );	
-    tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", nBins, lowRange, topRange), TString("pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 < 0 && ") + condition1); // considering particle 1 is the probe in events with 1 hit in ToF
-	hist1->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+vector<pair<int,double>> PlotTofEffMult::effFit(int Switch ,double Min, double Max,Double_t signalGuess1, Double_t signalGuess2, Double_t polGuess1[2], Double_t polGuess2[2], int runSeparatePions){
     
-    cout << "Entries in hist1: " << hist1->GetEntries() << ", entries in hist2: " << hist2->GetEntries() << endl;
 
-    
-    // ToFHit0 should be the one that always has a hit in ToF, this is just to check
-    tree->Draw( TString::Format("invMass>>hist(%d, %f, %f)", nBins, lowRange, topRange), TString("pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 < 0 && ") + condition2);
-    hist3->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-    if(hist3->GetEntries() != 0){ // just to check work
-    	cerr << "Somethings wrong with tree, hist3, which should be empty, is not empty. Leaving..." << endl;
-		vector<pair<int,double>> zero;
-		zero.push_back(make_pair(0,0));
-		zero.push_back(make_pair(0,0));
-		return zero;
-	}
-	
-	if(!hist1 || !hist2 || hist1->GetEntries() ==  hist2->GetEntries() ){
-		cerr << "Couldn't load histograms for " << variable << " efficiency or they have the same content, which is bullshit. Leaving..." << endl;
-		vector<pair<int,double>> zero;
-		zero.push_back(make_pair(0,0));
-		zero.push_back(make_pair(0,0));
-		return zero;
-	}
+	TH1D *hist1 = getHist(Switch, Min, Max, false, runSeparatePions, true);
+	TH1D *hist2 = getHist(Switch, Min, Max, true, runSeparatePions, true);
+
+
+    TString variable, variableString, condition1, condition2;
+    if( Switch == 1){//eta
+    	variable = "eta";
+    	variableString = "#eta";
+    } else if( Switch == 2){
+    	variable = "phi";
+    	variableString = "#phi";
+    } else if(Switch == 3){
+    	variable = "pT";
+    	variableString = "p_{T}";
+    }else if(Switch == 4){
+    	variable = "Vz";
+    	variableString = "V_{Z}";
+    }
 
 
 	double normalisation = (topRange - lowRange)/nBins;
@@ -376,7 +390,6 @@ vector<pair<int,double>> PlotV0SingleState::effFit(int Switch ,double Min, doubl
 
 		}
 	}
-
 
     // Define the observable
     RooRealVar x1("x1", "Observable1", lowRange,topRange);
@@ -559,7 +572,7 @@ vector<pair<int,double>> PlotV0SingleState::effFit(int Switch ,double Min, doubl
 }
 
 
-void PlotV0SingleState::efficiency(int switcher, int runSeparatePions = 0) {
+void PlotTofEffMult::efficiency(int switcher, int runSeparatePions = 0) {
 	// runSeparatePions = 0: no
 	// runSeparatePions = 1: yes, run pi +
 	// runSeparatePions = 2: yes, run pi -
@@ -779,7 +792,7 @@ void PlotV0SingleState::efficiency(int switcher, int runSeparatePions = 0) {
 }
 
 
-void PlotV0SingleState::invMassLambda(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF){
+void PlotTofEffMult::invMassLambda(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF){
 
    	//TCanvas* canvas;
 	CreateCanvas(&canvas,"invMassLambda", widthTypical, heightTypical);
@@ -845,7 +858,7 @@ void PlotV0SingleState::invMassLambda(Double_t minRange, Double_t maxRange, int 
 }
 
 
-void PlotV0SingleState::invMassK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF){
+void PlotTofEffMult::invMassK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF){
 	//TCanvas* canvas;
 	CreateCanvas(&canvas,"invMassK0s", widthTypical, heightTypical);
 	SetGPad(); //might set log y scale, watchout
