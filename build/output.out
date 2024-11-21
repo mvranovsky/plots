@@ -2836,3 +2836,420 @@ Running phi bin number: 2
 pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > -1.047198 && phiHadron1 < 0.000000
 pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 > 0 && phiHadron0 > -1.047198 && phiHadron0 < 0.000000
 pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > -1.047198 && phiHadron1 < 0.000000
+Entries in hist: 1.84412e+06
+pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > -1.047198 && phiHadron1 < 0.000000
+pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 > 0 && phiHadron0 > -1.047198 && phiHadron0 < 0.000000
+pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > -1.047198 && phiHadron1 < 0.000000
+Entries in hist: 641441
+[#1] INFO:DataHandling -- RooDataHist::adjustBinning(data1): fit range of variable x1 expanded to nearest bin boundaries: [0.45,0.54] --> [0.45,0.54]
+[#1] INFO:DataHandling -- RooDataHist::adjustBinning(data2): fit range of variable x2 expanded to nearest bin boundaries: [0.45,0.54] --> [0.45,0.54]
+[#1] INFO:Minization -- p.d.f. provides expected number of events, including extended term in likelihood.
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (cb1,poly1)
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (-1.20979e+07) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha1=1.3, coef1_0=-2360.43, coef1_1=-10000, mean1=0.497611, n1=4, nbkg1=300000, nsig1=30000, sigma1=0.004
+RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
+     p.d.f value is less than zero (-3097.564486), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f value is less than zero (-3120.365349), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f value is less than zero (-3143.246211), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f value is less than zero (-3166.207074), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f value is less than zero (-3189.247936), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f value is less than zero (-3212.368799), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = -2360.43,coef1_1 = -10000)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (-1.20979e+07) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha1=1.3, coef1_0=5274.58, coef1_1=-10000, mean1=0.497611, n1=4, nbkg1=300000, nsig1=30000, sigma1=0.004
+RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
+     p.d.f value is less than zero (-7.159360), forcing value to zero @ x=x1=0.529, coefList=(coef1_0 = 5274.58,coef1_1 = -10000)
+     p.d.f value is less than zero (-17.810208), forcing value to zero @ x=x1=0.531, coefList=(coef1_0 = 5274.58,coef1_1 = -10000)
+     p.d.f value is less than zero (-28.541056), forcing value to zero @ x=x1=0.533, coefList=(coef1_0 = 5274.58,coef1_1 = -10000)
+     p.d.f value is less than zero (-39.351905), forcing value to zero @ x=x1=0.535, coefList=(coef1_0 = 5274.58,coef1_1 = -10000)
+     p.d.f value is less than zero (-50.242753), forcing value to zero @ x=x1=0.537, coefList=(coef1_0 = 5274.58,coef1_1 = -10000)
+     p.d.f value is less than zero (-61.213601), forcing value to zero @ x=x1=0.539, coefList=(coef1_0 = 5274.58,coef1_1 = -10000)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (-1.20979e+07) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha1=4.43525, coef1_0=11092.9, coef1_1=-27385, mean1=0.498716, n1=3.00603, nbkg1=847462, nsig1=17812.2, sigma1=0.00406838
+RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
+     p.d.f value is less than zero (-566.248866), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f value is less than zero (-593.575231), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f value is less than zero (-621.120676), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f value is less than zero (-648.885202), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f value is less than zero (-676.868808), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f value is less than zero (-705.071494), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = 11092.9,coef1_1 = -27385)
+    ... (remaining 80 messages suppressed)
+
+ MINUIT WARNING IN HESSE   
+ ============== Negative diagonal element 5 in Error Matrix
+ MINUIT WARNING IN HESSE   
+ ============== 1.00454 added to diagonal of error matrix
+ MINUIT WARNING IN HESSE   
+ ============== Negative diagonal element 5 in Error Matrix
+ MINUIT WARNING IN HESSE   
+ ============== 1.00209 added to diagonal of error matrix
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+[#1] INFO:Minization -- p.d.f. provides expected number of events, including extended term in likelihood.
+[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (cb2,poly2)
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (5624.45) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.3, coef2_0=1000, coef2_1=-6182.24, mean2=0.497611, n2=4, nbkg2=1e+06, nsig2=20000, sigma2=0.004
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-805.474695), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f value is less than zero (-814.652193), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f value is less than zero (-823.879149), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f value is less than zero (-833.155563), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f value is less than zero (-842.481435), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f value is less than zero (-851.856764), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = 1000,coef2_1 = -6182.24)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (5624.45) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.3, coef2_0=1000, coef2_1=-2461.62, mean2=0.497611, n2=4, nbkg2=1e+06, nsig2=20000, sigma2=0.004
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-48.695618), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f value is less than zero (-51.146224), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f value is less than zero (-53.616522), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f value is less than zero (-56.106514), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f value is less than zero (-58.616199), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f value is less than zero (-61.145576), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = 1000,coef2_1 = -2461.62)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (5624.45) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=3.46479, coef2_0=-3696.79, coef2_1=31.3142, mean2=0.498617, n2=7.56905, nbkg2=62292.4, nsig2=6965.85, sigma2=0.00300058
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-1659.883958), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f value is less than zero (-1667.220926), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f value is less than zero (-1674.557644), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f value is less than zero (-1681.894111), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f value is less than zero (-1689.230328), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f value is less than zero (-1696.566295), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -3696.79,coef2_1 = 31.3142)
+    ... (remaining 80 messages suppressed)
+
+ MINUIT WARNING IN MIGRAD  
+ ============== Negative diagonal element 1 in Error Matrix
+ MINUIT WARNING IN MIGRAD  
+ ============== Negative diagonal element 2 in Error Matrix
+ MINUIT WARNING IN MIGRAD  
+ ============== Negative diagonal element 3 in Error Matrix
+ MINUIT WARNING IN MIGRAD  
+ ============== Negative diagonal element 6 in Error Matrix
+ MINUIT WARNING IN MIGRAD  
+ ============== Negative diagonal element 7 in Error Matrix
+ MINUIT WARNING IN MIGRAD  
+ ============== Negative diagonal element 8 in Error Matrix
+ MINUIT WARNING IN MIGRAD  
+ ============== 8.69699 added to diagonal of error matrix
+ EIGENVALUES OF SECOND-DERIVATIVE MATRIX:
+        -2.2584e-01  1.0000e+00  1.0000e+00  1.0001e+00  1.0004e+00  1.0017e+00  1.0443e+00  2.1794e+00
+ MINUIT WARNING IN MIGRAD  
+ ============== MATRIX FORCED POS-DEF BY ADDING 0.228017 TO DIAGONAL.
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (5624.45) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=4.34023, coef2_0=-20375, coef2_1=-47958.8, mean2=0.495021, n2=7.86211, nbkg2=9.9997e+06, nsig2=171151, sigma2=0.00301237
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-18943.015560), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f value is less than zero (-19070.475205), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f value is less than zero (-19198.318522), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f value is less than zero (-19326.545508), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f value is less than zero (-19455.156166), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f value is less than zero (-19584.150494), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -20375,coef2_1 = -47958.8)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (5624.45) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=2.6056, coef2_0=-48212.7, coef2_1=-44201.5, mean2=0.498582, n2=7.97372, nbkg2=2.44921e+06, nsig2=169462, sigma2=0.00489144
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-30733.587054), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f value is less than zero (-30909.928935), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f value is less than zero (-31086.624429), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f value is less than zero (-31263.673534), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f value is less than zero (-31441.076252), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f value is less than zero (-31618.832582), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -48212.7,coef2_1 = -44201.5)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (5624.45) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.00477, coef2_0=-27927.3, coef2_1=-41585.6, mean2=0.49504, n2=7.81746, nbkg2=9.46639e+06, nsig2=115159, sigma2=0.00329359
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-21052.752998), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f value is less than zero (-21183.794315), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f value is less than zero (-21315.168317), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f value is less than zero (-21446.875003), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f value is less than zero (-21578.914375), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f value is less than zero (-21711.286431), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -27927.3,coef2_1 = -41585.6)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (5624.45) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=4.6695, coef2_0=11735.8, coef2_1=-39969.1, mean2=0.496771, n2=7.68894, nbkg2=691205, nsig2=164669, sigma2=0.00498776
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-2835.911237), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f value is less than zero (-2884.703768), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f value is less than zero (-2933.816051), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f value is less than zero (-2983.248087), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f value is less than zero (-3032.999876), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f value is less than zero (-3083.071418), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = 11735.8,coef2_1 = -39969.1)
+    ... (remaining 80 messages suppressed)
+
+ MINUIT WARNING IN MIGRAD  
+ ============== Negative diagonal element 1 in Error Matrix
+ MINUIT WARNING IN MIGRAD  
+ ============== 1.16826 added to diagonal of error matrix
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.45151, coef2_0=-5124.62, coef2_1=-848.932, mean2=0.498658, n2=7.94128, nbkg2=60641, nsig2=8598.33, sigma2=0.00409632
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-2482.875131), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f value is less than zero (-2494.659230), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f value is less than zero (-2506.450121), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f value is less than zero (-2518.247804), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f value is less than zero (-2530.052277), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f value is less than zero (-2541.863543), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -5124.62,coef2_1 = -848.932)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.42529, coef2_0=-5111.07, coef2_1=-366.658, mean2=0.498623, n2=7.9394, nbkg2=60622.7, nsig2=8616.83, sigma2=0.00409558
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-2378.671683), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2389.556743), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2400.444736), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2411.335662), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2422.229521), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2433.126314), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.42529, coef2_0=-5111.07, coef2_1=-366.658, mean2=0.498623, n2=7.9394, nbkg2=60622.7, nsig2=8616.83, sigma2=0.00409558
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-2378.671683), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2389.556743), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2400.444736), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2411.335662), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2422.229521), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f value is less than zero (-2433.126314), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -5111.07,coef2_1 = -366.658)
+    ... (remaining 80 messages suppressed)
+
+ MINUIT WARNING IN MIGRAD  
+ ============== Negative diagonal element 2 in Error Matrix
+ MINUIT WARNING IN MIGRAD  
+ ============== 1 added to diagonal of error matrix
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.0023, coef2_0=-49185.9, coef2_1=24365.8, mean2=0.496829, n2=7.81669, nbkg2=783511, nsig2=165644, sigma2=0.00415322
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-17225.795123), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f value is less than zero (-17280.113463), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f value is less than zero (-17334.236876), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f value is less than zero (-17388.165362), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f value is less than zero (-17441.898922), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f value is less than zero (-17495.437556), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -49185.9,coef2_1 = 24365.8)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.23179, coef2_0=-47607.8, coef2_1=6072.64, mean2=0.498194, n2=7.91481, nbkg2=166103, nsig2=36638.6, sigma2=0.00411003
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-20234.934168), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f value is less than zero (-20319.170421), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f value is less than zero (-20403.358093), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f value is less than zero (-20487.497185), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f value is less than zero (-20571.587695), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f value is less than zero (-20655.629623), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -47607.8,coef2_1 = 6072.64)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.37198, coef2_0=-45593.1, coef2_1=1246.79, mean2=0.498519, n2=7.93364, nbkg2=82107.1, nsig2=13951.1, sigma2=0.00409919
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-20307.879552), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f value is less than zero (-20396.811512), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f value is less than zero (-20485.733499), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f value is less than zero (-20574.645511), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f value is less than zero (-20663.547548), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f value is less than zero (-20752.439612), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -45593.1,coef2_1 = 1246.79)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.39824, coef2_0=-48152.3, coef2_1=440.111, mean2=0.498571, n2=7.93655, nbkg2=70955.3, nsig2=11132, sigma2=0.00409738
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-21626.166230), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f value is less than zero (-21721.675100), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f value is less than zero (-21817.180449), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f value is less than zero (-21912.682277), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f value is less than zero (-22008.180584), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f value is less than zero (-22103.675371), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -48152.3,coef2_1 = 440.111)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.41167, coef2_0=-40677.5, coef2_1=36.717, mean2=0.498597, n2=7.93798, nbkg2=65686.4, nsig2=9835.85, sigma2=0.00409648
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-18337.096953), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f value is less than zero (-18418.385625), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f value is less than zero (-18499.674004), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f value is less than zero (-18580.962088), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f value is less than zero (-18662.249879), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f value is less than zero (-18743.537377), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -40677.5,coef2_1 = 36.717)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.41845, coef2_0=-35031.8, coef2_1=-164.983, mean2=0.49861, n2=7.93869, nbkg2=63128.8, nsig2=9216.6, sigma2=0.00409603
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-15831.906641), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f value is less than zero (-15902.268561), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f value is less than zero (-15972.631802), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f value is less than zero (-16042.996362), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f value is less than zero (-16113.362242), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f value is less than zero (-16183.729442), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -35031.8,coef2_1 = -164.983)
+    ... (remaining 80 messages suppressed)
+
+[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
+Returning maximum FCN so far (8.48964e+06) to force MIGRAD to back out of this region. Error log follows
+Parameter values: alpha2=1.42529, coef2_0=-5111.07, coef2_1=-366.658, mean2=0.498623, n2=7.9394, nbkg2=60622.7, nsig2=8616.83, sigma2=0.00409558
+RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
+     p.d.f value is less than zero (-2378.671683), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f value is less than zero (-2389.556743), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f value is less than zero (-2400.444736), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f value is less than zero (-2411.335662), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f value is less than zero (-2422.229521), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f value is less than zero (-2433.126314), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -5111.07 +/- 29948,coef2_1 = -366.658 +/- 71360.6)
+    ... (remaining 80 messages suppressed)
+
+ MINUIT WARNING IN HESSE   
+ ============== Negative diagonal element 5 in Error Matrix
+ MINUIT WARNING IN HESSE   
+ ============== 1.25546 added to diagonal of error matrix
+[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) directly selected PDF components: (poly1)
+[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) indirectly selected PDF components: ()
+[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) directly selected PDF components: (cb1)
+[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) indirectly selected PDF components: ()
+[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) directly selected PDF components: (poly2)
+[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) indirectly selected PDF components: ()
+[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) directly selected PDF components: (cb2)
+[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) indirectly selected PDF components: ()
+Running phi bin number: 3
+pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > 0.000000 && phiHadron1 < 1.047198
+pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 > 0 && phiHadron0 > 0.000000 && phiHadron0 < 1.047198
+pairID0 == 0 && totQ0 == 0 && tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > 0.000000 && phiHadron1 < 1.047198

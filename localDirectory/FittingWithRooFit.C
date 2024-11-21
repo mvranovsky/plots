@@ -26,6 +26,9 @@ void crystalBall(TH1D*& hist, const TString& outName, const TString& inputTag, b
 void crystalBallLambda(TH1D*& hist, const TString& outName, const TString& inputTag, bool is2TOF);
 
 
+Double_t outerBorder[2] = {13, 37};
+Double_t innerBorder[2] = {19, 31}; 
+
 void FittingWithRooFit(const string input) {
 //const TString& inputTag, const TString& histK0sName, const TString& histLambdaName
 	TString inputTag = input;
@@ -34,6 +37,15 @@ void FittingWithRooFit(const string input) {
     TString histK0sName2 = "invMassK0sFit2";
     TString histLambdaName2 = "invMassLambdaFit2"; 
 	TString inputFile = inputTag + TString("/AnalysisOutput.root");
+
+    if (input.find("MC") != string::npos || input.find("mc") != string::npos) {
+        innerBorder[0] = 11;
+        innerBorder[1] = 27;
+        outerBorder[0] = 3;
+        outerBorder[1] = 35;
+
+    }
+
 
    	TFile* file = new TFile(inputFile);
    	if(!file){
@@ -61,7 +73,6 @@ void FittingWithRooFit(const string input) {
    	    //fit(histK0s1TOF, "RooFitK0s1", inputTag, false);
         crystalBall(histK0s1TOF, "RooFitCBK0s1", inputTag, false);
     }
-
     if (histLambda1TOF){
        	cout << "Fitting Lambda with 1 TOF track with RooFit...";
        	//fitLambda(histLambda1TOF, "RooFitLambda1", inputTag, false);
@@ -73,6 +84,35 @@ void FittingWithRooFit(const string input) {
         //fitLambda(histLambda2TOF, "RooFitLambda2", inputTag, true);
         crystalBallLambda(histLambda2TOF, "RooFitCBLambda2", inputTag, true);
     }
+    TH1D* h1 = (TH1D*)file->Get("hInvMassTof1;1");
+    TH1D* h2 = (TH1D*)file->Get("hInvMassTof2;1");
+
+    h1 = (TH1D*)h1->Rebin(2, "hInvMassTof1");
+    h2 = (TH1D*)h2->Rebin(2, "hInvMassTof2");
+
+    if(!h1 || !h2){
+        cout << "Did not load hists" << endl;
+        return;
+    }
+    crystalBall(h1 , "RooFitInvMass1",inputTag, false  );
+    crystalBall( h2, "RooFitInvMass2",inputTag, true  );
+
+    TH1D* h3 = (TH1D*)file->Get("hInvMassTof1AfterPicking1;1");
+    TH1D* h4 = (TH1D*)file->Get("hInvMassTof2AfterPicking1;1");
+
+    if(!h3 || !h4){
+        cout << "Did not load hists" << endl;
+        return;
+    }
+    h3 = (TH1D*)h3->Rebin(2, "hInvMassTof1AfterPicking1");
+    h4 = (TH1D*)h4->Rebin(2, "hInvMassTof2AfterPicking1");
+
+    crystalBall(h3 , "RooFitInvMass1AfterPicking1",inputTag, false  );
+    crystalBall( h4, "RooFitInvMass2AfterPicking1",inputTag, true  );
+    /*
+    */
+
+
 
    	cout << "All plots that were loaded are created, Goodbye."<< endl;
     file->Close(); // Close the ROOT files
@@ -140,13 +180,13 @@ void crystalBall(TH1D*& hist, const TString& outName, const TString& inputTag, b
         resultPos[0] = 0.12;
         resultPos[1] = 0.6;
         resultPos[2] = 0.4;
-        resultPos[3] = 0.3;
+        resultPos[3] = 0.25;
         legendPos[0] = 0.6;
         legendPos[1] = 0.6;
         legendPos[2] = 0.8;
         legendPos[3] = 0.45;
-        yAxisText[0] = 0.72;
-        yAxisText[1] = 0.66;
+        yAxisText[0] = 0.74;
+        yAxisText[1] = 0.8;
     }
 
     // Define the observable
@@ -158,8 +198,8 @@ void crystalBall(TH1D*& hist, const TString& outName, const TString& inputTag, b
     // Define the Gaussian PDFs for the peaks
     RooRealVar mean1("mean1", "mean of Gaussian 1", mean , 0.495,0.51); // adjust these ranges and initial values as needed
     RooRealVar sigma1("sigma1", "width of Gaussian 1", sigma , 0.003, 0.005);
-    RooRealVar alpha("alpha", "Tail parameter", alpha_guess, 1, 5);
-    RooRealVar n("n", "Power parameter", n_guess, 3, 10);
+    RooRealVar alpha("alpha", "Tail parameter", alpha_guess, 1, 10);
+    RooRealVar n("n", "Power parameter", n_guess, 3, 11);
 
     RooCBShape CBfunc("cb", "Crystal Ball PDF", x, mean1, sigma1, alpha, n);
     // Define the polynomial PDF for the background
@@ -171,8 +211,8 @@ void crystalBall(TH1D*& hist, const TString& outName, const TString& inputTag, b
 
 
     // Coefficients for PDFs
-    RooRealVar nsig("nsig", "signal ", signal, 10000, 1000000);
-    RooRealVar nbkg("nbkg", "Background",background, 100000, 6e+10);
+    RooRealVar nsig("nsig", "signal ", signal, 1000, 2000000);
+    RooRealVar nbkg("nbkg", "Background",background, 1000, 6e+10);
 
 
     RooAddPdf model("model", "Gaussians plus polynomial", RooArgList(CBfunc, poly), RooArgList(nsig, nbkg)); //,poly   gaussFrac2
@@ -187,18 +227,19 @@ void crystalBall(TH1D*& hist, const TString& outName, const TString& inputTag, b
     double sumBcgError = 0;
     // integrate signal when approximating linear rise of background
 
-    for (int iBin = 6; iBin <= 45 ; ++iBin){ // integrating background: 0.46-0.48 and 0.52-0.54, signal 0.48-0.52
+    for (int iBin = outerBorder[0]; iBin < outerBorder[1] ; ++iBin){ // integrating background: 0.46-0.48 and 0.52-0.54, signal 0.48-0.52
         
-        if(iBin > 15 && iBin <= 35){
+        if(iBin >= innerBorder[0]  && iBin < innerBorder[1] ){
             sumSignal += hist->GetBinContent(iBin);
             sumSignalError += pow(hist->GetBinError(iBin),2);
-            //cout << "just added bin number " << iBin << " to signal" << endl;
-        }else if(iBin <= 15 || iBin > 35){
+            cout << "just added bin number " << iBin << " to signal" << endl;
+        }else if(iBin < innerBorder[0] || iBin >= innerBorder[1] ){
             sumBcg += hist->GetBinContent(iBin);
             sumBcgError += pow(hist->GetBinError(iBin),2);
-            //cout << "just added bin number " << iBin << " to bcg" << endl;
+            cout << "just added bin number " << iBin << " to bcg" << endl;
         }
     }
+
 
     int sum = sumSignal - sumBcg;
     int sumError = sqrt(sumSignalError) + sqrt(sumBcgError);
