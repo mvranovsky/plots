@@ -28,24 +28,14 @@ void PlotTofEff::Make(){
 	}
 
 	cout << "Successfully created invariant mass plot and fit of peak for K0S..." << endl;
-    /*
 
-	// create invariant mass plots for Lambda
-	if ( inputPosition.find("MC") != string::npos ){
-		fitLambda(1.1, 1.13, 30, true);
-		fitLambda(1.1, 1.13, 30, false);		
-	}else{
-		fitLambda(1.1, 1.13, 30, true);
-		fitLambda(1.1, 1.13, 30, false);
-	}
 
-	cout << "Successfully created invariant mass plot and fit of peak for Lambda..." << endl;
-	
 	efficiency(1,0); //eta
 	efficiency(2,0); //phi
 	efficiency(3,0); //pT
 	efficiency(4,0); //Vz
 
+    /*
 
 	// efficiencies
 	efficiency(1,1); //eta
@@ -128,12 +118,9 @@ void PlotTofEff::Init(){
 	if(!outFile){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
 	}
-	// define which analysis is supposed to run
-    if(!defineAnalysis()){
-    	cout << "No analysis defined." << endl;
-    }
+
 	//load the tree chain from the input file
-	ConnectInputTree(inputPosition);
+	ConnectInputTree(inputPosition, nameOfTofEffTree);
 
     if(!tree){
     	cerr << "Couldn't open tree with data. Returning." << endl;
@@ -182,20 +169,12 @@ void PlotTofEff::fitK0s(Double_t minRange, Double_t maxRange, int numBins, bool 
     cmd = TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange);
 
    	tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 > 0");
-	signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-   	tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 > 0");
-   	signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+   	tree->Draw(TString("invMass>>+hist"), "pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 > 0");
 	if(!is2TOF){
-   		tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 < 0");
-   		signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+   		tree->Draw(TString("invMass>>+hist"), "pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 < 0");
 
-   		tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), "pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 < 0");
-   		histCheck->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-   		if(histCheck->GetEntries() != 0){
-   			cerr << "somethings wrong with histCheck. Leaving..." << endl;
-   			return;
-   		}
 	}
+   	signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
 
 
     outFile->cd();
@@ -306,9 +285,6 @@ vector<pair<int,double>> PlotTofEff::effFit(int Switch ,double Min, double Max,D
    	TH1D *hist2 = new TH1D("effK0s2" + variable + convertToString( Min ) + TString("to") + convertToString( Max ), "fit peak for a specific bin;m_{#pi^{+} #pi^{-}} [GeV/c^{2}]; counts", nBins, lowRange, topRange);
    	TH1D *hist3 = new TH1D("tryout", "tryout", nBins, lowRange, topRange);
 
-   	cout << "condition1: " << TString("pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 > 0 && ") << condition1 << endl;
-   	cout << "condition2: " << TString("pairID == 0 && totQ == 0 && tofHit1 > 0 && tofHit0 > 0 && ") << condition2 << endl;
-   	cout << "condition3: " << TString("pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 < 0 && ") << condition1 << endl;
 
     tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", nBins, lowRange, topRange), TString("pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 > 0 && ") + condition1); // considering that particle 0 is the probe in events with 2 ToF hits
 	hist2->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
@@ -319,7 +295,7 @@ vector<pair<int,double>> PlotTofEff::effFit(int Switch ,double Min, double Max,D
     tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", nBins, lowRange, topRange), TString("pairID == 0 && totQ == 0 && tofHit0 > 0 && tofHit1 < 0 && ") + condition1); // considering particle 1 is the probe in events with 1 hit in ToF
 	hist1->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
     
-    cout << "Entries in hist1: " << hist1->GetEntries() << ", entries in hist2: " << hist2->GetEntries() << endl;
+    //cout << "Entries in hist1: " << hist1->GetEntries() << ", entries in hist2: " << hist2->GetEntries() << endl;
 
     
     // ToFHit0 should be the one that always has a hit in ToF, this is just to check

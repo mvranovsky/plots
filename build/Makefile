@@ -190,6 +190,33 @@ src/PlotAnaV0.cxx.s:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.s
 .PHONY : src/PlotAnaV0.cxx.s
 
+src/PlotAnaV0Mult.o: src/PlotAnaV0Mult.cxx.o
+
+.PHONY : src/PlotAnaV0Mult.o
+
+# target to build an object file
+src/PlotAnaV0Mult.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o
+.PHONY : src/PlotAnaV0Mult.cxx.o
+
+src/PlotAnaV0Mult.i: src/PlotAnaV0Mult.cxx.i
+
+.PHONY : src/PlotAnaV0Mult.i
+
+# target to preprocess a source file
+src/PlotAnaV0Mult.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.i
+.PHONY : src/PlotAnaV0Mult.cxx.i
+
+src/PlotAnaV0Mult.s: src/PlotAnaV0Mult.cxx.s
+
+.PHONY : src/PlotAnaV0Mult.s
+
+# target to generate assembly for a file
+src/PlotAnaV0Mult.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.s
+.PHONY : src/PlotAnaV0Mult.cxx.s
+
 src/PlotGeneral.o: src/PlotGeneral.cxx.o
 
 .PHONY : src/PlotGeneral.o
@@ -271,33 +298,6 @@ src/PlotTofEffMult.cxx.s:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.s
 .PHONY : src/PlotTofEffMult.cxx.s
 
-src/PlotV0SingleState.o: src/PlotV0SingleState.cxx.o
-
-.PHONY : src/PlotV0SingleState.o
-
-# target to build an object file
-src/PlotV0SingleState.cxx.o:
-	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.o
-.PHONY : src/PlotV0SingleState.cxx.o
-
-src/PlotV0SingleState.i: src/PlotV0SingleState.cxx.i
-
-.PHONY : src/PlotV0SingleState.i
-
-# target to preprocess a source file
-src/PlotV0SingleState.cxx.i:
-	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.i
-.PHONY : src/PlotV0SingleState.cxx.i
-
-src/PlotV0SingleState.s: src/PlotV0SingleState.cxx.s
-
-.PHONY : src/PlotV0SingleState.s
-
-# target to generate assembly for a file
-src/PlotV0SingleState.cxx.s:
-	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.s
-.PHONY : src/PlotV0SingleState.cxx.s
-
 src/PlotsManager.o: src/PlotsManager.cxx.o
 
 .PHONY : src/PlotsManager.o
@@ -341,6 +341,9 @@ help:
 	@echo "... src/PlotAnaV0.o"
 	@echo "... src/PlotAnaV0.i"
 	@echo "... src/PlotAnaV0.s"
+	@echo "... src/PlotAnaV0Mult.o"
+	@echo "... src/PlotAnaV0Mult.i"
+	@echo "... src/PlotAnaV0Mult.s"
 	@echo "... src/PlotGeneral.o"
 	@echo "... src/PlotGeneral.i"
 	@echo "... src/PlotGeneral.s"
@@ -350,9 +353,6 @@ help:
 	@echo "... src/PlotTofEffMult.o"
 	@echo "... src/PlotTofEffMult.i"
 	@echo "... src/PlotTofEffMult.s"
-	@echo "... src/PlotV0SingleState.o"
-	@echo "... src/PlotV0SingleState.i"
-	@echo "... src/PlotV0SingleState.s"
 	@echo "... src/PlotsManager.o"
 	@echo "... src/PlotsManager.i"
 	@echo "... src/PlotsManager.s"

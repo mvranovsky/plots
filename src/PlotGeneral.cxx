@@ -49,11 +49,8 @@ void PlotGeneral::Init(){
 	//define the output file which will store all the canvases
 	outFile = new TFile(outputPosition, "recreate");
 
-	// define which analysis is supposed to run
-    if(!defineAnalysis())
-    	cout << "No analysis defined." << endl;
 	//load the tree chain from the input file
-	ConnectInputTree(inputPosition);
+	ConnectInputTree(inputPosition, nameOfAnaV0Tree);
 
     if(!tree){
     	cerr << "Couldn't open tree with data. Returning." << endl;

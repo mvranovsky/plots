@@ -16,9 +16,9 @@ void PlotTofEffMult::Make(){
 	}else{
 		cout << "Did not get h1, h2" << endl;
 	}
-	
-	/*
-	// create invariant mass plots for K0s
+	cout << "input position: " << inputPosition << endl;	
+
+		// create invariant mass plots for K0s
 	if( inputPosition.find("MC") != string::npos ){
 		fitK0s(0.46, 0.53, 35, true);
 		fitK0s(0.46, 0.53, 35, false);
@@ -28,25 +28,14 @@ void PlotTofEffMult::Make(){
 	}
 
 	cout << "Successfully created invariant mass plot and fit of peak for K0S..." << endl;
+    
 
-	// create invariant mass plots for Lambda
-	if ( inputPosition.find("MC") != string::npos ){
-		fitLambda(1.1, 1.13, 30, true);
-		fitLambda(1.1, 1.13, 30, false);		
-	}else{
-		fitLambda(1.1, 1.13, 30, true);
-		fitLambda(1.1, 1.13, 30, false);
-	}
-
-	cout << "Successfully created invariant mass plot and fit of peak for Lambda..." << endl;
-	*/
 	efficiency(1,0); //eta
 	efficiency(2,0); //phi
 	efficiency(3,0); //pT
 	efficiency(4,0); //Vz
 
-    /*
-
+	/*
 	// efficiencies
 	efficiency(1,1); //eta
 	efficiency(2,1); //phi
@@ -99,17 +88,7 @@ void PlotTofEffMult::Make(){
 	}
 
 
-	/*
-    TList* keys = outFile->GetListOfKeys();
-    if(!keys || sizeof(keys) == 0){
-    	cout << "No keys." << endl;
-    	return;
-    }
 
-    for (int i = 0; i < sizeof(keys); ++i){
-        cout << "Canvas: " << keys[i].GetName() << endl;
-    }
-    */
 	outFile->Close();
 	Clear();
 	MCAna->Close();
@@ -128,28 +107,19 @@ void PlotTofEffMult::Init(){
 	if(!outFile){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
 	}
-	// define which analysis is supposed to run
-    if(!defineAnalysis()){
-    	cout << "No analysis defined." << endl;
-    }
+
 	//load the tree chain from the input file
-	ConnectInputTree(inputPosition);
-
-    if(!tree){
-    	cerr << "Couldn't open tree with data. Returning." << endl;
-    	return;
-    }
-
-    MCAna = new TFile("MCAnalysis.root", "read");
-
-    if(!MCAna){
-    	cout << "Couldn't open MC ana file. Leaving..." << endl;
-    	return;
-    }
+	if(!ConnectInputTree(inputPosition, nameOfTofEffMultTree) || !tree ){
+		cout << "Could not connect input tree correctly." << endl;
+		return;
+	}
 
 
     if( inputPosition.find("MC") != string::npos ){
     	cout << "This is an MC simulation!" << endl;
+
+	    MCAna = new TFile("MCAnalysis.root", "recreate");
+
     	nBins = 35;
     	lowRange = 0.46;
     	topRange = 0.53;
@@ -158,6 +128,13 @@ void PlotTofEffMult::Init(){
     	innerBorder[1] = 27;
     	outerBorder[0] = 3;
     	outerBorder[1] = 35;
+    }else{
+	    MCAna = new TFile("MCAnalysis.root", "read");    	
+    }
+
+    if(!MCAna){
+    	cout << "Couldn't open MC ana file. Leaving..." << endl;
+    	return;
     }
 
     outFile->cd();
@@ -181,15 +158,13 @@ void PlotTofEffMult::fitK0s(Double_t minRange, Double_t maxRange, int numBins, b
 
     for (int i = 0; i < 5; ++i){
 
-	   	tree->Draw(TString::Format("invMass%d>>hist(%d, %f, %f)", i,numBins, minRange,maxRange), TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0", i,2*i, 2*i +1) );
-		signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-	   	tree->Draw(TString::Format("invMass%d>>hist(%d, %f, %f)", i, numBins, minRange,maxRange), TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0", i,2*i+1, 2*i) );
-	   	signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+	   	tree->Draw(TString::Format("invMass%d>>hist(%d, %f, %f)", i,numBins, minRange,maxRange), TString::Format("tofHit%d > 0 && tofHit%d > 0", 2*i, 2*i +1) );
+	   	//tree->Draw(TString::Format("invMass%d>>+hist", i), TString::Format("tofHit%d > 0 && tofHit%d > 0", 2*i+1, 2*i));
 
 		if(!is2TOF){
-	   		tree->Draw(TString::Format("invMass%d>>hist(%d, %f, %f)",i, numBins, minRange,maxRange),TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0", i,2*i,  2*i +1) );
-	   		signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+	   		tree->Draw(TString::Format("invMass%d>>+hist",i),TString::Format("tofHit%d > 0 && tofHit%d < 0",2*i,  2*i +1) );
 		}
+	   	signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
     }
 
 
@@ -261,21 +236,21 @@ int PlotTofEffMult::makeInt(double val) {
 vector<TString> PlotTofEffMult::getConditions(int Switch, int i, double Min, double Max){
 	vector<TString> cond;
 	if(Switch == 1){
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && etaHadron%d > %f && etaHadron%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && etaHadron%d > %f && etaHadron%d < %f", i, 2*i, 2*i + 1, 2*i, Min, 2*i, Max) );
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0 && etaHadron%d > %f && etaHadron%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d > 0 && etaHadron%d > %f && etaHadron%d < %f", 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d > 0 && etaHadron%d > %f && etaHadron%d < %f", 2*i, 2*i + 1, 2*i, Min, 2*i, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d < 0 && etaHadron%d > %f && etaHadron%d < %f", 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
 	}else if(Switch == 2){
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && phiHadron%d > %f && phiHadron%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min*TMath::Pi()/180, 2*i + 1, Max*TMath::Pi()/180) );
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && phiHadron%d > %f && phiHadron%d < %f", i, 2*i, 2*i + 1, 2*i, Min*TMath::Pi()/180, 2*i, Max*TMath::Pi()/180) );
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0 && phiHadron%d > %f && phiHadron%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min*TMath::Pi()/180, 2*i + 1, Max*TMath::Pi()/180) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d > 0 && phiHadron%d > %f && phiHadron%d < %f", 2*i, 2*i + 1, 2*i + 1, Min*TMath::Pi()/180, 2*i + 1, Max*TMath::Pi()/180) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d > 0 && phiHadron%d > %f && phiHadron%d < %f", 2*i, 2*i + 1, 2*i, Min*TMath::Pi()/180, 2*i, Max*TMath::Pi()/180) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d < 0 && phiHadron%d > %f && phiHadron%d < %f", 2*i, 2*i + 1, 2*i + 1, Min*TMath::Pi()/180, 2*i + 1, Max*TMath::Pi()/180) );
 	}else if(Switch == 3){
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && pTInGev%d > %f && pTInGev%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && pTInGev%d > %f && pTInGev%d < %f", i, 2*i, 2*i + 1, 2*i, Min, 2*i, Max) );
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0 && pTInGev%d > %f && pTInGev%d < %f", i, 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d > 0 && pTInGev%d > %f && pTInGev%d < %f", 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d > 0 && pTInGev%d > %f && pTInGev%d < %f", 2*i, 2*i + 1, 2*i, Min, 2*i, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d < 0 && pTInGev%d > %f && pTInGev%d < %f", 2*i, 2*i + 1, 2*i + 1, Min, 2*i + 1, Max) );
 	}else if(Switch == 4){
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && vertexZInCm > %f && vertexZInCm < %f", i, 2*i, 2*i + 1, Min, Max) );
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d > 0 && vertexZInCm > %f && vertexZInCm < %f", i, 2*i, 2*i + 1, Min, Max) );
-		cond.push_back( TString::Format("pairID%d == 0 && tofHit%d > 0 && tofHit%d < 0 && vertexZInCm > %f && vertexZInCm < %f", i, 2*i, 2*i + 1, Min, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d > 0 && vertexZInCm%d > %f && vertexZInCm%d < %f", 2*i, 2*i + 1,i, Min,i, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d > 0 && vertexZInCm%d > %f && vertexZInCm%d < %f", 2*i, 2*i + 1,i, Min,i, Max) );
+		cond.push_back( TString::Format("tofHit%d > 0 && tofHit%d < 0 && vertexZInCm%d > %f && vertexZInCm%d < %f", 2*i, 2*i + 1,i, Min,i, Max) );
 	}
 
 	return cond;
@@ -313,12 +288,22 @@ TH1D* PlotTofEffMult::getHist(int Switch, double Min, double Max, bool is2TOF, i
    	for (int i = 0; i < 5; ++i){
    		vector<TString> conditions = getConditions(Switch, i, Min, Max);
 
+   		if(runSeparatePions == 1){
+   			conditions[0] += TString(" && charge%d > 0", 2*i +1);
+   			conditions[1] += TString(" && charge%d > 0", 2*i);
+   			conditions[2] += TString(" && charge%d > 0", 2*i + 1);
+   		}else if(runSeparatePions == 2){
+   			conditions[0] += TString(" && charge%d < 0", 2*i +1);
+   			conditions[1] += TString(" && charge%d < 0", 2*i);
+   			conditions[2] += TString(" && charge%d < 0", 2*i + 1);   			
+   		}
+
    		cout << conditions[0] << endl;
    		cout << conditions[1] << endl;
    		cout << conditions[2] << endl;
 
    		tree->Draw( TString::Format("invMass%d>>hist(%d, %f, %f)",i, nBins, lowRange, topRange) , conditions[0] );
-   		tree->Draw( TString::Format("invMass%d>>+hist", i), conditions[1] );
+   		//tree->Draw( TString::Format("invMass%d>>+hist", i), conditions[1] );
    		if(!is2TOF){
    			tree->Draw( TString::Format("invMass%d>>+hist", i), conditions[2] );
    		}
@@ -344,8 +329,8 @@ TH1D* PlotTofEffMult::getHist(int Switch, double Min, double Max, bool is2TOF, i
 vector<pair<int,double>> PlotTofEffMult::effFit(int Switch ,double Min, double Max,Double_t signalGuess1, Double_t signalGuess2, Double_t polGuess1[2], Double_t polGuess2[2], int runSeparatePions){
     
 
-	TH1D *hist1 = getHist(Switch, Min, Max, false, runSeparatePions, true);
-	TH1D *hist2 = getHist(Switch, Min, Max, true, runSeparatePions, true);
+	TH1D *hist1 = getHist(Switch, Min, Max, false, runSeparatePions, false);
+	TH1D *hist2 = getHist(Switch, Min, Max, true, runSeparatePions, false);
 
 
     TString variable, variableString, condition1, condition2;
@@ -456,7 +441,6 @@ vector<pair<int,double>> PlotTofEffMult::effFit(int Switch ,double Min, double M
     model1.plotOn(frame1);
     model1.plotOn(frame1, Components(poly1), LineStyle(kDashed), LineColor(kRed));
     model1.plotOn(frame1, Components(CBfunc1), LineStyle(kDashed), LineColor(kBlue));
-    //frame->GetYaxis()->SetRangeUser(yRangeBottom, yRangeTop);
     frame1->Draw();
 
 
@@ -683,8 +667,8 @@ void PlotTofEffMult::efficiency(int switcher, int runSeparatePions = 0) {
 
 	//load values to histogram
 	for (int i = 0; i < binCount; ++i){
-		if(inputPosition.find("MC") != string::npos && (variable == "pT" && (i == 4 || i == 5 ) ) ) //too little number of events in higher momenta 
-			continue;
+		//if(inputPosition.find("MC") != string::npos && (variable == "pT" && (i == 4 || i == 5 ) ) ) //too little number of events in higher momenta 
+		//	continue;
 
 		Yield1->SetBinContent(i+1,binContent1[i].first);
 		Yield1->SetBinError(i+1, binContent1[i].second);
@@ -726,7 +710,6 @@ void PlotTofEffMult::efficiency(int switcher, int runSeparatePions = 0) {
     gr->SetMarkerColor(kRed);
     gr->SetLineColor(kRed); 
     gr->GetYaxis()->SetRangeUser(0,1);
-    gr->Draw("AEP");
 
  	
 	
@@ -738,7 +721,8 @@ void PlotTofEffMult::efficiency(int switcher, int runSeparatePions = 0) {
     grBcgSub->SetMarkerColor(kBlue);
     grBcgSub->SetLineColor(kBlue); 
     grBcgSub->GetYaxis()->SetRangeUser(0,1);
-    grBcgSub->Draw("same EP");
+    grBcgSub->Draw("AEP");
+    gr->Draw("same EP");
 
 
     DrawSTARpp510(0.23, 0.9, 0.43, 0.9);
@@ -746,28 +730,36 @@ void PlotTofEffMult::efficiency(int switcher, int runSeparatePions = 0) {
     legend->AddEntry(gr, "Efficiency K^{0}_{S} (Fitting)","ple");
     legend->AddEntry(grBcgSub, "Efficiency K^{0}_{S} (Integration)","ple");
 
+	TGraphAsymmErrors *grMC;
+    if(inputPosition.find("MC") == string::npos){
 
-    TGraphAsymmErrors *grMC = (TGraphAsymmErrors*)MCAna->Get("effInt" + variable);
-
-    if(runSeparatePions == 1){
-    	grMC = (TGraphAsymmErrors*)MCAna->Get("PLUS/effInt" + variable);
-    }else if(runSeparatePions == 2){
-    	grMC = (TGraphAsymmErrors*)MCAna->Get("MINUS/effInt" + variable);
-    }
-    
-    if(grMC){
-	    grMC->SetMarkerStyle(22);
-	    grMC->SetMarkerColor(kGreen);
-	    grMC->SetLineColor(kGreen); 
-	    grMC->GetXaxis()->SetTitle(title);
-	    grMC->GetYaxis()->SetTitle("efficiency");
-	    grMC->Draw("same EP");
-    	legend->AddEntry(grMC, "Efficiency K^{0}_{S} (MC sim)", "ple");
+	    if(runSeparatePions == 0){
+	    	grMC = (TGraphAsymmErrors*)MCAna->Get("effInt" + variable);
+	    }else if(runSeparatePions == 1){
+	    	grMC = (TGraphAsymmErrors*)MCAna->Get("PLUS/effInt" + variable);
+	    }else if(runSeparatePions == 2){
+	    	grMC = (TGraphAsymmErrors*)MCAna->Get("MINUS/effInt" + variable);
+	    }
+	    
+	    if(grMC){
+		    grMC->SetMarkerStyle(22);
+		    grMC->SetMarkerColor(kGreen);
+		    grMC->SetLineColor(kGreen); 
+		    grMC->GetXaxis()->SetTitle(title);
+		    grMC->GetYaxis()->SetTitle("efficiency");
+		    grMC->Draw("same EP");
+	    	legend->AddEntry(grMC, "Efficiency K^{0}_{S} (MC sim)", "ple");
+	    }else{
+	    	cout << "Couldn't load MC eff. Running without it." << endl;
+	    }
     }else{
-    	cout << "Couldn't load MC eff. Running without it." << endl;
+    	MCAna->cd();
+    	gr->Write("effFit" + variable);
+    	grBcgSub->Write("effInt" + variable);
     }
+
+
     legend->Draw("same");
-    
     outFile->cd();
 
     if(runSeparatePions == 0){

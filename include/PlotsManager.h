@@ -2,15 +2,15 @@
 #define PlotsManager_h
 
 
-#include "/star/u/mvranovsk/star-upcDst/work/include/RunDef.h"
 #include "PlotAnaV0.h"
 #include "PlotGeneral.h"
-#include "PlotV0SingleState.h"
+#include "PlotAnaV0Mult.h"
 #include "PlotTofEff.h"
 #include "PlotTofEffMult.h"
 #include <TFile.h>
 #include <TKey.h>
 #include <TClass.h>
+#include <cstring>
 
 using namespace std;
 //using namespace UTIL;

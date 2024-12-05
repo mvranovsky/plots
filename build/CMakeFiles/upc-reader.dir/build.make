@@ -96,18 +96,18 @@ CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/PlotGeneral.cxx -o CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.s
 
-CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.o: CMakeFiles/upc-reader.dir/flags.make
-CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.o: ../src/PlotV0SingleState.cxx
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.o -c /star/u/mvranovsk/plots/src/PlotV0SingleState.cxx
+CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: CMakeFiles/upc-reader.dir/flags.make
+CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: ../src/PlotAnaV0Mult.cxx
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o -c /star/u/mvranovsk/plots/src/PlotAnaV0Mult.cxx
 
-CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /star/u/mvranovsk/plots/src/PlotV0SingleState.cxx > CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.i
+CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /star/u/mvranovsk/plots/src/PlotAnaV0Mult.cxx > CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.i
 
-CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/PlotV0SingleState.cxx -o CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.s
+CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/PlotAnaV0Mult.cxx -o CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.s
 
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: CMakeFiles/upc-reader.dir/flags.make
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../src/PlotTofEff.cxx
@@ -140,7 +140,7 @@ upc__reader_OBJECTS = \
 "CMakeFiles/upc-reader.dir/src/Plot.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o" \
-"CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.o" \
+"CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o"
 
@@ -150,7 +150,7 @@ upc__reader_EXTERNAL_OBJECTS =
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/Plot.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o
-libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotV0SingleState.cxx.o
+libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/build.make

@@ -8,7 +8,6 @@ Plot::Plot(TFile *mOutFile, const string mInputList, const char* filePath){
    //plots = plotsFromManager;
    //mUtil = new Util();
 }
-
 Plot::~Plot(){
    //if(mUtil) delete mUtil;
 }
@@ -250,44 +249,7 @@ int Plot::fitGaussPol2(TH1D **histToFit, Int_t binWidth, Double_t minRange, Doub
 
 
 
-
-bool Plot::defineAnalysis(){
-   //define which analysis ran and what histograms are needed to be plotted
-
-   if (runAnaV0){
-      nameOfTree =nameOfAnaV0Tree;
-      plots = plotsV0;
-      return true;
-   } else if (runAnaBP){
-      nameOfTree = nameOfAnaBPTree; 
-      plots = plotsBP;
-      return true;
-   } else if (runAnaV0Control){
-      nameOfTree = nameOfAnaV0ControlTree;
-      plots = plotsV0Control;
-      return true;  
-   } else if(runAnaV0SingleState){
-      nameOfTree = nameOfAnaV0SingleStateTree;
-      plots = plotsV0;
-      return true;  
-   }else if(runTofEff){
-      nameOfTree = nameOfAnaTofEff;
-      plots = plotsV0;
-      return true;
-   }else if(runTofEffMult){
-      nameOfTree = nameOfAnaTofEffMult;
-      plots = plotsV0;
-      return true;
-   } else {
-      cout << "All analyses set to false. Returning..." << endl;
-      return false;
-   }
-}//defineAnalysis
-
-
-
-
-bool Plot::ConnectInputTree(const string& input) {
+bool Plot::ConnectInputTree(const string& input, TString nameOfTree) {
    
    int nInputFiles;
    //cout << "Input from: " << input.c_str() << endl;

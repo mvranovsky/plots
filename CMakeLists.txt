@@ -7,7 +7,7 @@ set (SRCS
   src/Plot.cxx
   src/PlotAnaV0.cxx
   src/PlotGeneral.cxx
-  src/PlotV0SingleState.cxx
+  src/PlotAnaV0Mult.cxx
   src/PlotTofEff.cxx
   src/PlotTofEffMult.cxx
   )

@@ -30,18 +30,18 @@ int main(int argc, char *argv[]){
     cout << "Successfully added all histograms together..." << endl;
 
 
-    if( runAnaV0 ){
+    if( strstr(inputPosition, "AnaV0Mult") ){
+    	cout << "Creating plots from AnaV0Mult..." << endl;
+    	mPlot = new PlotAnaV0Mult(mOutFile, inputPosition, outputPosition);
+    }else if( strstr(inputPosition, "AnaV0" ) ){
     	cout << "Creating plots from AnaV0..." << endl;
     	mPlot = new PlotAnaV0(mOutFile, inputPosition, outputPosition);
-    }else if( runAnaV0SingleState ){
-    	cout << "Creating plots from AnaV0 Single state..." << endl;
-    	mPlot = new PlotV0SingleState(mOutFile, inputPosition, outputPosition);
-    } else if( runTofEff ){
-    	cout << "Creating plots from TofEff..." << endl;
-    	mPlot = new PlotTofEff(mOutFile, inputPosition, outputPosition);
-    } else if( runTofEffMult ){
+    } else if( strstr(inputPosition, "TofEffMult") ){
         cout << "Creating plots from TofEffMult..." << endl;
         mPlot = new PlotTofEffMult(mOutFile, inputPosition, outputPosition);
+    } else if( strstr(inputPosition, "TofEff") ){
+    	cout << "Creating plots from TofEff..." << endl;
+    	mPlot = new PlotTofEff(mOutFile, inputPosition, outputPosition);
     }else{
     	cout << "No plots to run. Leaving..." << endl;
     	Clear();

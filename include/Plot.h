@@ -3,7 +3,6 @@
 
 // include headers
 #include "Libraries.h"
-#include "/star/u/mvranovsk/star-upcDst/work/include/RunDef.h"
 
 
 
@@ -26,7 +25,7 @@ class Plot{
    	protected:
    		//can be accessed from within this class or from derived classes
 		
-		bool ConnectInputTree(const string& input);
+		bool ConnectInputTree(const string& input, TString nameOfTree);
 		void CreateCanvas(TCanvas **canvas, TString canvasName, int canvasWidth, int canvasHeight);
 		void SetHistStyle(TH1* hist, Int_t color, Int_t markStyle);
 		void SetTH2Style(TH2* hist);
@@ -38,7 +37,6 @@ class Plot{
 		void SetLineStyle(TLine* line);
 		void DrawSTARpp510(double xl = 0.2, double yl = 0.85, double xr = 0.4, double yr = 0.85, double textSizeRel = 0.);
 		int fitGaussPol2(TH1D **histToFit, Int_t binWidth, Double_t minRange, Double_t maxRange, Double_t pol0 = 0.01, Double_t pol1 = 0.01, Double_t pol2 = 0.01, Double_t amp = 10000,Double_t mean = 0.497, Double_t sigma = 0.001);
-		bool defineAnalysis();
 		vector<pair<TH1D*, TString>> GetAllTH1D();
 		vector<pair<TH2F*, TString>> GetAllTH2F();
 		void TH1DGeneral(TString nameOfHist,TH1D* hist);
@@ -49,7 +47,6 @@ class Plot{
 		
 		TFile *outFile, *inFile;
 		//Util *mUtil;
-		const char* nameOfTree;
 		std::vector<std::pair<TString, bool>> plots;
 
 		//TTree *mTree[nStudies];
