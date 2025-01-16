@@ -47,6 +47,9 @@ class PlotTofEffMult : public Plot {
 		void efficiencyFromHists(TH1D* hist1, TH1D* hist2);
 		vector<TString> getConditions(int Switch, int idx, double Min, double Max);
 		TH1D* getHist(int Switch, double Min, double Max, bool is2TOF, int runSeparatePions, bool runFirstOnly);
+		TGraphAsymmErrors* getTrueMC(int switcher);
+		double CalculateSystematicError(int switcher,TGraphAsymmErrors* gData, TGraphAsymmErrors* gMC);
+
 
 		TH1D *hMean1, *hSigma1, *hN1, *hAlpha1;
 		TH1D *hMean2, *hSigma2, *hN2, *hAlpha2;
@@ -57,12 +60,13 @@ class PlotTofEffMult : public Plot {
 		TH1D *polVz10, *polVz11, *polVz20, *polVz21;
 
 		TFile *MCAna;
-
+		TFile *effFile;
+		Util* mUtil;
 		vector<TH1D*> histsParFit;
 
 		// wider binning
-		Double_t effEtaAmpGuess1[9] = {12000, 17000, 9000, 8000, 8000, 8000, 7000, 8000, 8000};
-		Double_t effEtaAmpGuess2[9] = {6000, 10000,5500, 6000, 6000, 7000, 6000, 7000, 7000};
+		Double_t effEtaAmpGuess1[9] = {8000, 12000, 15000, 10000, 10000, 10000, 10000, 10000, 8000};
+		Double_t effEtaAmpGuess2[9] = {5000, 6000,7000, 7000, 7000, 7000, 6000, 7000, 4000};
 		Double_t effEtaPol0Guess1[9] = {37000, 30000,15000, 1000, 4000, 4500, 4000, 5000, 5000};
 		Double_t effEtaPol1Guess1[9] = {48000, -14000,10000, 5000, -5000, -4000, -7000, -5000, -7000,};
 		Double_t effEtaPol0Guess2[9] = {20000, 18000,46000, 19000, 50000, 1000, 1000, 1000, 1000};
@@ -72,22 +76,22 @@ class PlotTofEffMult : public Plot {
 		Double_t effEtaNGuess2[9] = {4, 4,4, 4., 4, 4, 4., 4,4};
 		Double_t effEtaAlphaGuess2[9] = {1.1,1,1.1, 1.1, 1.2, 1.2, 1., 1, 1};
 
-		Double_t effPhiAmpGuess1[6] = {30000, 30000, 30000, 30000, 30000, 30000};
-		Double_t effPhiAmpGuess2[6] = { 20000, 20000, 20000, 20000,20000, 20000};
+		Double_t effPhiAmpGuess1[6] = {20000, 20000, 20000, 20000, 20000, 20000};
+		Double_t effPhiAmpGuess2[6] = { 10000, 10000, 10000, 10000,10000, 10000};
 		Double_t effPhiPol0Guess1[6] = { 20000, 20000, 20000, 20000, 20000, 20000};
 		Double_t effPhiPol1Guess1[6] = {-10000, -10000, -10000, -10000, -10000, -10000};
 		Double_t effPhiPol0Guess2[6] = { 1000, 1000, 1000, 1000,1000, 1000};
 		Double_t effPhiPol1Guess2[6] = { 5000, 5000, 5000, 5000,5000, 5000};
 
-		Double_t effPtAmpGuess1[6] = {140000, 40000, 40000, 30000, 30000, 30000};
-		Double_t effPtAmpGuess2[6] = {80000, 20000, 20000, 5000,5000, 1000};
+		Double_t effPtAmpGuess1[6] = {50000, 20000, 20000, 10000, 2000, 2000};
+		Double_t effPtAmpGuess2[6] = {30000, 10000, 10000, 5000,1000, 1000};
 		Double_t effPtPol0Guess1[6] = { 20000, 90000, 20000, 5000,10000, 10000};
 		Double_t effPtPol1Guess1[6] = { -20000, -90000, -5000, 1000,5000, 5000};
 		Double_t effPtPol0Guess2[6] = { 30000, 30000, 1000, 1000,1000, 1000};
 		Double_t effPtPol1Guess2[6] = { -5000, -5000, 5000, 5000,5000, 5000};
 
-		Double_t effVzAmpGuess1[12] = { 15000, 15000, 15000, 15000, 15000, 15000, 15000, 15000,15000, 15000,15000, 15000};
-		Double_t effVzAmpGuess2[12] = {4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000,4000, 4000,4000, 4000};
+		Double_t effVzAmpGuess1[12] = { 3000, 6000, 8000, 8000, 20000, 20000, 20000, 8000,8000, 3000,3000, 3000};
+		Double_t effVzAmpGuess2[12] = {2000, 4000, 5000, 5000, 10000, 10000, 10000, 5000,5000, 2000,2000, 2000};
 		Double_t effVzPol0Guess1[12] = {10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000,10000, 10000,10000, 10000};
 		Double_t effVzPol1Guess1[12] = {10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000,10000, 10000,10000, 10000};
 		Double_t effVzPol0Guess2[12] = {10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000,10000, 10000,10000, 10000};

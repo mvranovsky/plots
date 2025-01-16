@@ -388,7 +388,8 @@ void Plot::TH1DGeneral(TString nameOfHist,TH1D* hist) {
       canvas->SetLogy();
       SetGPad(false, 0.14, 0.05,0.11,0.06);
       DrawSTARpp510(0.6,0.85,0.9,0.85, 0.02);
-
+   }else if(strcmp(hist->GetName(), "hNTpcTracks") == 0 || strcmp(hist->GetName(), "hNTofTracks") == 0 || strcmp(hist->GetName(), "hPointingAngle") == 0){
+      canvas->SetLogy();
    }else{
       SetGPad(false, 0.14, 0.05,0.11,0.06);
       DrawSTARpp510(0.6,0.85,0.9,0.85, 0.02);

@@ -8,635 +8,882 @@ Output file created...
 outfile connected successfully.
 Successfully added all histograms together...
 Creating plots from TofEffMult...
-Input from root list: /gpfs01/star/pwg/mvranovsk/Run17_P20ic/TofEffMult_5.12.24/merged/StRP_production.list
-Input from 2 files...
-input position: /gpfs01/star/pwg/mvranovsk/Run17_P20ic/TofEffMult_5.12.24/merged/StRP_production.list
-fitting peak for K0S
-fitting peak for K0S
-Successfully created invariant mass plot and fit of peak for K0S...
+Input from root list: /gpfs01/star/pwg/mvranovsk/Run17_P20ic/TofEffMult_14.12.24/merged/StRP_production.list
+Input from 1 files...
+input position: /gpfs01/star/pwg/mvranovsk/Run17_P20ic/TofEffMult_14.12.24/merged/StRP_production.list
 Beginning efficiency plot for eta
 Running eta bin number: 0
 tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.900000 && etaHadron1 < -0.700000
-tofHit0 > 0 && tofHit1 > 0 && etaHadron0 > -0.900000 && etaHadron0 < -0.700000
 tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.900000 && etaHadron1 < -0.700000
 tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.900000 && etaHadron3 < -0.700000
-tofHit2 > 0 && tofHit3 > 0 && etaHadron2 > -0.900000 && etaHadron2 < -0.700000
 tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.900000 && etaHadron3 < -0.700000
 tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.900000 && etaHadron5 < -0.700000
-tofHit4 > 0 && tofHit5 > 0 && etaHadron4 > -0.900000 && etaHadron4 < -0.700000
 tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.900000 && etaHadron5 < -0.700000
 tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.900000 && etaHadron7 < -0.700000
-tofHit6 > 0 && tofHit7 > 0 && etaHadron6 > -0.900000 && etaHadron6 < -0.700000
 tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.900000 && etaHadron7 < -0.700000
 tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.900000 && etaHadron9 < -0.700000
-tofHit8 > 0 && tofHit9 > 0 && etaHadron8 > -0.900000 && etaHadron8 < -0.700000
 tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.900000 && etaHadron9 < -0.700000
-Entries in hist: 2.09107e+06
 tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.900000 && etaHadron1 < -0.700000
-tofHit0 > 0 && tofHit1 > 0 && etaHadron0 > -0.900000 && etaHadron0 < -0.700000
 tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.900000 && etaHadron1 < -0.700000
 tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.900000 && etaHadron3 < -0.700000
-tofHit2 > 0 && tofHit3 > 0 && etaHadron2 > -0.900000 && etaHadron2 < -0.700000
 tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.900000 && etaHadron3 < -0.700000
 tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.900000 && etaHadron5 < -0.700000
-tofHit4 > 0 && tofHit5 > 0 && etaHadron4 > -0.900000 && etaHadron4 < -0.700000
 tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.900000 && etaHadron5 < -0.700000
 tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.900000 && etaHadron7 < -0.700000
-tofHit6 > 0 && tofHit7 > 0 && etaHadron6 > -0.900000 && etaHadron6 < -0.700000
 tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.900000 && etaHadron7 < -0.700000
 tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.900000 && etaHadron9 < -0.700000
-tofHit8 > 0 && tofHit9 > 0 && etaHadron8 > -0.900000 && etaHadron8 < -0.700000
 tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.900000 && etaHadron9 < -0.700000
-Entries in hist: 808406
-[#1] INFO:DataHandling -- RooDataHist::adjustBinning(data1): fit range of variable x1 expanded to nearest bin boundaries: [0.45,0.54] --> [0.45,0.54]
-[#1] INFO:DataHandling -- RooDataHist::adjustBinning(data2): fit range of variable x2 expanded to nearest bin boundaries: [0.45,0.54] --> [0.45,0.54]
-[#1] INFO:Minization -- p.d.f. provides expected number of events, including extended term in likelihood.
-[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (cb1,poly1)
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.29513e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=4.95247, coef1_0=-18900.6, coef1_1=-1184.1, mean1=0.498524, n1=3.00001, nbkg1=890785, nsig1=15554.8, sigma1=0.00435103
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-8764.010116), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f value is less than zero (-8803.952132), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f value is less than zero (-8843.903621), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f value is less than zero (-8883.864583), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f value is less than zero (-8923.835018), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f value is less than zero (-8963.814926), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = -18900.6,coef1_1 = -1184.1)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.29513e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=4.95124, coef1_0=-12596.1, coef1_1=-2746.19, mean1=0.498515, n1=3.00001, nbkg1=890964, nsig1=15331, sigma1=0.00423941
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-6238.422980), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f value is less than zero (-6268.580307), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f value is less than zero (-6298.759603), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f value is less than zero (-6328.960869), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f value is less than zero (-6359.184104), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f value is less than zero (-6389.429309), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = -12596.1,coef1_1 = -2746.19)
-    ... (remaining 80 messages suppressed)
-
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 1 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 5 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== 1.00013 added to diagonal of error matrix
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 1 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== 1.00231 added to diagonal of error matrix
- EIGENVALUES OF SECOND-DERIVATIVE MATRIX:
-        -1.4007e-01  7.0139e-02  9.6369e-01  9.9999e-01  1.0000e+00  1.0402e+00  1.9003e+00  2.1657e+00
- MINUIT WARNING IN HESSE   
- ============== MATRIX FORCED POS-DEF BY ADDING 0.142236 TO DIAGONAL.
------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------
-[#1] INFO:Minization -- p.d.f. provides expected number of events, including extended term in likelihood.
-[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (cb2,poly2)
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-84984.6) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=1.3, coef2_0=-18725.2, coef2_1=14000, mean2=0.497611, n2=4, nbkg2=1e+06, nsig2=6000, sigma2=0.004
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-5596.443845), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f value is less than zero (-5608.582212), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f value is less than zero (-5620.608580), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f value is less than zero (-5632.522947), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f value is less than zero (-5644.325315), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f value is less than zero (-5656.015682), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -18725.2,coef2_1 = 14000)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-84984.6) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=1.3, coef2_0=-6515.37, coef2_1=14000, mean2=0.497611, n2=4, nbkg2=1e+06, nsig2=6000, sigma2=0.004
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-89.818519), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -6515.37,coef2_1 = 14000)
-     p.d.f value is less than zero (-77.537261), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -6515.37,coef2_1 = 14000)
-     p.d.f value is less than zero (-65.144004), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -6515.37,coef2_1 = 14000)
-     p.d.f value is less than zero (-52.638747), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -6515.37,coef2_1 = 14000)
-     p.d.f value is less than zero (-40.021490), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -6515.37,coef2_1 = 14000)
-     p.d.f value is less than zero (-27.292233), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -6515.37,coef2_1 = 14000)
-     p.d.f value is less than zero (-14.450976), forcing value to zero @ x=x2=0.463, coefList=(coef2_0 = -6515.37,coef2_1 = 14000)
-     p.d.f value is less than zero (-1.497719), forcing value to zero @ x=x2=0.465, coefList=(coef2_0 = -6515.37,coef2_1 = 14000)
-
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 5 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== 1.00004 added to diagonal of error matrix
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) directly selected PDF components: (poly1)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) directly selected PDF components: (cb1)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) directly selected PDF components: (poly2)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) directly selected PDF components: (cb2)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) indirectly selected PDF components: ()
 Running eta bin number: 1
 tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.700000 && etaHadron1 < -0.500000
-tofHit0 > 0 && tofHit1 > 0 && etaHadron0 > -0.700000 && etaHadron0 < -0.500000
 tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.700000 && etaHadron1 < -0.500000
 tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.700000 && etaHadron3 < -0.500000
-tofHit2 > 0 && tofHit3 > 0 && etaHadron2 > -0.700000 && etaHadron2 < -0.500000
 tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.700000 && etaHadron3 < -0.500000
 tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.700000 && etaHadron5 < -0.500000
-tofHit4 > 0 && tofHit5 > 0 && etaHadron4 > -0.700000 && etaHadron4 < -0.500000
 tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.700000 && etaHadron5 < -0.500000
 tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.700000 && etaHadron7 < -0.500000
-tofHit6 > 0 && tofHit7 > 0 && etaHadron6 > -0.700000 && etaHadron6 < -0.500000
 tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.700000 && etaHadron7 < -0.500000
 tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.700000 && etaHadron9 < -0.500000
-tofHit8 > 0 && tofHit9 > 0 && etaHadron8 > -0.700000 && etaHadron8 < -0.500000
 tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.700000 && etaHadron9 < -0.500000
-Entries in hist: 2.81854e+06
 tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.700000 && etaHadron1 < -0.500000
-tofHit0 > 0 && tofHit1 > 0 && etaHadron0 > -0.700000 && etaHadron0 < -0.500000
 tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.700000 && etaHadron1 < -0.500000
 tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.700000 && etaHadron3 < -0.500000
-tofHit2 > 0 && tofHit3 > 0 && etaHadron2 > -0.700000 && etaHadron2 < -0.500000
 tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.700000 && etaHadron3 < -0.500000
 tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.700000 && etaHadron5 < -0.500000
-tofHit4 > 0 && tofHit5 > 0 && etaHadron4 > -0.700000 && etaHadron4 < -0.500000
 tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.700000 && etaHadron5 < -0.500000
 tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.700000 && etaHadron7 < -0.500000
-tofHit6 > 0 && tofHit7 > 0 && etaHadron6 > -0.700000 && etaHadron6 < -0.500000
 tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.700000 && etaHadron7 < -0.500000
 tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.700000 && etaHadron9 < -0.500000
-tofHit8 > 0 && tofHit9 > 0 && etaHadron8 > -0.700000 && etaHadron8 < -0.500000
 tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.700000 && etaHadron9 < -0.500000
-Entries in hist: 1.0857e+06
-[#1] INFO:DataHandling -- RooDataHist::adjustBinning(data1): fit range of variable x1 expanded to nearest bin boundaries: [0.45,0.54] --> [0.45,0.54]
-[#1] INFO:DataHandling -- RooDataHist::adjustBinning(data2): fit range of variable x2 expanded to nearest bin boundaries: [0.45,0.54] --> [0.45,0.54]
-[#1] INFO:Minization -- p.d.f. provides expected number of events, including extended term in likelihood.
-[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (cb1,poly1)
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.73984e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=1.3, coef1_0=6076.25, coef1_1=-14000, mean1=0.497611, n1=4, nbkg1=300000, nsig1=17000, sigma1=0.004
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-106.224629), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f value is less than zero (-119.384126), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f value is less than zero (-132.655623), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f value is less than zero (-146.039121), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f value is less than zero (-159.534618), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f value is less than zero (-173.142115), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = 6076.25,coef1_1 = -14000)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.73984e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=1.3, coef1_0=874.514, coef1_1=-14000, mean1=0.497611, n1=4, nbkg1=300000, nsig1=17000, sigma1=0.004
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-2452.208401), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f value is less than zero (-2475.771374), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f value is less than zero (-2499.446347), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f value is less than zero (-2523.233320), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f value is less than zero (-2547.132293), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f value is less than zero (-2571.143266), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = 874.514,coef1_1 = -14000)
-    ... (remaining 80 messages suppressed)
-
- EIGENVALUES OF SECOND-DERIVATIVE MATRIX:
-        -1.3709e+00  3.2316e-01  9.2264e-01  9.8016e-01  1.0345e+00  1.0615e+00  1.7047e+00  3.3442e+00
- MINUIT WARNING IN HESSE   
- ============== MATRIX FORCED POS-DEF BY ADDING 1.374275 TO DIAGONAL.
- MINUIT WARNING IN MIGRAD  
- ============== Negative diagonal element 1 in Error Matrix
- MINUIT WARNING IN MIGRAD  
- ============== 1.08018 added to diagonal of error matrix
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (2.36808e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=1.24145, coef1_0=2119.95, coef1_1=-10748.2, mean1=0.499537, n1=5.49023, nbkg1=1.16292e+06, nsig1=86383.2, sigma1=0.00480826
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-1229.096904), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f value is less than zero (-1244.289750), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f value is less than zero (-1259.568581), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f value is less than zero (-1274.933398), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f value is less than zero (-1290.384201), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f value is less than zero (-1305.920989), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = 2119.95,coef1_1 = -10748.2)
-    ... (remaining 80 messages suppressed)
-
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 1 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== 9.34218 added to diagonal of error matrix
------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------
-[#1] INFO:Minization -- p.d.f. provides expected number of events, including extended term in likelihood.
-[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (cb2,poly2)
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-541005) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.03868, coef2_0=-709.611, coef2_1=-299.48, mean2=0.498093, n2=7.70677, nbkg2=103152, nsig2=11997.9, sigma2=0.00419651
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-379.948944), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f value is less than zero (-381.909625), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f value is less than zero (-383.872703), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f value is less than zero (-385.838176), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f value is less than zero (-387.806045), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f value is less than zero (-389.776310), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -709.611,coef2_1 = -299.48)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-541005) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.04305, coef2_0=-692.71, coef2_1=-79.4341, mean2=0.498041, n2=7.70693, nbkg2=103149, nsig2=12054.6, sigma2=0.00421831
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-327.569236), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-329.098273), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-330.627946), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-332.158254), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-333.689197), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-335.220776), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-541005) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.04305, coef2_0=-692.71, coef2_1=-79.4341, mean2=0.498041, n2=7.70693, nbkg2=103149, nsig2=12054.6, sigma2=0.00421831
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-327.569236), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-329.098273), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-330.627946), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-332.158254), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-333.689197), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-335.220776), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-    ... (remaining 80 messages suppressed)
-
- MINUIT WARNING IN MIGRAD  
- ============== Negative diagonal element 2 in Error Matrix
- MINUIT WARNING IN MIGRAD  
- ============== 1 added to diagonal of error matrix
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-541005) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.09281, coef2_0=-41009.7, coef2_1=44912.4, mean2=0.499432, n2=7.70708, nbkg2=6.8071e+06, nsig2=42053, sigma2=0.00407861
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-9359.130569), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f value is less than zero (-9359.948248), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f value is less than zero (-9360.406627), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f value is less than zero (-9360.505707), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f value is less than zero (-9360.245488), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f value is less than zero (-9359.625969), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -41009.7,coef2_1 = 44912.4)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-541005) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.06805, coef2_0=-48751.4, coef2_1=-26435.6, mean2=0.498808, n2=7.707, nbkg2=7.39425e+06, nsig2=197395, sigma2=0.00414883
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-27362.910018), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f value is less than zero (-27508.208372), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f value is less than zero (-27653.718211), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f value is less than zero (-27799.439535), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f value is less than zero (-27945.372343), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f value is less than zero (-28091.516636), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -48751.4,coef2_1 = -26435.6)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (156478) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.04325, coef2_0=-21502.3, coef2_1=1365.75, mean2=0.498048, n2=7.70693, nbkg2=86071.2, nsig2=10663.9, sigma2=0.00421777
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-9418.757636), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f value is less than zero (-9459.293025), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f value is less than zero (-9499.817488), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f value is less than zero (-9540.331024), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f value is less than zero (-9580.833635), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f value is less than zero (-9621.325320), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -21502.3,coef2_1 = 1365.75)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (156478) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.04305, coef2_0=-692.71, coef2_1=-79.4341, mean2=0.498041, n2=7.70693, nbkg2=103149, nsig2=12054.6, sigma2=0.00421831
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-327.569236), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-329.098273), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-330.627946), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-332.158254), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-333.689197), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-335.220776), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (156478) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.04305, coef2_0=-692.71, coef2_1=-79.4341, mean2=0.498041, n2=7.70693, nbkg2=103149, nsig2=12054.6, sigma2=0.00421831
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-327.569236), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-329.098273), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-330.627946), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-332.158254), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-333.689197), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-335.220776), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (156478) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=4.04305, coef2_0=-692.71, coef2_1=-79.4341, mean2=0.498041, n2=7.70693, nbkg2=103149, nsig2=12054.6, sigma2=0.00421831
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-327.569236), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-329.098273), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-330.627946), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-332.158254), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-333.689197), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f value is less than zero (-335.220776), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = -692.71,coef2_1 = -79.4341)
-    ... (remaining 80 messages suppressed)
-
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 1 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 5 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== 1.00078 added to diagonal of error matrix
- EIGENVALUES OF SECOND-DERIVATIVE MATRIX:
-        -4.5572e-01  3.2528e-01  9.9165e-01  1.0000e+00  1.0000e+00  1.1039e+00  1.5705e+00  2.4645e+00
- MINUIT WARNING IN HESSE   
- ============== MATRIX FORCED POS-DEF BY ADDING 0.458184 TO DIAGONAL.
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) directly selected PDF components: (poly1)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) directly selected PDF components: (cb1)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) directly selected PDF components: (poly2)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) directly selected PDF components: (cb2)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) indirectly selected PDF components: ()
 Running eta bin number: 2
 tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.500000 && etaHadron1 < -0.300000
-tofHit0 > 0 && tofHit1 > 0 && etaHadron0 > -0.500000 && etaHadron0 < -0.300000
 tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.500000 && etaHadron1 < -0.300000
 tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.500000 && etaHadron3 < -0.300000
-tofHit2 > 0 && tofHit3 > 0 && etaHadron2 > -0.500000 && etaHadron2 < -0.300000
 tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.500000 && etaHadron3 < -0.300000
 tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.500000 && etaHadron5 < -0.300000
-tofHit4 > 0 && tofHit5 > 0 && etaHadron4 > -0.500000 && etaHadron4 < -0.300000
 tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.500000 && etaHadron5 < -0.300000
 tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.500000 && etaHadron7 < -0.300000
-tofHit6 > 0 && tofHit7 > 0 && etaHadron6 > -0.500000 && etaHadron6 < -0.300000
 tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.500000 && etaHadron7 < -0.300000
 tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.500000 && etaHadron9 < -0.300000
-tofHit8 > 0 && tofHit9 > 0 && etaHadron8 > -0.500000 && etaHadron8 < -0.300000
 tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.500000 && etaHadron9 < -0.300000
-Entries in hist: 2.72448e+06
 tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.500000 && etaHadron1 < -0.300000
-tofHit0 > 0 && tofHit1 > 0 && etaHadron0 > -0.500000 && etaHadron0 < -0.300000
 tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.500000 && etaHadron1 < -0.300000
 tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.500000 && etaHadron3 < -0.300000
-tofHit2 > 0 && tofHit3 > 0 && etaHadron2 > -0.500000 && etaHadron2 < -0.300000
 tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.500000 && etaHadron3 < -0.300000
 tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.500000 && etaHadron5 < -0.300000
-tofHit4 > 0 && tofHit5 > 0 && etaHadron4 > -0.500000 && etaHadron4 < -0.300000
 tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.500000 && etaHadron5 < -0.300000
 tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.500000 && etaHadron7 < -0.300000
-tofHit6 > 0 && tofHit7 > 0 && etaHadron6 > -0.500000 && etaHadron6 < -0.300000
 tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.500000 && etaHadron7 < -0.300000
 tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.500000 && etaHadron9 < -0.300000
-tofHit8 > 0 && tofHit9 > 0 && etaHadron8 > -0.500000 && etaHadron8 < -0.300000
 tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.500000 && etaHadron9 < -0.300000
-Entries in hist: 1.09469e+06
-[#1] INFO:DataHandling -- RooDataHist::adjustBinning(data1): fit range of variable x1 expanded to nearest bin boundaries: [0.45,0.54] --> [0.45,0.54]
-[#1] INFO:DataHandling -- RooDataHist::adjustBinning(data2): fit range of variable x2 expanded to nearest bin boundaries: [0.45,0.54] --> [0.45,0.54]
-[#1] INFO:Minization -- p.d.f. provides expected number of events, including extended term in likelihood.
-[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (cb1,poly1)
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.61149e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=1.3, coef1_0=15000, coef1_1=-48907.1, mean1=0.497611, n1=4, nbkg1=300000, nsig1=9000, sigma1=0.004
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-3181.748690), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f value is less than zero (-3240.172688), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f value is less than zero (-3298.987943), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f value is less than zero (-3358.194454), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f value is less than zero (-3417.792222), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f value is less than zero (-3477.781247), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = 15000,coef1_1 = -48907.1)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.61149e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=1.3, coef1_0=15000, coef1_1=-37246.6, mean1=0.497611, n1=4, nbkg1=300000, nsig1=9000, sigma1=0.004
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-809.993416), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f value is less than zero (-847.335248), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f value is less than zero (-884.975054), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f value is less than zero (-922.912832), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f value is less than zero (-961.148583), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f value is less than zero (-999.682306), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = 15000,coef1_1 = -37246.6)
-    ... (remaining 80 messages suppressed)
-
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 8 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== 1.3384 added to diagonal of error matrix
- EIGENVALUES OF SECOND-DERIVATIVE MATRIX:
-        -6.4939e-01  2.0638e-01  9.4799e-01  9.9966e-01  1.0000e+00  1.0567e+00  1.8225e+00  2.6161e+00
- MINUIT WARNING IN HESSE   
- ============== MATRIX FORCED POS-DEF BY ADDING 0.652008 TO DIAGONAL.
- MINUIT WARNING IN MIGRAD  
- ============== Negative diagonal element 8 in Error Matrix
- MINUIT WARNING IN MIGRAD  
- ============== 1.59832 added to diagonal of error matrix
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.61149e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=4.33178, coef1_0=-12709, coef1_1=-11160, mean1=0.499434, n1=3.00001, nbkg1=9.65525e+06, nsig1=7777.33, sigma1=0.00494845
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-8000.740509), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f value is less than zero (-8046.335925), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f value is less than zero (-8092.020621), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f value is less than zero (-8137.794597), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f value is less than zero (-8183.657853), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f value is less than zero (-8229.610389), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = -12709,coef1_1 = -11160)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.61149e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=4.2821, coef1_0=-22467.5, coef1_1=-47724.6, mean1=0.498159, n1=3.00001, nbkg1=3.64473e+07, nsig1=126290, sigma1=0.00499211
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-19839.086698), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f value is less than zero (-19970.307856), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f value is less than zero (-20101.910810), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f value is less than zero (-20233.895562), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f value is less than zero (-20366.262110), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f value is less than zero (-20499.010456), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = -22467.5,coef1_1 = -47724.6)
-    ... (remaining 80 messages suppressed)
-
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-1.39835e+07) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha1=4.29342, coef1_0=-40494.5, coef1_1=35379.5, mean1=0.499996, n1=3.00001, nbkg1=5.77417e+07, nsig1=12834.6, sigma1=0.00499725
-RooPolynomial::poly1[ x=x1 coefList=(coef1_0,coef1_1) ]
-     p.d.f value is less than zero (-11065.774629), forcing value to zero @ x=x1=0.451, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f normalization integral is zero or negative @ x=x1=0.451, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f value is less than zero (-11082.797397), forcing value to zero @ x=x1=0.453, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f normalization integral is zero or negative @ x=x1=0.453, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f value is less than zero (-11099.537130), forcing value to zero @ x=x1=0.455, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f normalization integral is zero or negative @ x=x1=0.455, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f value is less than zero (-11115.993826), forcing value to zero @ x=x1=0.457, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f normalization integral is zero or negative @ x=x1=0.457, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f value is less than zero (-11132.167486), forcing value to zero @ x=x1=0.459, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f normalization integral is zero or negative @ x=x1=0.459, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f value is less than zero (-11148.058110), forcing value to zero @ x=x1=0.461, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-     p.d.f normalization integral is zero or negative @ x=x1=0.461, coefList=(coef1_0 = -40494.5,coef1_1 = 35379.5)
-    ... (remaining 80 messages suppressed)
-
- EIGENVALUES OF SECOND-DERIVATIVE MATRIX:
-        -1.9374e+00  2.0682e-01  9.4551e-01  9.9074e-01  1.0090e+00  1.0609e+00  1.8229e+00  3.9015e+00
- MINUIT WARNING IN HESSE   
- ============== MATRIX FORCED POS-DEF BY ADDING 1.941303 TO DIAGONAL.
------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------
-[#1] INFO:Minization -- p.d.f. provides expected number of events, including extended term in likelihood.
-[#1] INFO:Minization --  The following expressions will be evaluated in cache-and-track mode: (cb2,poly2)
-[#0] WARNING:Minization -- RooFitGlue: Minimized function has error status.
-Returning maximum FCN so far (-709230) to force MIGRAD to back out of this region. Error log follows
-Parameter values: alpha2=1.3, coef2_0=2326.39, coef2_1=-6345.51, mean2=0.497611, n2=4, nbkg2=1e+06, nsig2=5500, sigma2=0.004
-RooPolynomial::poly2[ x=x2 coefList=(coef2_0,coef2_1) ]
-     p.d.f value is less than zero (-240.481058), forcing value to zero @ x=x2=0.451, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f normalization integral is zero or negative @ x=x2=0.451, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f value is less than zero (-247.300955), forcing value to zero @ x=x2=0.453, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f normalization integral is zero or negative @ x=x2=0.453, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f value is less than zero (-254.171616), forcing value to zero @ x=x2=0.455, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f normalization integral is zero or negative @ x=x2=0.455, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f value is less than zero (-261.093041), forcing value to zero @ x=x2=0.457, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f normalization integral is zero or negative @ x=x2=0.457, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f value is less than zero (-268.065230), forcing value to zero @ x=x2=0.459, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f normalization integral is zero or negative @ x=x2=0.459, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f value is less than zero (-275.088184), forcing value to zero @ x=x2=0.461, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-     p.d.f normalization integral is zero or negative @ x=x2=0.461, coefList=(coef2_0 = 2326.39,coef2_1 = -6345.51)
-    ... (remaining 80 messages suppressed)
-
- MINUIT WARNING IN HESSE   
- ============== Negative diagonal element 1 in Error Matrix
- MINUIT WARNING IN HESSE   
- ============== 1.00143 added to diagonal of error matrix
- EIGENVALUES OF SECOND-DERIVATIVE MATRIX:
-        -4.1425e-01  3.3221e-01  9.7842e-01  9.9999e-01  1.0000e+00  1.1056e+00  1.5636e+00  2.4344e+00
- MINUIT WARNING IN HESSE   
- ============== MATRIX FORCED POS-DEF BY ADDING 0.416685 TO DIAGONAL.
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) directly selected PDF components: (poly1)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) directly selected PDF components: (cb1)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model1) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) directly selected PDF components: (poly2)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) indirectly selected PDF components: ()
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) directly selected PDF components: (cb2)
-[#1] INFO:Plotting -- RooAbsPdf::plotOn(model2) indirectly selected PDF components: ()
 Running eta bin number: 3
 tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.300000 && etaHadron1 < -0.100000
-tofHit0 > 0 && tofHit1 > 0 && etaHadron0 > -0.300000 && etaHadron0 < -0.100000
 tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.300000 && etaHadron1 < -0.100000
 tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.300000 && etaHadron3 < -0.100000
-tofHit2 > 0 && tofHit3 > 0 && etaHadron2 > -0.300000 && etaHadron2 < -0.100000
 tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.300000 && etaHadron3 < -0.100000
 tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.300000 && etaHadron5 < -0.100000
-tofHit4 > 0 && tofHit5 > 0 && etaHadron4 > -0.300000 && etaHadron4 < -0.100000
 tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.300000 && etaHadron5 < -0.100000
 tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.300000 && etaHadron7 < -0.100000
-tofHit6 > 0 && tofHit7 > 0 && etaHadron6 > -0.300000 && etaHadron6 < -0.100000
 tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.300000 && etaHadron7 < -0.100000
 tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.300000 && etaHadron9 < -0.100000
-tofHit8 > 0 && tofHit9 > 0 && etaHadron8 > -0.300000 && etaHadron8 < -0.100000
 tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.300000 && etaHadron9 < -0.100000
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.300000 && etaHadron1 < -0.100000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.300000 && etaHadron1 < -0.100000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.300000 && etaHadron3 < -0.100000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.300000 && etaHadron3 < -0.100000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.300000 && etaHadron5 < -0.100000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.300000 && etaHadron5 < -0.100000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.300000 && etaHadron7 < -0.100000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.300000 && etaHadron7 < -0.100000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.300000 && etaHadron9 < -0.100000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.300000 && etaHadron9 < -0.100000
+Running eta bin number: 4
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.100000 && etaHadron1 < 0.100000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.100000 && etaHadron1 < 0.100000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.100000 && etaHadron3 < 0.100000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.100000 && etaHadron3 < 0.100000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.100000 && etaHadron5 < 0.100000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.100000 && etaHadron5 < 0.100000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.100000 && etaHadron7 < 0.100000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.100000 && etaHadron7 < 0.100000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.100000 && etaHadron9 < 0.100000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.100000 && etaHadron9 < 0.100000
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > -0.100000 && etaHadron1 < 0.100000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > -0.100000 && etaHadron1 < 0.100000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > -0.100000 && etaHadron3 < 0.100000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > -0.100000 && etaHadron3 < 0.100000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > -0.100000 && etaHadron5 < 0.100000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > -0.100000 && etaHadron5 < 0.100000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > -0.100000 && etaHadron7 < 0.100000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > -0.100000 && etaHadron7 < 0.100000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > -0.100000 && etaHadron9 < 0.100000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > -0.100000 && etaHadron9 < 0.100000
+Running eta bin number: 5
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > 0.100000 && etaHadron1 < 0.300000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > 0.100000 && etaHadron1 < 0.300000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > 0.100000 && etaHadron3 < 0.300000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > 0.100000 && etaHadron3 < 0.300000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > 0.100000 && etaHadron5 < 0.300000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > 0.100000 && etaHadron5 < 0.300000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > 0.100000 && etaHadron7 < 0.300000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > 0.100000 && etaHadron7 < 0.300000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > 0.100000 && etaHadron9 < 0.300000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > 0.100000 && etaHadron9 < 0.300000
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > 0.100000 && etaHadron1 < 0.300000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > 0.100000 && etaHadron1 < 0.300000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > 0.100000 && etaHadron3 < 0.300000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > 0.100000 && etaHadron3 < 0.300000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > 0.100000 && etaHadron5 < 0.300000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > 0.100000 && etaHadron5 < 0.300000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > 0.100000 && etaHadron7 < 0.300000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > 0.100000 && etaHadron7 < 0.300000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > 0.100000 && etaHadron9 < 0.300000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > 0.100000 && etaHadron9 < 0.300000
+Running eta bin number: 6
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > 0.300000 && etaHadron1 < 0.500000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > 0.300000 && etaHadron1 < 0.500000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > 0.300000 && etaHadron3 < 0.500000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > 0.300000 && etaHadron3 < 0.500000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > 0.300000 && etaHadron5 < 0.500000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > 0.300000 && etaHadron5 < 0.500000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > 0.300000 && etaHadron7 < 0.500000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > 0.300000 && etaHadron7 < 0.500000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > 0.300000 && etaHadron9 < 0.500000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > 0.300000 && etaHadron9 < 0.500000
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > 0.300000 && etaHadron1 < 0.500000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > 0.300000 && etaHadron1 < 0.500000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > 0.300000 && etaHadron3 < 0.500000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > 0.300000 && etaHadron3 < 0.500000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > 0.300000 && etaHadron5 < 0.500000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > 0.300000 && etaHadron5 < 0.500000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > 0.300000 && etaHadron7 < 0.500000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > 0.300000 && etaHadron7 < 0.500000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > 0.300000 && etaHadron9 < 0.500000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > 0.300000 && etaHadron9 < 0.500000
+Running eta bin number: 7
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > 0.500000 && etaHadron1 < 0.700000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > 0.500000 && etaHadron1 < 0.700000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > 0.500000 && etaHadron3 < 0.700000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > 0.500000 && etaHadron3 < 0.700000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > 0.500000 && etaHadron5 < 0.700000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > 0.500000 && etaHadron5 < 0.700000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > 0.500000 && etaHadron7 < 0.700000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > 0.500000 && etaHadron7 < 0.700000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > 0.500000 && etaHadron9 < 0.700000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > 0.500000 && etaHadron9 < 0.700000
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > 0.500000 && etaHadron1 < 0.700000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > 0.500000 && etaHadron1 < 0.700000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > 0.500000 && etaHadron3 < 0.700000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > 0.500000 && etaHadron3 < 0.700000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > 0.500000 && etaHadron5 < 0.700000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > 0.500000 && etaHadron5 < 0.700000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > 0.500000 && etaHadron7 < 0.700000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > 0.500000 && etaHadron7 < 0.700000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > 0.500000 && etaHadron9 < 0.700000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > 0.500000 && etaHadron9 < 0.700000
+Running eta bin number: 8
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > 0.700000 && etaHadron1 < 0.900000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > 0.700000 && etaHadron1 < 0.900000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > 0.700000 && etaHadron3 < 0.900000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > 0.700000 && etaHadron3 < 0.900000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > 0.700000 && etaHadron5 < 0.900000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > 0.700000 && etaHadron5 < 0.900000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > 0.700000 && etaHadron7 < 0.900000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > 0.700000 && etaHadron7 < 0.900000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > 0.700000 && etaHadron9 < 0.900000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > 0.700000 && etaHadron9 < 0.900000
+tofHit0 > 0 && tofHit1 > 0 && etaHadron1 > 0.700000 && etaHadron1 < 0.900000
+tofHit0 > 0 && tofHit1 < 0 && etaHadron1 > 0.700000 && etaHadron1 < 0.900000
+tofHit2 > 0 && tofHit3 > 0 && etaHadron3 > 0.700000 && etaHadron3 < 0.900000
+tofHit2 > 0 && tofHit3 < 0 && etaHadron3 > 0.700000 && etaHadron3 < 0.900000
+tofHit4 > 0 && tofHit5 > 0 && etaHadron5 > 0.700000 && etaHadron5 < 0.900000
+tofHit4 > 0 && tofHit5 < 0 && etaHadron5 > 0.700000 && etaHadron5 < 0.900000
+tofHit6 > 0 && tofHit7 > 0 && etaHadron7 > 0.700000 && etaHadron7 < 0.900000
+tofHit6 > 0 && tofHit7 < 0 && etaHadron7 > 0.700000 && etaHadron7 < 0.900000
+tofHit8 > 0 && tofHit9 > 0 && etaHadron9 > 0.700000 && etaHadron9 < 0.900000
+tofHit8 > 0 && tofHit9 < 0 && etaHadron9 > 0.700000 && etaHadron9 < 0.900000
+-------------------------------------------------------------------------
+RESULTS FOR INTEGRATION:
+eta bin number 0,contentBcgSub 1: value: 8820, error: 497.228
+eta bin number 0,contentBcgSub 2: value: 4958, error: 160.037
+eta bin number 1,contentBcgSub 1: value: 11350, error: 574.162
+eta bin number 1,contentBcgSub 2: value: 6706, error: 193.505
+eta bin number 2,contentBcgSub 1: value: 12961, error: 551.405
+eta bin number 2,contentBcgSub 2: value: 7540, error: 202.494
+eta bin number 3,contentBcgSub 1: value: 11919, error: 537.007
+eta bin number 3,contentBcgSub 2: value: 7429, error: 201.685
+eta bin number 4,contentBcgSub 1: value: 11002, error: 1044.24
+eta bin number 4,contentBcgSub 2: value: 7005, error: 202.502
+eta bin number 5,contentBcgSub 1: value: 11312, error: 545.934
+eta bin number 5,contentBcgSub 2: value: 7413, error: 206.821
+eta bin number 6,contentBcgSub 1: value: 12317, error: 568.553
+eta bin number 6,contentBcgSub 2: value: 8119, error: 212.12
+eta bin number 7,contentBcgSub 1: value: 11953, error: 595.494
+eta bin number 7,contentBcgSub 2: value: 7539, error: 206.211
+eta bin number 8,contentBcgSub 1: value: 8394, error: 516.98
+eta bin number 8,contentBcgSub 2: value: 5398, error: 170.968
+-------------------------------------------------------------------------
+RESULTS FOR FITS:
+eta bin number 0,content 1: value: 1, error: 0
+eta bin number 0,content 2: value: 0, error: 0
+eta bin number 1,content 1: value: 1, error: 0
+eta bin number 1,content 2: value: 0, error: 0
+eta bin number 2,content 1: value: 1, error: 0
+eta bin number 2,content 2: value: 0, error: 0
+eta bin number 3,content 1: value: 1, error: 0
+eta bin number 3,content 2: value: 0, error: 0
+eta bin number 4,content 1: value: 1, error: 0
+eta bin number 4,content 2: value: 0, error: 0
+eta bin number 5,content 1: value: 1, error: 0
+eta bin number 5,content 2: value: 0, error: 0
+eta bin number 6,content 1: value: 1, error: 0
+eta bin number 6,content 2: value: 0, error: 0
+eta bin number 7,content 1: value: 1, error: 0
+eta bin number 7,content 2: value: 0, error: 0
+eta bin number 8,content 1: value: 1, error: 0
+eta bin number 8,content 2: value: 0, error: 0
+-------------------------------------------------------------------------
+Systematic error (C): 0.98361
+Systematic uncertainty: 0.0161813
+Systematic error from true MC: 0.0161813
+Beginning efficiency plot for phi
+Running phi bin number: 0
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > -3.141593 && phiHadron1 < -2.094395
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > -3.141593 && phiHadron1 < -2.094395
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > -3.141593 && phiHadron3 < -2.094395
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > -3.141593 && phiHadron3 < -2.094395
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > -3.141593 && phiHadron5 < -2.094395
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > -3.141593 && phiHadron5 < -2.094395
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > -3.141593 && phiHadron7 < -2.094395
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > -3.141593 && phiHadron7 < -2.094395
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > -3.141593 && phiHadron9 < -2.094395
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > -3.141593 && phiHadron9 < -2.094395
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > -3.141593 && phiHadron1 < -2.094395
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > -3.141593 && phiHadron1 < -2.094395
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > -3.141593 && phiHadron3 < -2.094395
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > -3.141593 && phiHadron3 < -2.094395
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > -3.141593 && phiHadron5 < -2.094395
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > -3.141593 && phiHadron5 < -2.094395
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > -3.141593 && phiHadron7 < -2.094395
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > -3.141593 && phiHadron7 < -2.094395
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > -3.141593 && phiHadron9 < -2.094395
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > -3.141593 && phiHadron9 < -2.094395
+Running phi bin number: 1
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > -2.094395 && phiHadron1 < -1.047198
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > -2.094395 && phiHadron1 < -1.047198
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > -2.094395 && phiHadron3 < -1.047198
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > -2.094395 && phiHadron3 < -1.047198
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > -2.094395 && phiHadron5 < -1.047198
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > -2.094395 && phiHadron5 < -1.047198
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > -2.094395 && phiHadron7 < -1.047198
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > -2.094395 && phiHadron7 < -1.047198
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > -2.094395 && phiHadron9 < -1.047198
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > -2.094395 && phiHadron9 < -1.047198
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > -2.094395 && phiHadron1 < -1.047198
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > -2.094395 && phiHadron1 < -1.047198
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > -2.094395 && phiHadron3 < -1.047198
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > -2.094395 && phiHadron3 < -1.047198
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > -2.094395 && phiHadron5 < -1.047198
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > -2.094395 && phiHadron5 < -1.047198
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > -2.094395 && phiHadron7 < -1.047198
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > -2.094395 && phiHadron7 < -1.047198
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > -2.094395 && phiHadron9 < -1.047198
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > -2.094395 && phiHadron9 < -1.047198
+Running phi bin number: 2
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > -1.047198 && phiHadron1 < 0.000000
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > -1.047198 && phiHadron1 < 0.000000
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > -1.047198 && phiHadron3 < 0.000000
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > -1.047198 && phiHadron3 < 0.000000
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > -1.047198 && phiHadron5 < 0.000000
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > -1.047198 && phiHadron5 < 0.000000
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > -1.047198 && phiHadron7 < 0.000000
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > -1.047198 && phiHadron7 < 0.000000
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > -1.047198 && phiHadron9 < 0.000000
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > -1.047198 && phiHadron9 < 0.000000
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > -1.047198 && phiHadron1 < 0.000000
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > -1.047198 && phiHadron1 < 0.000000
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > -1.047198 && phiHadron3 < 0.000000
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > -1.047198 && phiHadron3 < 0.000000
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > -1.047198 && phiHadron5 < 0.000000
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > -1.047198 && phiHadron5 < 0.000000
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > -1.047198 && phiHadron7 < 0.000000
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > -1.047198 && phiHadron7 < 0.000000
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > -1.047198 && phiHadron9 < 0.000000
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > -1.047198 && phiHadron9 < 0.000000
+Running phi bin number: 3
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > 0.000000 && phiHadron1 < 1.047198
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > 0.000000 && phiHadron1 < 1.047198
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > 0.000000 && phiHadron3 < 1.047198
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > 0.000000 && phiHadron3 < 1.047198
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > 0.000000 && phiHadron5 < 1.047198
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > 0.000000 && phiHadron5 < 1.047198
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > 0.000000 && phiHadron7 < 1.047198
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > 0.000000 && phiHadron7 < 1.047198
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > 0.000000 && phiHadron9 < 1.047198
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > 0.000000 && phiHadron9 < 1.047198
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > 0.000000 && phiHadron1 < 1.047198
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > 0.000000 && phiHadron1 < 1.047198
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > 0.000000 && phiHadron3 < 1.047198
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > 0.000000 && phiHadron3 < 1.047198
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > 0.000000 && phiHadron5 < 1.047198
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > 0.000000 && phiHadron5 < 1.047198
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > 0.000000 && phiHadron7 < 1.047198
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > 0.000000 && phiHadron7 < 1.047198
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > 0.000000 && phiHadron9 < 1.047198
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > 0.000000 && phiHadron9 < 1.047198
+Running phi bin number: 4
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > 1.047198 && phiHadron1 < 2.094395
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > 1.047198 && phiHadron1 < 2.094395
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > 1.047198 && phiHadron3 < 2.094395
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > 1.047198 && phiHadron3 < 2.094395
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > 1.047198 && phiHadron5 < 2.094395
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > 1.047198 && phiHadron5 < 2.094395
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > 1.047198 && phiHadron7 < 2.094395
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > 1.047198 && phiHadron7 < 2.094395
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > 1.047198 && phiHadron9 < 2.094395
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > 1.047198 && phiHadron9 < 2.094395
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > 1.047198 && phiHadron1 < 2.094395
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > 1.047198 && phiHadron1 < 2.094395
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > 1.047198 && phiHadron3 < 2.094395
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > 1.047198 && phiHadron3 < 2.094395
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > 1.047198 && phiHadron5 < 2.094395
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > 1.047198 && phiHadron5 < 2.094395
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > 1.047198 && phiHadron7 < 2.094395
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > 1.047198 && phiHadron7 < 2.094395
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > 1.047198 && phiHadron9 < 2.094395
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > 1.047198 && phiHadron9 < 2.094395
+Running phi bin number: 5
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > 2.094395 && phiHadron1 < 3.141593
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > 2.094395 && phiHadron1 < 3.141593
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > 2.094395 && phiHadron3 < 3.141593
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > 2.094395 && phiHadron3 < 3.141593
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > 2.094395 && phiHadron5 < 3.141593
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > 2.094395 && phiHadron5 < 3.141593
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > 2.094395 && phiHadron7 < 3.141593
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > 2.094395 && phiHadron7 < 3.141593
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > 2.094395 && phiHadron9 < 3.141593
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > 2.094395 && phiHadron9 < 3.141593
+tofHit0 > 0 && tofHit1 > 0 && phiHadron1 > 2.094395 && phiHadron1 < 3.141593
+tofHit0 > 0 && tofHit1 < 0 && phiHadron1 > 2.094395 && phiHadron1 < 3.141593
+tofHit2 > 0 && tofHit3 > 0 && phiHadron3 > 2.094395 && phiHadron3 < 3.141593
+tofHit2 > 0 && tofHit3 < 0 && phiHadron3 > 2.094395 && phiHadron3 < 3.141593
+tofHit4 > 0 && tofHit5 > 0 && phiHadron5 > 2.094395 && phiHadron5 < 3.141593
+tofHit4 > 0 && tofHit5 < 0 && phiHadron5 > 2.094395 && phiHadron5 < 3.141593
+tofHit6 > 0 && tofHit7 > 0 && phiHadron7 > 2.094395 && phiHadron7 < 3.141593
+tofHit6 > 0 && tofHit7 < 0 && phiHadron7 > 2.094395 && phiHadron7 < 3.141593
+tofHit8 > 0 && tofHit9 > 0 && phiHadron9 > 2.094395 && phiHadron9 < 3.141593
+tofHit8 > 0 && tofHit9 < 0 && phiHadron9 > 2.094395 && phiHadron9 < 3.141593
+-------------------------------------------------------------------------
+RESULTS FOR INTEGRATION:
+phi bin number 0,contentBcgSub 1: value: 15911, error: 753.281
+phi bin number 0,contentBcgSub 2: value: 9693, error: 231.571
+phi bin number 1,contentBcgSub 1: value: 14663, error: 716.091
+phi bin number 1,contentBcgSub 2: value: 8821, error: 225.67
+phi bin number 2,contentBcgSub 1: value: 14422, error: 727.929
+phi bin number 2,contentBcgSub 2: value: 9345, error: 228.208
+phi bin number 3,contentBcgSub 1: value: 18918, error: 801.494
+phi bin number 3,contentBcgSub 2: value: 11464, error: 251.615
+phi bin number 4,contentBcgSub 1: value: 17441, error: 796.387
+phi bin number 4,contentBcgSub 2: value: 11914, error: 254.661
+phi bin number 5,contentBcgSub 1: value: 18673, error: 784.996
+phi bin number 5,contentBcgSub 2: value: 10870, error: 245.915
+-------------------------------------------------------------------------
+RESULTS FOR FITS:
+phi bin number 0,content 1: value: 1, error: 0
+phi bin number 0,content 2: value: 0, error: 0
+phi bin number 1,content 1: value: 1, error: 0
+phi bin number 1,content 2: value: 0, error: 0
+phi bin number 2,content 1: value: 1, error: 0
+phi bin number 2,content 2: value: 0, error: 0
+phi bin number 3,content 1: value: 1, error: 0
+phi bin number 3,content 2: value: 0, error: 0
+phi bin number 4,content 1: value: 1, error: 0
+phi bin number 4,content 2: value: 0, error: 0
+phi bin number 5,content 1: value: 1, error: 0
+phi bin number 5,content 2: value: 0, error: 0
+-------------------------------------------------------------------------
+Systematic error (C): 0.988098
+Systematic uncertainty: 0.0179424
+Systematic error from true MC: 0.0179424
+Beginning efficiency plot for pT
+Running pT bin number: 0
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 0.200000 && pTInGev1 < 0.400000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 0.200000 && pTInGev1 < 0.400000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 0.200000 && pTInGev3 < 0.400000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 0.200000 && pTInGev3 < 0.400000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 0.200000 && pTInGev5 < 0.400000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 0.200000 && pTInGev5 < 0.400000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 0.200000 && pTInGev7 < 0.400000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 0.200000 && pTInGev7 < 0.400000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 0.200000 && pTInGev9 < 0.400000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 0.200000 && pTInGev9 < 0.400000
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 0.200000 && pTInGev1 < 0.400000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 0.200000 && pTInGev1 < 0.400000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 0.200000 && pTInGev3 < 0.400000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 0.200000 && pTInGev3 < 0.400000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 0.200000 && pTInGev5 < 0.400000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 0.200000 && pTInGev5 < 0.400000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 0.200000 && pTInGev7 < 0.400000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 0.200000 && pTInGev7 < 0.400000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 0.200000 && pTInGev9 < 0.400000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 0.200000 && pTInGev9 < 0.400000
+Running pT bin number: 1
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 0.400000 && pTInGev1 < 0.600000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 0.400000 && pTInGev1 < 0.600000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 0.400000 && pTInGev3 < 0.600000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 0.400000 && pTInGev3 < 0.600000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 0.400000 && pTInGev5 < 0.600000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 0.400000 && pTInGev5 < 0.600000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 0.400000 && pTInGev7 < 0.600000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 0.400000 && pTInGev7 < 0.600000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 0.400000 && pTInGev9 < 0.600000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 0.400000 && pTInGev9 < 0.600000
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 0.400000 && pTInGev1 < 0.600000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 0.400000 && pTInGev1 < 0.600000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 0.400000 && pTInGev3 < 0.600000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 0.400000 && pTInGev3 < 0.600000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 0.400000 && pTInGev5 < 0.600000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 0.400000 && pTInGev5 < 0.600000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 0.400000 && pTInGev7 < 0.600000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 0.400000 && pTInGev7 < 0.600000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 0.400000 && pTInGev9 < 0.600000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 0.400000 && pTInGev9 < 0.600000
+Running pT bin number: 2
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 0.600000 && pTInGev1 < 0.800000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 0.600000 && pTInGev1 < 0.800000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 0.600000 && pTInGev3 < 0.800000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 0.600000 && pTInGev3 < 0.800000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 0.600000 && pTInGev5 < 0.800000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 0.600000 && pTInGev5 < 0.800000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 0.600000 && pTInGev7 < 0.800000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 0.600000 && pTInGev7 < 0.800000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 0.600000 && pTInGev9 < 0.800000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 0.600000 && pTInGev9 < 0.800000
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 0.600000 && pTInGev1 < 0.800000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 0.600000 && pTInGev1 < 0.800000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 0.600000 && pTInGev3 < 0.800000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 0.600000 && pTInGev3 < 0.800000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 0.600000 && pTInGev5 < 0.800000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 0.600000 && pTInGev5 < 0.800000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 0.600000 && pTInGev7 < 0.800000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 0.600000 && pTInGev7 < 0.800000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 0.600000 && pTInGev9 < 0.800000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 0.600000 && pTInGev9 < 0.800000
+Running pT bin number: 3
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 0.800000 && pTInGev1 < 1.000000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 0.800000 && pTInGev1 < 1.000000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 0.800000 && pTInGev3 < 1.000000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 0.800000 && pTInGev3 < 1.000000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 0.800000 && pTInGev5 < 1.000000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 0.800000 && pTInGev5 < 1.000000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 0.800000 && pTInGev7 < 1.000000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 0.800000 && pTInGev7 < 1.000000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 0.800000 && pTInGev9 < 1.000000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 0.800000 && pTInGev9 < 1.000000
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 0.800000 && pTInGev1 < 1.000000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 0.800000 && pTInGev1 < 1.000000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 0.800000 && pTInGev3 < 1.000000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 0.800000 && pTInGev3 < 1.000000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 0.800000 && pTInGev5 < 1.000000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 0.800000 && pTInGev5 < 1.000000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 0.800000 && pTInGev7 < 1.000000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 0.800000 && pTInGev7 < 1.000000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 0.800000 && pTInGev9 < 1.000000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 0.800000 && pTInGev9 < 1.000000
+Running pT bin number: 4
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 1.000000 && pTInGev1 < 1.400000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 1.000000 && pTInGev1 < 1.400000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 1.000000 && pTInGev3 < 1.400000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 1.000000 && pTInGev3 < 1.400000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 1.000000 && pTInGev5 < 1.400000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 1.000000 && pTInGev5 < 1.400000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 1.000000 && pTInGev7 < 1.400000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 1.000000 && pTInGev7 < 1.400000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 1.000000 && pTInGev9 < 1.400000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 1.000000 && pTInGev9 < 1.400000
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 1.000000 && pTInGev1 < 1.400000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 1.000000 && pTInGev1 < 1.400000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 1.000000 && pTInGev3 < 1.400000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 1.000000 && pTInGev3 < 1.400000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 1.000000 && pTInGev5 < 1.400000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 1.000000 && pTInGev5 < 1.400000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 1.000000 && pTInGev7 < 1.400000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 1.000000 && pTInGev7 < 1.400000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 1.000000 && pTInGev9 < 1.400000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 1.000000 && pTInGev9 < 1.400000
+Running pT bin number: 5
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 1.200000 && pTInGev1 < 1.400000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 1.200000 && pTInGev1 < 1.400000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 1.200000 && pTInGev3 < 1.400000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 1.200000 && pTInGev3 < 1.400000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 1.200000 && pTInGev5 < 1.400000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 1.200000 && pTInGev5 < 1.400000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 1.200000 && pTInGev7 < 1.400000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 1.200000 && pTInGev7 < 1.400000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 1.200000 && pTInGev9 < 1.400000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 1.200000 && pTInGev9 < 1.400000
+tofHit0 > 0 && tofHit1 > 0 && pTInGev1 > 1.200000 && pTInGev1 < 1.400000
+tofHit0 > 0 && tofHit1 < 0 && pTInGev1 > 1.200000 && pTInGev1 < 1.400000
+tofHit2 > 0 && tofHit3 > 0 && pTInGev3 > 1.200000 && pTInGev3 < 1.400000
+tofHit2 > 0 && tofHit3 < 0 && pTInGev3 > 1.200000 && pTInGev3 < 1.400000
+tofHit4 > 0 && tofHit5 > 0 && pTInGev5 > 1.200000 && pTInGev5 < 1.400000
+tofHit4 > 0 && tofHit5 < 0 && pTInGev5 > 1.200000 && pTInGev5 < 1.400000
+tofHit6 > 0 && tofHit7 > 0 && pTInGev7 > 1.200000 && pTInGev7 < 1.400000
+tofHit6 > 0 && tofHit7 < 0 && pTInGev7 > 1.200000 && pTInGev7 < 1.400000
+tofHit8 > 0 && tofHit9 > 0 && pTInGev9 > 1.200000 && pTInGev9 < 1.400000
+tofHit8 > 0 && tofHit9 < 0 && pTInGev9 > 1.200000 && pTInGev9 < 1.400000
+-------------------------------------------------------------------------
+RESULTS FOR INTEGRATION:
+pT bin number 0,contentBcgSub 1: value: 59293, error: 1531.03
+pT bin number 0,contentBcgSub 2: value: 36919, error: 463.011
+pT bin number 1,contentBcgSub 1: value: 23088, error: 831.948
+pT bin number 1,contentBcgSub 2: value: 14499, error: 280.872
+pT bin number 2,contentBcgSub 1: value: 10150, error: 507.886
+pT bin number 2,contentBcgSub 2: value: 6060, error: 172.203
+pT bin number 3,contentBcgSub 1: value: 4443, error: 326.565
+pT bin number 3,contentBcgSub 2: value: 2626, error: 109.06
+pT bin number 4,contentBcgSub 1: value: 2205, error: 272.952
+pT bin number 4,contentBcgSub 2: value: 1552, error: 88.1363
+pT bin number 5,contentBcgSub 1: value: 740, error: 157.696
+pT bin number 5,contentBcgSub 2: value: 581, error: 49.99
+-------------------------------------------------------------------------
+RESULTS FOR FITS:
+pT bin number 0,content 1: value: 1, error: 0
+pT bin number 0,content 2: value: 0, error: 0
+pT bin number 1,content 1: value: 1, error: 0
+pT bin number 1,content 2: value: 0, error: 0
+pT bin number 2,content 1: value: 1, error: 0
+pT bin number 2,content 2: value: 0, error: 0
+pT bin number 3,content 1: value: 1, error: 0
+pT bin number 3,content 2: value: 0, error: 0
+pT bin number 4,content 1: value: 1, error: 0
+pT bin number 4,content 2: value: 0, error: 0
+pT bin number 5,content 1: value: 1, error: 0
+pT bin number 5,content 2: value: 0, error: 0
+-------------------------------------------------------------------------
+Systematic error (C): 1.00777
+Systematic uncertainty: 0.0182661
+Systematic error from true MC: 0.0182661
+Beginning efficiency plot for Vz
+Running Vz bin number: 0
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -100.000000 && vertexZInCm0 < -80.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -100.000000 && vertexZInCm0 < -80.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -100.000000 && vertexZInCm1 < -80.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -100.000000 && vertexZInCm1 < -80.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -100.000000 && vertexZInCm2 < -80.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -100.000000 && vertexZInCm2 < -80.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -100.000000 && vertexZInCm3 < -80.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -100.000000 && vertexZInCm3 < -80.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -100.000000 && vertexZInCm4 < -80.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -100.000000 && vertexZInCm4 < -80.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -100.000000 && vertexZInCm0 < -80.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -100.000000 && vertexZInCm0 < -80.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -100.000000 && vertexZInCm1 < -80.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -100.000000 && vertexZInCm1 < -80.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -100.000000 && vertexZInCm2 < -80.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -100.000000 && vertexZInCm2 < -80.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -100.000000 && vertexZInCm3 < -80.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -100.000000 && vertexZInCm3 < -80.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -100.000000 && vertexZInCm4 < -80.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -100.000000 && vertexZInCm4 < -80.000000
+Running Vz bin number: 1
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -80.000000 && vertexZInCm0 < -60.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -80.000000 && vertexZInCm0 < -60.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -80.000000 && vertexZInCm1 < -60.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -80.000000 && vertexZInCm1 < -60.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -80.000000 && vertexZInCm2 < -60.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -80.000000 && vertexZInCm2 < -60.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -80.000000 && vertexZInCm3 < -60.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -80.000000 && vertexZInCm3 < -60.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -80.000000 && vertexZInCm4 < -60.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -80.000000 && vertexZInCm4 < -60.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -80.000000 && vertexZInCm0 < -60.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -80.000000 && vertexZInCm0 < -60.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -80.000000 && vertexZInCm1 < -60.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -80.000000 && vertexZInCm1 < -60.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -80.000000 && vertexZInCm2 < -60.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -80.000000 && vertexZInCm2 < -60.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -80.000000 && vertexZInCm3 < -60.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -80.000000 && vertexZInCm3 < -60.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -80.000000 && vertexZInCm4 < -60.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -80.000000 && vertexZInCm4 < -60.000000
+Running Vz bin number: 2
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -60.000000 && vertexZInCm0 < -40.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -60.000000 && vertexZInCm0 < -40.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -60.000000 && vertexZInCm1 < -40.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -60.000000 && vertexZInCm1 < -40.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -60.000000 && vertexZInCm2 < -40.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -60.000000 && vertexZInCm2 < -40.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -60.000000 && vertexZInCm3 < -40.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -60.000000 && vertexZInCm3 < -40.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -60.000000 && vertexZInCm4 < -40.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -60.000000 && vertexZInCm4 < -40.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -60.000000 && vertexZInCm0 < -40.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -60.000000 && vertexZInCm0 < -40.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -60.000000 && vertexZInCm1 < -40.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -60.000000 && vertexZInCm1 < -40.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -60.000000 && vertexZInCm2 < -40.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -60.000000 && vertexZInCm2 < -40.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -60.000000 && vertexZInCm3 < -40.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -60.000000 && vertexZInCm3 < -40.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -60.000000 && vertexZInCm4 < -40.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -60.000000 && vertexZInCm4 < -40.000000
+Running Vz bin number: 3
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -40.000000 && vertexZInCm0 < -20.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -40.000000 && vertexZInCm0 < -20.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -40.000000 && vertexZInCm1 < -20.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -40.000000 && vertexZInCm1 < -20.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -40.000000 && vertexZInCm2 < -20.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -40.000000 && vertexZInCm2 < -20.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -40.000000 && vertexZInCm3 < -20.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -40.000000 && vertexZInCm3 < -20.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -40.000000 && vertexZInCm4 < -20.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -40.000000 && vertexZInCm4 < -20.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -40.000000 && vertexZInCm0 < -20.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -40.000000 && vertexZInCm0 < -20.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -40.000000 && vertexZInCm1 < -20.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -40.000000 && vertexZInCm1 < -20.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -40.000000 && vertexZInCm2 < -20.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -40.000000 && vertexZInCm2 < -20.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -40.000000 && vertexZInCm3 < -20.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -40.000000 && vertexZInCm3 < -20.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -40.000000 && vertexZInCm4 < -20.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -40.000000 && vertexZInCm4 < -20.000000
+Running Vz bin number: 4
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -20.000000 && vertexZInCm0 < 0.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -20.000000 && vertexZInCm0 < 0.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -20.000000 && vertexZInCm1 < 0.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -20.000000 && vertexZInCm1 < 0.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -20.000000 && vertexZInCm2 < 0.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -20.000000 && vertexZInCm2 < 0.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -20.000000 && vertexZInCm3 < 0.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -20.000000 && vertexZInCm3 < 0.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -20.000000 && vertexZInCm4 < 0.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -20.000000 && vertexZInCm4 < 0.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > -20.000000 && vertexZInCm0 < 0.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > -20.000000 && vertexZInCm0 < 0.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > -20.000000 && vertexZInCm1 < 0.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > -20.000000 && vertexZInCm1 < 0.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > -20.000000 && vertexZInCm2 < 0.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > -20.000000 && vertexZInCm2 < 0.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > -20.000000 && vertexZInCm3 < 0.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > -20.000000 && vertexZInCm3 < 0.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > -20.000000 && vertexZInCm4 < 0.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > -20.000000 && vertexZInCm4 < 0.000000
+Running Vz bin number: 5
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 0.000000 && vertexZInCm0 < 20.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 0.000000 && vertexZInCm0 < 20.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 0.000000 && vertexZInCm1 < 20.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 0.000000 && vertexZInCm1 < 20.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 0.000000 && vertexZInCm2 < 20.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 0.000000 && vertexZInCm2 < 20.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 0.000000 && vertexZInCm3 < 20.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 0.000000 && vertexZInCm3 < 20.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 0.000000 && vertexZInCm4 < 20.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 0.000000 && vertexZInCm4 < 20.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 0.000000 && vertexZInCm0 < 20.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 0.000000 && vertexZInCm0 < 20.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 0.000000 && vertexZInCm1 < 20.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 0.000000 && vertexZInCm1 < 20.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 0.000000 && vertexZInCm2 < 20.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 0.000000 && vertexZInCm2 < 20.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 0.000000 && vertexZInCm3 < 20.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 0.000000 && vertexZInCm3 < 20.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 0.000000 && vertexZInCm4 < 20.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 0.000000 && vertexZInCm4 < 20.000000
+Running Vz bin number: 6
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 20.000000 && vertexZInCm0 < 40.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 20.000000 && vertexZInCm0 < 40.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 20.000000 && vertexZInCm1 < 40.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 20.000000 && vertexZInCm1 < 40.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 20.000000 && vertexZInCm2 < 40.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 20.000000 && vertexZInCm2 < 40.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 20.000000 && vertexZInCm3 < 40.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 20.000000 && vertexZInCm3 < 40.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 20.000000 && vertexZInCm4 < 40.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 20.000000 && vertexZInCm4 < 40.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 20.000000 && vertexZInCm0 < 40.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 20.000000 && vertexZInCm0 < 40.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 20.000000 && vertexZInCm1 < 40.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 20.000000 && vertexZInCm1 < 40.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 20.000000 && vertexZInCm2 < 40.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 20.000000 && vertexZInCm2 < 40.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 20.000000 && vertexZInCm3 < 40.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 20.000000 && vertexZInCm3 < 40.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 20.000000 && vertexZInCm4 < 40.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 20.000000 && vertexZInCm4 < 40.000000
+Running Vz bin number: 7
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 40.000000 && vertexZInCm0 < 60.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 40.000000 && vertexZInCm0 < 60.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 40.000000 && vertexZInCm1 < 60.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 40.000000 && vertexZInCm1 < 60.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 40.000000 && vertexZInCm2 < 60.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 40.000000 && vertexZInCm2 < 60.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 40.000000 && vertexZInCm3 < 60.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 40.000000 && vertexZInCm3 < 60.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 40.000000 && vertexZInCm4 < 60.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 40.000000 && vertexZInCm4 < 60.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 40.000000 && vertexZInCm0 < 60.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 40.000000 && vertexZInCm0 < 60.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 40.000000 && vertexZInCm1 < 60.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 40.000000 && vertexZInCm1 < 60.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 40.000000 && vertexZInCm2 < 60.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 40.000000 && vertexZInCm2 < 60.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 40.000000 && vertexZInCm3 < 60.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 40.000000 && vertexZInCm3 < 60.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 40.000000 && vertexZInCm4 < 60.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 40.000000 && vertexZInCm4 < 60.000000
+Running Vz bin number: 8
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 60.000000 && vertexZInCm0 < 80.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 60.000000 && vertexZInCm0 < 80.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 60.000000 && vertexZInCm1 < 80.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 60.000000 && vertexZInCm1 < 80.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 60.000000 && vertexZInCm2 < 80.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 60.000000 && vertexZInCm2 < 80.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 60.000000 && vertexZInCm3 < 80.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 60.000000 && vertexZInCm3 < 80.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 60.000000 && vertexZInCm4 < 80.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 60.000000 && vertexZInCm4 < 80.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 60.000000 && vertexZInCm0 < 80.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 60.000000 && vertexZInCm0 < 80.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 60.000000 && vertexZInCm1 < 80.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 60.000000 && vertexZInCm1 < 80.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 60.000000 && vertexZInCm2 < 80.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 60.000000 && vertexZInCm2 < 80.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 60.000000 && vertexZInCm3 < 80.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 60.000000 && vertexZInCm3 < 80.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 60.000000 && vertexZInCm4 < 80.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 60.000000 && vertexZInCm4 < 80.000000
+Running Vz bin number: 9
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 80.000000 && vertexZInCm0 < 100.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 80.000000 && vertexZInCm0 < 100.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 80.000000 && vertexZInCm1 < 100.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 80.000000 && vertexZInCm1 < 100.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 80.000000 && vertexZInCm2 < 100.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 80.000000 && vertexZInCm2 < 100.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 80.000000 && vertexZInCm3 < 100.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 80.000000 && vertexZInCm3 < 100.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 80.000000 && vertexZInCm4 < 100.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 80.000000 && vertexZInCm4 < 100.000000
+tofHit0 > 0 && tofHit1 > 0 && vertexZInCm0 > 80.000000 && vertexZInCm0 < 100.000000
+tofHit0 > 0 && tofHit1 < 0 && vertexZInCm0 > 80.000000 && vertexZInCm0 < 100.000000
+tofHit2 > 0 && tofHit3 > 0 && vertexZInCm1 > 80.000000 && vertexZInCm1 < 100.000000
+tofHit2 > 0 && tofHit3 < 0 && vertexZInCm1 > 80.000000 && vertexZInCm1 < 100.000000
+tofHit4 > 0 && tofHit5 > 0 && vertexZInCm2 > 80.000000 && vertexZInCm2 < 100.000000
+tofHit4 > 0 && tofHit5 < 0 && vertexZInCm2 > 80.000000 && vertexZInCm2 < 100.000000
+tofHit6 > 0 && tofHit7 > 0 && vertexZInCm3 > 80.000000 && vertexZInCm3 < 100.000000
+tofHit6 > 0 && tofHit7 < 0 && vertexZInCm3 > 80.000000 && vertexZInCm3 < 100.000000
+tofHit8 > 0 && tofHit9 > 0 && vertexZInCm4 > 80.000000 && vertexZInCm4 < 100.000000
+tofHit8 > 0 && tofHit9 < 0 && vertexZInCm4 > 80.000000 && vertexZInCm4 < 100.000000
+-------------------------------------------------------------------------
+RESULTS FOR INTEGRATION:
+Vz bin number 0,contentBcgSub 1: value: 3327, error: 304.146
+Vz bin number 0,contentBcgSub 2: value: 1902, error: 100.906
+Vz bin number 1,contentBcgSub 1: value: 5381, error: 424.856
+Vz bin number 1,contentBcgSub 2: value: 2857, error: 135.695
+Vz bin number 2,contentBcgSub 1: value: 8205, error: 560.72
+Vz bin number 2,contentBcgSub 2: value: 5568, error: 176.034
+Vz bin number 3,contentBcgSub 1: value: 14297, error: 698.78
+Vz bin number 3,contentBcgSub 2: value: 8706, error: 217.587
+Vz bin number 4,contentBcgSub 1: value: 17493, error: 821.201
+Vz bin number 4,contentBcgSub 2: value: 11133, error: 251.839
+Vz bin number 5,contentBcgSub 1: value: 19066, error: 821.176
+Vz bin number 5,contentBcgSub 2: value: 11576, error: 254.173
+Vz bin number 6,contentBcgSub 1: value: 15597, error: 699.854
+Vz bin number 6,contentBcgSub 2: value: 9353, error: 220.434
+Vz bin number 7,contentBcgSub 1: value: 8495, error: 560.675
+Vz bin number 7,contentBcgSub 2: value: 5661, error: 178.188
+Vz bin number 8,contentBcgSub 1: value: 5312, error: 424.926
+Vz bin number 8,contentBcgSub 2: value: 3337, error: 138.719
+Vz bin number 9,contentBcgSub 1: value: 2855, error: 306.302
+Vz bin number 9,contentBcgSub 2: value: 2014, error: 103.576
+-------------------------------------------------------------------------
+RESULTS FOR FITS:
+Vz bin number 0,content 1: value: 1, error: 0
+Vz bin number 0,content 2: value: 0, error: 0
+Vz bin number 1,content 1: value: 1, error: 0
+Vz bin number 1,content 2: value: 0, error: 0
+Vz bin number 2,content 1: value: 1, error: 0
+Vz bin number 2,content 2: value: 0, error: 0
+Vz bin number 3,content 1: value: 1, error: 0
+Vz bin number 3,content 2: value: 0, error: 0
+Vz bin number 4,content 1: value: 1, error: 0
+Vz bin number 4,content 2: value: 0, error: 0
+Vz bin number 5,content 1: value: 1, error: 0
+Vz bin number 5,content 2: value: 0, error: 0
+Vz bin number 6,content 1: value: 1, error: 0
+Vz bin number 6,content 2: value: 0, error: 0
+Vz bin number 7,content 1: value: 1, error: 0
+Vz bin number 7,content 2: value: 0, error: 0
+Vz bin number 8,content 1: value: 1, error: 0
+Vz bin number 8,content 2: value: 0, error: 0
+Vz bin number 9,content 1: value: 1, error: 0
+Vz bin number 9,content 2: value: 0, error: 0
+-------------------------------------------------------------------------
+Systematic error (C): 0.975907
+Systematic uncertainty: 0.0176801
+Systematic error from true MC: 0.0176801
+Created canvas for 1D histogram hAnalysisFlow
+Created canvas for 1D histogram TriggerBits
+Created canvas for 1D histogram hEta
+Created canvas for 1D histogram hEtaCut
+Created canvas for 1D histogram hPosZ
+Created canvas for 1D histogram hPosZCut
+Created canvas for 1D histogram hNSigmaPi
+Created canvas for 1D histogram hNSigmaP
+Created canvas for 1D histogram hNSigmaK
+Created canvas for 1D histogram hDEdxSignal
+Created canvas for 1D histogram NumberRPTracks
+Created canvas for 1D histogram NumberGlobalTracks
+Created canvas for 1D histogram hPt
+Created canvas for 1D histogram hDcaZ
+Created canvas for 1D histogram hDcaXY
+Created canvas for 1D histogram hNfitHits
+Created canvas for 1D histogram hNhitsDEdx
+Created canvas for 1D histogram hVtxDiff
+Created canvas for 1D histogram hVtxDiffAfter
+Created canvas for 1D histogram hHasPrimVtx
+Created canvas for 1D histogram hNVertices
+Created canvas for 1D histogram hNPairV0
+Created canvas for 1D histogram hTotQ
+Created canvas for 1D histogram hSameTrackPair
+Created canvas for 1D histogram hBothFlags
+Created canvas for 1D histogram hDecayLength
+Created canvas for 1D histogram hDecayLengthCut
+Created canvas for 1D histogram hPointingAngle
+Created canvas for 1D histogram hPointingAngleCut
+Created canvas for 1D histogram hDcaDaughters
+Created canvas for 1D histogram hDcaDaughtersCut
+Created canvas for 1D histogram hDcaBeamline
+Created canvas for 1D histogram hDcaBeamlineCut
+Created canvas for 1D histogram hNTracksTof
+Created canvas for 1D histogram hNTracksTpc
+Created canvas for 1D histogram hMultipleGoodV0
+Created canvas for 1D histogram hInvMassTof1
+Created canvas for 1D histogram hInvMassTof2
+Created canvas for 1D histogram hV0perEvent
+Created canvas for 2D histogram hEtaPhi
+Created canvas for 2D histogram hEtaPhiCut
+Created canvas for 2D histogram hEtaVtxZ
+Created canvas for 2D histogram hEtaVtxZCut
+Created canvas for 2D histogram hNSigmaPiPcorr
+Created canvas for 2D histogram hNSigmaPiKcorr
+Created canvas for 2D histogram hNSigmaPiecorr
+Created canvas for 2D histogram hNSigmaPPicorr
+Created canvas for 2D histogram hNSigmaPKcorr
+Created canvas for 2D histogram hNSigmaPecorr
+Created canvas for 2D histogram hNSigmaKPicorr
+Created canvas for 2D histogram hNSigmaKPcorr
+Created canvas for 2D histogram hNSigmaKecorr
+Created canvas for 2D histogram hRPcorr
+Created canvas for 2D histogram hRPcorr_fid
+Created canvas for 2D histogram hRPcorrWest
+Created canvas for 2D histogram hRPcorrWest_fid
+Created canvas for 2D histogram hRPcorrEast
+Created canvas for 2D histogram hRPcorrEast_fid
+Created canvas for 2D histogram hDecayLPointingA
+Created canvas for 2D histogram hDecayLPointingACut
+Created canvas for 2D histogram hArmenterosPodolanski
+Created canvas for 2D histogram hInvMassEta
+All histograms successfully saved to canvases...
+The output file is saved: /gpfs01/star/pwg/mvranovsk/Run17_P20ic/TofEffMult_14.12.24/merged/AnalysisOutput.root
+Ending analysis. All plots created. Goodbye...

@@ -182,14 +182,6 @@ Plot.h
 ../../star-upcDst/work/include/RunDef.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
-/star/u/mvranovsk/plots/include/PlotTofEffMult.h
-Util.h
-/star/u/mvranovsk/plots/include/Util.h
-Plot.h
-/star/u/mvranovsk/plots/include/Plot.h
-../../star-upcDst/work/include/RunDef.h
-/star/u/mvranovsk/star-upcDst/work/include/RunDef.h
-
 /star/u/mvranovsk/plots/include/Util.h
 Libraries.h
 /star/u/mvranovsk/plots/include/Libraries.h
@@ -213,10 +205,6 @@ Libraries.h
 /star/u/mvranovsk/plots/src/PlotTofEff.cxx
 ../include/PlotTofEff.h
 /star/u/mvranovsk/plots/include/PlotTofEff.h
-
-/star/u/mvranovsk/plots/src/PlotTofEffMult.cxx
-../include/PlotTofEffMult.h
-/star/u/mvranovsk/plots/include/PlotTofEffMult.h
 
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 vector
