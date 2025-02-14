@@ -40,11 +40,9 @@ vector<TH1D*> histograms;
 
 Plot* mPlot;
 
-TFile *CreateOutputFile(const string& out);
-void Clear();
-bool saveHists();
 bool connectHists(const char* inputPath, const char* outputFilename);
-vector<string> getFilenames(const char* inputPath);
+vector<string> getFilenames(const string& input);
+
 
 
 vector<string> getFilenames(const string& input){
@@ -58,16 +56,16 @@ vector<string> getFilenames(const string& input){
       ifstream instr(input.c_str());
       if (!instr.is_open()){
          cout<< "Couldn't open: "<<input.c_str()<<endl;
-         return false;
+         return {};
       }
       string line;
       while(getline(instr, line)) {
          if(line.empty())
             continue;
-         inputFile = TFile::Open(line.c_str(), "read");
-         if(!inputFile){
+         unique_ptr<TFile> inputFile(TFile::Open(line.c_str(), "read") );
+         if(!inputFile || inputFile->IsZombie()){
             cout << "Couldn't open: " << line.c_str() << endl;
-            return false;
+            return {};
          } 
          filenames.push_back(line);
       }//while
@@ -77,13 +75,12 @@ vector<string> getFilenames(const string& input){
 }
 
 
-
 bool connectHists(const char* inputPath, const char* outputFilename) {
    map<string, unique_ptr<TH1>> mergedTH1Hists;
    map<string, unique_ptr<TH2>> mergedTH2Hists;
 
 
-   std::vector<string> filenames = getFilenames(inputPath.c_str());
+   std::vector<string> filenames = getFilenames(inputPath);
 
    if(filenames.size() == 0 ){
       cout << "Empty vector of filenames" << endl;
@@ -138,24 +135,25 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
     }
 
     // Save merged histograms to new ROOT file
-    std::unique_ptr<TFile> histFile(TFile::Open(outputFilename.c_str(), "RECREATE"));
+    std::unique_ptr<TFile> histFile(TFile::Open(outputFilename, "RECREATE"));
     if (!histFile || histFile->IsZombie()) {
         std::cerr << "Error creating output file: " << outputFilename << std::endl;
-        return;
+        return false;
     }
 
     histFile->cd();
-    for (const auto& [name, hist] : mergedTH1Hists) {
-        hist->Write();
-    }
+   for (const auto& entry : mergedTH1Hists) {
+       TH1* hist = entry.second.get();          // Get the raw pointer from unique_ptr
+       hist->Write();
+   }
+   for (const auto& entry : mergedTH2Hists) {
+       TH2* hist = entry.second.get();          // Get the raw pointer from unique_ptr
+       hist->Write();
+   }
 
-    for (const auto& [name, hist] : mergedTH2Hists) {
-        hist->Write();
-    }
-
-    std::cout << "Merged histograms saved in " << outputFilename << std::endl;
+    cout << "Merged histograms saved in " << outputFilename << endl;
+    return true;
 }
 
 #endif
-
 

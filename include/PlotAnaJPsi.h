@@ -32,9 +32,6 @@ class PlotAnaJPsi : public Plot {
 		void roofit_invMassFit_Misa(int numBins, Double_t minRange, Double_t maxRange);
 
 
-		vector<pair<TH1D*,TString>> hists1D;
-		vector<pair<TH2F*,TString>> hists2D;
-
 };
 
 

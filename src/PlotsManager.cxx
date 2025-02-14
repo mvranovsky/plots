@@ -38,7 +38,6 @@ int main(int argc, char *argv[]){
         mPlot = new PlotAnaJPsi(inputPosition, outputPosition);
     }else{
     	cout << "No plots to run. Leaving..." << endl;
-    	Clear();
     	return 1;
     }
 
@@ -48,8 +47,6 @@ int main(int argc, char *argv[]){
 
 
     cout << "Ending analysis. All plots created. Goodbye..." << endl;
-
-    Clear();
 
 	return 0;
 

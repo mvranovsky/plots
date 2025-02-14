@@ -6,8 +6,8 @@ PlotTofEffMult::PlotTofEffMult(const string mInputList, const char* filePath): P
 void PlotTofEffMult::Make(){
 
 	
-	TH1D* h1 = (TH1D*)inFile->Get("hInvMassTof1");
-	TH1D* h2 = (TH1D*)inFile->Get("hInvMassTof2");
+	TH1D* h1 = (TH1D*)histFile->Get("hInvMassTof1");
+	TH1D* h2 = (TH1D*)histFile->Get("hInvMassTof2");
 
 	if(h1 && h2){
 		outFile->cd();
@@ -57,53 +57,14 @@ void PlotTofEffMult::Make(){
 	efficiency(4,2); //Vz
 	*/
 	// create canvases for all TH1D 
-	hists1D = GetAllTH1D();
-	if(hists1D.size() == 0){
-		cerr << "Couldn't load 1D histograms from file. Leaving..." << endl;
-		return;
-	}
-	for (int i = 0; i < hists1D.size(); ++i){
-		if(!hists1D[i].first){
-			cerr << "Couldn't load histogram " << hists1D[i].second << ". Leaving..." << endl;
-			return;
-		}
-		TH1DGeneral(hists1D[i].second, hists1D[i].first);
-		cout << "Created canvas for 1D histogram " << hists1D[i].second << endl;
-	}
 
-	for (int i = 0; i < histsParFit.size(); ++i){
-		if(!histsParFit[i]){
-			cerr << "Couldn't load histogram from fit parameters. Leaving..." << endl;
-			return;
-		}
-		TH1DGeneral("", histsParFit[i]);
-		cout << "Created canvas for 1D histogram " << histsParFit[i]->GetName() << endl;
-	}
-
-
-	// create canvases for all TH2F
-	hists2D = GetAllTH2F();
-	if(hists2D.size() == 0){
-		cerr << "Couldn't load 2D histograms from file. Leaving..." << endl;
-		return;
-	}
-	for (int i = 0; i < hists2D.size(); ++i){
-		if(!hists2D[i].first){
-			cerr << "Couldn't load histogram " << hists2D[i].second << ". Leaving..." << endl;
-			return;
-		}
-		TH2FGeneral(hists2D[i].second, hists2D[i].first);
-		cout << "Created canvas for 2D histogram " << hists2D[i].second << endl;
-	}
-
-
+	handleHistograms();
 
 	outFile->Close();
-	Clear();
+	histFile->Close();
 	MCAna->Close();
 	cout << "All histograms successfully saved to canvases..." << endl;
 	cout << "The output file is saved: " << outputPosition << endl;
-
 
 }
 
@@ -113,7 +74,17 @@ void PlotTofEffMult::Init(){
 
 	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
+		return;
 	}
+
+	histFile = unique_ptr<TFile>( TFile::Open("histFile.root", "read"));
+
+
+	if(!histFile || histFile->IsZombie()){
+		cerr << "Couldn't open histFile with position: histFile.root" << endl;
+		return;
+	}
+
 
 	//load the tree chain from the input file
 	if(!ConnectInputTree(inputPosition, nameOfTofEffMultTree) || !tree ){

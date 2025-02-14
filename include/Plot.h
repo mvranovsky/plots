@@ -22,34 +22,30 @@ class Plot{
         //TFile* outFile;
    	protected:
    		//can be accessed from within this class or from derived classes
-		
 		bool ConnectInputTree(const string& input, TString nameOfTree, bool alsoBcgTree = false);
+		
+		//helper functions
 		void CreateCanvas(TCanvas **canvas, TString canvasName, int canvasWidth, int canvasHeight);
-		void SetHistStyle(TH1* hist, Int_t color, Int_t markStyle);
-		void SetTH2Style(TH2* hist);
 		void CreateLegend(TLegend **legend,double xl = 0.74, double yl = 0.74, double xr = 0.97, double yr = 0.89);
 		void DrawSTARInternal(double xl = 0.75, double yl = 0.89, double xr = 0.88, double yr = 0.93);
-		void CreateText(TString writtenText, double xl, double yl, double xr, double yr);
 		void SetGPad(bool isLogY = false, double left = 0.14, double right = 0.07, double bottom = 0.11, double top = 0.06 ); // (Float_t left, Float_t right, Float_t bottom, Float_t top)
+		void CreateText(TString writtenText, double xl, double yl, double xr, double yr);
 		void DrawFiducial();
 		void SetLineStyle(TLine* line);
 		void DrawSTARpp510(double xl = 0.2, double yl = 0.85, double xr = 0.4, double yr = 0.85, double textSizeRel = 0.);
 		void DrawSTARpp510JPsi(double xl = 0.2, double yl = 0.85, double xr = 0.4, double yr = 0.85, double textSizeRel = 0.);
-		int fitGaussPol2(TH1D **histToFit, Int_t binWidth, Double_t minRange, Double_t maxRange, Double_t pol0 = 0.01, Double_t pol1 = 0.01, Double_t pol2 = 0.01, Double_t amp = 10000,Double_t mean = 0.497, Double_t sigma = 0.001);
-		vector<pair<TH1D*, TString>> GetAllTH1D();
-		vector<pair<TH2F*, TString>> GetAllTH2F();
-		void TH1DGeneral(TString nameOfHist,TH1D* hist);
-		void TH2FGeneral(TString nameOfHist , TH2F* hist);
-		void Clear();
-
-		//bool defineAnalysis();
 		
-		std::unique_ptr<TFile> inFile, outFile;
-		//Util *mUtil;
-		std::vector<std::pair<TString, bool>> plots;
+		// methods to handle TH1 and TH2 histograms
+		bool handleHistograms();
+		void TH1General(TString nameOfHist,TH1* hist);
+		void SetHistStyle(TH1* hist, Int_t color, Int_t markStyle);
+		void TH2General(TString nameOfHist , TH2* hist);
+		void SetTH2Style(TH2* hist);
+		vector<pair<TH1*, TString>> GetAllTH1();
+		vector<pair<TH2*, TString>> GetAllTH2();
+		
+		std::unique_ptr<TFile> 	outFile, histFile;
 
-		//TTree *mTree[nStudies];
-		//RecTree *mRecTree[nStudies];
 		vector<TH2F*> PIDplots;
 		//vector<TH1D*> histograms;
 		const char* outputPosition;
@@ -78,17 +74,6 @@ class Plot{
 		const Double_t labelSize = 0.05;
 		const Double_t ticksSize = 0.05;
 		const int markerStyle = 20;		
-
-
-/*
-// general stuff
-bool runPlots(TString inputFile, TString embedFile);
-bool Init(TString inputFile, TString embedFile);
-bool ConnectInput( TString inputFile, TFile **file); 
-TFile *CreateOutputFile(const string& out);
-
-*/
-
 
 };
 

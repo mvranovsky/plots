@@ -5,13 +5,28 @@ PlotAnaV0Mult::PlotAnaV0Mult(const string mInputList, const char* filePath): Plo
 
 void PlotAnaV0Mult::Make(){
 
+	handleHistograms();
 
+
+	outFile->Close();
+	histFile->Close();
 }
 
 void PlotAnaV0Mult::Init(){
 	//define the output file which will store all the canvases
 	outFile = unique_ptr<TFile>( TFile::Open(outputPosition, "recreate") );
 
+	if(!outFile || outFile->IsZombie()){
+		cerr << "Could not open outFile. Leaving..." << endl;
+		return;
+	}
+
+    histFile = unique_ptr<TFile>( TFile::Open("histFile.root", "read") );
+
+	if(!histFile || histFile->IsZombie()){
+		cerr << "Could not open histFile. Leaving..." << endl;
+		return;
+	}
 
 	//load the tree chain from the input file
 	ConnectInputTree(inputPosition, nameOfAnaV0MultTree);
@@ -21,82 +36,6 @@ void PlotAnaV0Mult::Init(){
     	return;
     }
 }
-
-void PlotAnaV0Mult::general2f(TString nameOfHist , TString cutDescription){
-	//TCanvas* canvas;
-	CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
-	SetGPad(false,0.12, 0.16,0.11, 0.06 );
-	TH2F* hist = (TH2F*)inFile->Get(nameOfHist);
-	if (!hist){
-		cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-		return;
-	}
-	canvas->Clear();
-	SetTH2Style(hist);
-	hist->Draw("COLZ");
-	DrawSTARpp510();
-	CreateText(cutDescription, 0.1, 0.8,0.4,0.8);
-
-	outFile->cd();
-	canvas->Write();
-	hist->Write();
-}
-
-
-void PlotAnaV0Mult::nSigmaCorr(){
-
-	for (int i = 0; i < 3; ++i){
-		CreateCanvas(&canvas,plots[2+i].first, widthTypical, heightTypical);
-		SetGPad();
-		TH2F* hist = (TH2F*)inFile->Get(plots[2+i].first);
-		if(!hist){
-			cerr << "Could not open histogram "<< plots[2+i].first << " from inFile."<< endl;
-			return;
-		}
-
-		canvas->Clear();
-		SetTH2Style(hist);
-		hist->Draw("COLZ");
-		DrawSTARpp510();
-
-
-    	outFile->cd();
-    	canvas->Write();
-    	hist->Write();
-	}
-}
-
-void PlotAnaV0Mult::histGeneral(TString nameOfHist, TString cutDescription) {
-
-	//TCanvas* canvas;
-	//cout << "Creating " << nameOfHist << " in histGeneral." << endl;
-	CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
-
-	TH1D* hist = (TH1D*)inFile->Get(nameOfHist);
-	if (!hist){
-		cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-		return;
-	}
-	canvas->Clear();
-	SetHistStyle(hist, kBlack, markerStyleTypical);
-
-
-	hist->Draw("same");
-	if(nameOfHist == "hAnalysisFlow"){
-		SetGPad(true, 0.14, 0.05,0.11,0.06);
-		DrawSTARpp510(0.6,0.9,0.9,0.9);
-	}else{
-		SetGPad(false, 0.14, 0.05,0.11,0.06);
-		DrawSTARpp510();
-	}
-
-	//CreateText(cutDescription, 0.1, 0.8,0.4,0.8);
-
-	outFile->cd();
-	canvas->Write();
-	hist->Write();
-}
-
 
 void PlotAnaV0Mult::invMassLambda(Double_t minRange, Double_t maxRange, int nBins){
 
@@ -228,8 +167,6 @@ void PlotAnaV0Mult::fitK0s(Double_t minRange, Double_t maxRange, int nBins) {
 	SetHistStyle(signalFinal, kBlack, markerStyleTypical);
 	signalFinal->SetMarkerStyle(markerStyleTypical);
     signalFinal->Draw();
-	int y = fitGaussPol2(&signalFinal,(maxRange-minRange)/nBins, minRange, maxRange);
-    CreateText("Yield: " + to_string(y), 0.7, 0.85,0.85,0.85);
 
     DrawSTARpp510();
     CreateLegend(&legend,0.15, 0.85, 0.4, 0.7);
@@ -262,8 +199,6 @@ void PlotAnaV0Mult::fitLambda(Double_t minRange, Double_t maxRange, int nBins) {
 	SetHistStyle(signalFinal, kBlack, markerStyleTypical);
 	signalFinal->GetYaxis()->SetTitleOffset(1.5);
     signalFinal->Draw();
-	int y = fitGaussPol2(&signalFinal,(maxRange-minRange)/nBins, minRange, maxRange, 0.01, 0.01, 0.01, 5000, 1.15, 0.01);
-    CreateText("Yield: " + to_string(y), 0.15, 0.8,0.4,0.8);
 
     DrawSTARpp510();
     CreateLegend(&legend,0.15, 0.7, 0.5, 0.6);

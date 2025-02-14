@@ -210,52 +210,6 @@ void Plot::SetLineStyle(TLine* line)
    line->SetLineWidth(4);
 }//SetLineStyle
 
-int Plot::fitGaussPol2(TH1D **histToFit, Int_t binWidth, Double_t minRange, Double_t maxRange, Double_t pol0, Double_t pol1, Double_t pol2, Double_t amp,Double_t mean, Double_t sigma) {
-   //func is function of signal(gauss) and background(pol2)
-   func = new TF1("func","pol2(0) + gaus(3)",minRange,maxRange);
-   func->SetParNames("p_{0}", "p_{1}", "p_{2}", "A","#mu","#sigma");
-   func->SetParameter(0, pol0);
-   func->SetParameter(1, pol1);
-   func->SetParameter(2, pol2);
-   func->SetParameter(3, amp); //amplitude //Lambda
-   func->SetParameter(4, mean); //mean
-   func->SetParameter(5, sigma); //sigma
-   func->SetLineColor(kBlue);
-   func->SetLineWidth(2);
-   (*histToFit)->Fit("func", "", "", minRange, maxRange);   //Lambda   
-   func->Draw("same");
-
-   Double_t upperLim, lowerLim;
-   pol0 = func->GetParameter(0);
-   pol1 = func->GetParameter(1);
-   pol2 = func->GetParameter(2);
-   amp = func->GetParameter(3);
-   mean = func->GetParameter(4);
-   sigma = func->GetParameter(5);
-   upperLim = mean + 3*sigma;
-   lowerLim = mean - 3*sigma;
-
-   bcg = new TF1("bcg","pol2", minRange, maxRange); //Lambda
-   bcg->SetParameter(0,pol0);
-   bcg->SetParameter(1,pol1);
-   bcg->SetParameter(2,pol2);
-   bcg->SetLineColor(kRed);
-   bcg->SetLineWidth(2);
-   bcg->Draw("same");
-
-
-   Double_t i_s, i_b;
-   int y;
-   i_s = func->Integral(lowerLim, upperLim);  //under peak of pol+gaus
-   i_b = bcg->Integral(lowerLim, upperLim);  //under peak of pol from pol+gaus
-   cout << "i_s = " << i_s << "\n";    
-   cout << "i_b = " << i_b << "\n";    
-   y = (i_s - i_b) / binWidth;             //yield calculation must be renormalised to bin size in GeV (here bin is 50 MeV)
-
-   return y;
-}
-
-
 
 bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBcgTree) {
    
@@ -322,37 +276,62 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBc
 
    }//else if
 
-   if(inputFile){
-      inputFile->Close();
-      delete inputFile;
-   }
-
-   inFile = unique_ptr<TFile>(TFile::Open(inputFilePath, "READ"));
-   
    cout << "Input from " << nInputFiles << " files..." << endl;
    return true;
 }
 
 
+bool Plot::handleHistograms(){
 
+   vector<pair<TH1*,TString>> hists1D;
+   vector<pair<TH2*,TString>> hists2D;
 
-vector<pair<TH2F*, TString>> Plot::GetAllTH2F() {
-    // Open the ROOT file
-   if (!inFile || inFile->IsZombie()) {
-      cerr << "Error opening file1 to get TH2F." << endl;
-      return {};
+   hists1D = GetAllTH1();
+   if(hists1D.size() == 0){
+      cerr << "Couldn't load 1D histograms from file. Leaving..." << endl;
+      return false;
+   }
+   for (int i = 0; i < hists1D.size(); ++i){
+      if(!hists1D[i].first){
+         cerr << "Couldn't load histogram " << hists1D[i].second << ". Leaving..." << endl;
+         return false;
+      }
+      TH1General(hists1D[i].second, hists1D[i].first);
+      cout << "Created canvas for 1D histogram " << hists1D[i].second << endl;
    }
 
+   // create canvases for all TH2F
+   hists2D = GetAllTH2();
+   if(hists2D.size() == 0){
+      cerr << "Couldn't load 2D histograms from file. Leaving..." << endl;
+      return false;
+   }
+   for (int i = 0; i < hists2D.size(); ++i){
+      if(!hists2D[i].first){
+         cerr << "Couldn't load histogram " << hists2D[i].second << ". Leaving..." << endl;
+         return false;
+      }
+      TH2General(hists2D[i].second, hists2D[i].first);
+      cout << "Created canvas for 2D histogram " << hists2D[i].second << endl;
+   }
+
+   return true;
+}
+
+
+
+vector<pair<TH2*, TString>> Plot::GetAllTH2() {
+
    // Vector to store pointers to TH1D histograms
-   vector<pair<TH2F*,TString>> histograms;
+   vector<pair<TH2*,TString>> histograms;
 
    // Iterate over all keys in the file
    TKey *key;
-   TIter next(inFile->GetListOfKeys());
+   TIter next(histFile->GetListOfKeys());
    while ((key = (TKey*)next())) {
       // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
       TObject *obj = key->ReadObj();
-      if (TH2F *h1 = dynamic_cast<TH2F*>(obj)) {
+      if (TH2 *h1 = dynamic_cast<TH2*>(obj)) {
          // If the object is a TH2F histogram, add it to the vector
          histograms.push_back(make_pair(h1, h1->GetName()));
       }
@@ -362,25 +341,20 @@ vector<pair<TH2F*, TString>> Plot::GetAllTH2F() {
 }
 
 
-vector<pair<TH1D*, TString>> Plot::GetAllTH1D() {
-    // Open the ROOT file
-   if (!inFile || inFile->IsZombie()) {
-      cerr << "Error opening inFile to get TH1D." << endl;
-      return {};
-   }
+vector<pair<TH1*, TString>> Plot::GetAllTH1() {
 
    // Vector to store pointers to TH1D histograms
-   vector<pair<TH1D*,TString>> histograms;
+   vector<pair<TH1*,TString>> histograms;
 
    // Iterate over all keys in the file
    TKey *key;
-   TIter next(inFile->GetListOfKeys());
+   TIter next(histFile->GetListOfKeys());
    while ((key = (TKey*)next())) {
       //cout << "object being iterated" << endl;
       // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
       TObject *obj = key->ReadObj();
       //cout << "Name of object: " << obj->GetName() << endl;
-      if (TH1D *h1 = dynamic_cast<TH1D*>(obj)) {
+      if (TH1 *h1 = dynamic_cast<TH1*>(obj)) {
          // If the object is a TH2F histogram, add it to the vector
          histograms.push_back(make_pair(h1, h1->GetName()));
       }
@@ -391,7 +365,7 @@ vector<pair<TH1D*, TString>> Plot::GetAllTH1D() {
 
 
 
-void Plot::TH1DGeneral(TString nameOfHist,TH1D* hist) {
+void Plot::TH1General(TString nameOfHist,TH1* hist) {
 
    if (!hist){
       cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
@@ -429,7 +403,7 @@ void Plot::TH1DGeneral(TString nameOfHist,TH1D* hist) {
 }
 
 
-void Plot::TH2FGeneral(TString nameOfHist , TH2F* hist){
+void Plot::TH2General(TString nameOfHist , TH2* hist){
    CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
    SetGPad(false,0.12, 0.16,0.11, 0.06 );
    if (!hist){
@@ -446,12 +420,3 @@ void Plot::TH2FGeneral(TString nameOfHist , TH2F* hist){
    //hist->Write();
 }
 
-void Plot::Clear(){
-   if(inFile){
-      inFile->Close();
-   }
-
-   if(outFile){
-      outFile->Close();
-   }
-}
