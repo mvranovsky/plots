@@ -13,7 +13,7 @@ using namespace UTIL;
 class PlotAnaV0Mult : public Plot {
 	public:
 		//accessible from outside the class
-		PlotAnaV0Mult(TFile *mOutFile, const string mInputList, const char* filePath);
+		PlotAnaV0Mult( const string mInputList, const char* filePath);
       	~PlotAnaV0Mult(){};
       
       	//overrides the original Make() from class Plot

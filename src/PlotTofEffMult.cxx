@@ -1,7 +1,7 @@
 #include "../include/PlotTofEffMult.h"
 
 
-PlotTofEffMult::PlotTofEffMult(TFile *mOutFile, const string mInputList, const char* filePath): Plot(mOutFile, mInputList, filePath){}
+PlotTofEffMult::PlotTofEffMult(const string mInputList, const char* filePath): Plot( mInputList, filePath){}
 
 void PlotTofEffMult::Make(){
 
@@ -35,8 +35,8 @@ void PlotTofEffMult::Make(){
 	efficiency(2,0); //phi
 	efficiency(3,0); //pT
 	efficiency(4,0); //Vz
-
 	/*
+
 	efficiency(5,0); //Dca daughters
 	efficiency(6,0); //Dca Beamline
 	efficiency(7,0); //pointing angle
@@ -109,9 +109,9 @@ void PlotTofEffMult::Make(){
 
 void PlotTofEffMult::Init(){
 	//define the output file which will store all the canvases
-	outFile = new TFile(outputPosition, "recreate");
+	outFile = unique_ptr<TFile>(TFile::Open(outputPosition, "recreate"));
 
-	if(!outFile){
+	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
 	}
 
@@ -229,7 +229,7 @@ double PlotTofEffMult::GoodnessOfFit(RooPlot*& frame, RooAddPdf& model, RooDataH
 TString PlotTofEffMult::convertToString(double val) {
 
     ostringstream streamA;
-    streamA << fixed << setprecision(1) << val;
+    streamA << fixed << setprecision(3) << val;
     TString formattedA = streamA.str();
 
     return formattedA;
@@ -999,20 +999,17 @@ double PlotTofEffMult::CalculateSystematicError(int switcher,TGraphAsymmErrors* 
 
     constantFit->Draw("same");
 
-    TLegend *l = new TLegend(0.68, 0.85, 0.9, 0.77);
-    CreateLegend(&l,0.68, 0.87, 0.9, 0.73);
+    TLegend *l;
+    CreateLegend(&l,0.55, 0.9, 0.9, 0.8);
     l->AddEntry(gRatio, "data/trueMC", "lep");
     l->AddEntry(constantFit, "constant fit: " + convertToString(systematicError ) + "+/-" + convertToString( systematicErrorUncertainty ),"ple");
-    l->SetTextSize(0.05);
+    l->SetTextSize(0.04);
     l->Draw("same");
 
     outFile->cd();
 
     c1->Write(TString::Format("hSysErrorFit%d", switcher)); // Save the canvas as an image (optional)
-
-    // Clean up
-    delete gRatio;
-
+    cout << "Just saved canvas with sys error as " << TString::Format("hSysErrorFit%d", switcher) << endl;
     return systematicErrorUncertainty;
 }
 

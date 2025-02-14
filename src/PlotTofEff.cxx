@@ -1,7 +1,7 @@
 #include "../include/PlotTofEff.h"
 
 
-PlotTofEff::PlotTofEff(TFile *mOutFile, const string mInputList, const char* filePath): Plot(mOutFile, mInputList, filePath){}
+PlotTofEff::PlotTofEff(const string mInputList, const char* filePath): Plot(mInputList, filePath){}
 
 void PlotTofEff::Make(){
 
@@ -113,9 +113,9 @@ void PlotTofEff::Make(){
 
 void PlotTofEff::Init(){
 	//define the output file which will store all the canvases
-	outFile = new TFile(outputPosition, "recreate");
+	outFile = unique_ptr<TFile>( TFile::Open(outputPosition, "recreate") );
 
-	if(!outFile){
+	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
 	}
 

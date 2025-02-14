@@ -12,11 +12,9 @@ using namespace std;
 
 class Plot{
 	public: 
-		Plot(TFile* mOutFile, const string mInputList, const char* filePath);
+		// can be accessed from outside the class
+		Plot(const string mInputList, const char* filePath);
 		virtual ~Plot();
-
-
-
 
 		virtual void Make(){cout<<"Hi my name is make"<<endl;};
         virtual void Init(){cout<<"Hi I should not be there but I am"<<endl;};
@@ -25,7 +23,7 @@ class Plot{
    	protected:
    		//can be accessed from within this class or from derived classes
 		
-		bool ConnectInputTree(const string& input, TString nameOfTree);
+		bool ConnectInputTree(const string& input, TString nameOfTree, bool alsoBcgTree = false);
 		void CreateCanvas(TCanvas **canvas, TString canvasName, int canvasWidth, int canvasHeight);
 		void SetHistStyle(TH1* hist, Int_t color, Int_t markStyle);
 		void SetTH2Style(TH2* hist);
@@ -36,6 +34,7 @@ class Plot{
 		void DrawFiducial();
 		void SetLineStyle(TLine* line);
 		void DrawSTARpp510(double xl = 0.2, double yl = 0.85, double xr = 0.4, double yr = 0.85, double textSizeRel = 0.);
+		void DrawSTARpp510JPsi(double xl = 0.2, double yl = 0.85, double xr = 0.4, double yr = 0.85, double textSizeRel = 0.);
 		int fitGaussPol2(TH1D **histToFit, Int_t binWidth, Double_t minRange, Double_t maxRange, Double_t pol0 = 0.01, Double_t pol1 = 0.01, Double_t pol2 = 0.01, Double_t amp = 10000,Double_t mean = 0.497, Double_t sigma = 0.001);
 		vector<pair<TH1D*, TString>> GetAllTH1D();
 		vector<pair<TH2F*, TString>> GetAllTH2F();
@@ -45,7 +44,7 @@ class Plot{
 
 		//bool defineAnalysis();
 		
-		TFile *outFile, *inFile;
+		std::unique_ptr<TFile> inFile, outFile;
 		//Util *mUtil;
 		std::vector<std::pair<TString, bool>> plots;
 
@@ -60,19 +59,17 @@ class Plot{
 		TCanvas *canvas;
 		TLegend *legend, *legend2;
 		TPaveText *text;
-		TTree *tree;
-		TChain *chain;
+		TTree *tree, *bcgTree;
+		TChain *chain, *bcgChain;
 		TF1 *func, *bcg;
 		TH1D *histToFit;
-
-		//Util *mUtil;
-
 
     	//some preset constants for histograms
 		const int widthTypical = 1000;
 		const int heightTypical = 800;
 		const int markerStyleTypical = 20;
 		TString ppSTAR = "p+p #sqrt{s} = 510 GeV";
+		TString ppSTARJPsi = "p+p #rightarrow p #oplus J/#Psi #oplus p, #sqrt{s} = 510 GeV";
 
 		const TString yAxisTitle = "counts"; //entries/counts
 		const int textAlign = 12;

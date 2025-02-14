@@ -244,6 +244,7 @@ eta bin number 8,content 2: value: 0, error: 0
 -------------------------------------------------------------------------
 Systematic error (C): 0.98361
 Systematic uncertainty: 0.0161813
+Just saved canvas with sys error as hSysErrorFit1
 Systematic error from true MC: 0.0161813
 Beginning efficiency plot for phi
 Running phi bin number: 0
@@ -403,6 +404,7 @@ phi bin number 5,content 2: value: 0, error: 0
 -------------------------------------------------------------------------
 Systematic error (C): 0.988098
 Systematic uncertainty: 0.0179424
+Just saved canvas with sys error as hSysErrorFit2
 Systematic error from true MC: 0.0179424
 Beginning efficiency plot for pT
 Running pT bin number: 0
@@ -562,6 +564,7 @@ pT bin number 5,content 2: value: 0, error: 0
 -------------------------------------------------------------------------
 Systematic error (C): 1.00777
 Systematic uncertainty: 0.0182661
+Just saved canvas with sys error as hSysErrorFit3
 Systematic error from true MC: 0.0182661
 Beginning efficiency plot for Vz
 Running Vz bin number: 0
@@ -821,6 +824,7 @@ Vz bin number 9,content 2: value: 0, error: 0
 -------------------------------------------------------------------------
 Systematic error (C): 0.975907
 Systematic uncertainty: 0.0176801
+Just saved canvas with sys error as hSysErrorFit4
 Systematic error from true MC: 0.0176801
 Created canvas for 1D histogram hAnalysisFlow
 Created canvas for 1D histogram TriggerBits

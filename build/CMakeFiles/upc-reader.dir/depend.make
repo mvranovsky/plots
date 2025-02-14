@@ -5,6 +5,13 @@ CMakeFiles/upc-reader.dir/src/Plot.cxx.o: ../include/Libraries.h
 CMakeFiles/upc-reader.dir/src/Plot.cxx.o: ../include/Plot.h
 CMakeFiles/upc-reader.dir/src/Plot.cxx.o: ../src/Plot.cxx
 
+CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o: ../include/Libraries.h
+CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o: ../include/Plot.h
+CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o: ../include/PlotAnaJPsi.h
+CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o: ../include/Util.h
+CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o: ../src/PlotAnaJPsi.cxx
+CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+
 CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o: ../include/Libraries.h
 CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o: ../include/Plot.h
 CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o: ../include/PlotAnaV0.h
@@ -19,13 +26,6 @@ CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: ../include/Util.h
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: ../src/PlotAnaV0Mult.cxx
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
-CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o: ../include/Libraries.h
-CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o: ../include/Plot.h
-CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o: ../include/PlotGeneral.h
-CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o: ../include/Util.h
-CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o: ../src/PlotGeneral.cxx
-CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
-
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../include/Libraries.h
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../include/Plot.h
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../include/PlotTofEff.h
@@ -33,4 +33,10 @@ CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../include/Util.h
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../src/PlotTofEff.cxx
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
+CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../include/Libraries.h
+CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../include/Plot.h
+CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../include/PlotTofEffMult.h
+CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../include/Util.h
+CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../src/PlotTofEffMult.cxx
+CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 

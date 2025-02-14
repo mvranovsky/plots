@@ -13,7 +13,7 @@ using namespace UTIL;
 class PlotTofEff : public Plot {
 	public:
 		//accessible from outside the class
-		PlotTofEff(TFile *mOutFile, const string mInputList, const char* filePath);
+		PlotTofEff(const string mInputList, const char* filePath);
       	~PlotTofEff(){};
       
       	//overrides the original Make() from class Plot

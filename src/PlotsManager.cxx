@@ -11,19 +11,10 @@ int main(int argc, char *argv[]){
 	}
 	const char* inputPosition = argv[1];
 	const char* outputPosition = argv[2];
+    const char* histogramFilePath = "histFile.root";
 
 
-   	//create and open output file
-   	mOutFile = CreateOutputFile("AnalysisOutput.root"); 
-   	if(!mOutFile) {
-      	cout << "Cannot open output file." << endl; 
-      	return 1;
-   	}
-   	cout << "Output file created..." << endl;
-
-
-
-    if (!connectHists(argc, argv)){
+    if (!connectHists(inputPosition, histogramFilePath)){
     	cout << "Couldn't connect all histograms." << endl;
     	return 1;
     }
@@ -32,31 +23,35 @@ int main(int argc, char *argv[]){
 
     if( strstr(inputPosition, "AnaV0Mult") ){
     	cout << "Creating plots from AnaV0Mult..." << endl;
-    	mPlot = new PlotAnaV0Mult(mOutFile, inputPosition, outputPosition);
+    	mPlot = new PlotAnaV0Mult(inputPosition, outputPosition);
     }else if( strstr(inputPosition, "AnaV0" ) ){
     	cout << "Creating plots from AnaV0..." << endl;
-    	mPlot = new PlotAnaV0(mOutFile, inputPosition, outputPosition);
+    	mPlot = new PlotAnaV0(inputPosition, outputPosition);
     } else if( strstr(inputPosition, "TofEffMult") ){
         cout << "Creating plots from TofEffMult..." << endl;
-        mPlot = new PlotTofEffMult(mOutFile, inputPosition, outputPosition);
+        mPlot = new PlotTofEffMult(inputPosition, outputPosition);
     } else if( strstr(inputPosition, "TofEff") ){
     	cout << "Creating plots from TofEff..." << endl;
-    	mPlot = new PlotTofEff(mOutFile, inputPosition, outputPosition);
+    	mPlot = new PlotTofEff(inputPosition, outputPosition);
+    } else if( strstr(inputPosition, "AnaJPsi") || strstr(inputPosition, "AnaJPSI") ){
+        cout << "Creating plots from AnaJPsi..." << endl;
+        mPlot = new PlotAnaJPsi(inputPosition, outputPosition);
     }else{
     	cout << "No plots to run. Leaving..." << endl;
     	Clear();
     	return 1;
     }
 
-    mPlot->Init();
-    mPlot->Make();
+    //mPlot->Init();
+    //mPlot->Make();
 
 
-    Clear();
 
     cout << "Ending analysis. All plots created. Goodbye..." << endl;
 
+    Clear();
 
 	return 0;
+
 }
 

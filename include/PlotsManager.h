@@ -3,10 +3,11 @@
 
 
 #include "PlotAnaV0.h"
-#include "PlotGeneral.h"
+//#include "PlotGeneral.h"
 #include "PlotAnaV0Mult.h"
 #include "PlotTofEff.h"
 #include "PlotTofEffMult.h"
+#include "PlotAnaJPsi.h"
 #include <TFile.h>
 #include <TKey.h>
 #include <TClass.h>
@@ -16,7 +17,7 @@ using namespace std;
 //using namespace UTIL;
 
 
-TFile *mOutFile, *file1, *file2;
+TFile *file1, *file2;
 const char* nameOfTree;
 std::vector<std::pair<TString, bool>> plots;
 
@@ -42,210 +43,118 @@ Plot* mPlot;
 TFile *CreateOutputFile(const string& out);
 void Clear();
 bool saveHists();
-bool connectHists(int argc, char *argv[]);
-vector<pair<TH2F*, TString>> GetAllTH2FHistograms(const string& fileName);
-vector<pair<TH1D*, TString>> GetAllTH1DHistograms(const string& fileName);
+bool connectHists(const char* inputPath, const char* outputFilename);
+vector<string> getFilenames(const char* inputPath);
 
 
-bool connectHists(int argc, char *argv[]) {
+vector<string> getFilenames(const string& input){
 
-   const string& input = argv[1];
-   TFile *inFile;
+   vector<string> filenames;
+   //cout << "Input file: " << input.c_str() << endl;
    if(input.find(".root") != string::npos){
-      cout << "Input from only one root file." << endl;
-
-      hists1D = GetAllTH1DHistograms(input);
-      hists2D = GetAllTH2FHistograms(input);
-
-      if(hists1D.size() == 0 || hists2D.size() == 0){
-         cerr << "Did not load histograms, couldn't find any." << endl;
-         return false;
-      }
-   } else if(input.find(".list") != string::npos){
+      filenames.push_back(input);
+   } 
+   else if(input.find(".list") != string::npos ){
       ifstream instr(input.c_str());
       if (!instr.is_open()){
-         cout<< "Couldn't open: "<< input.c_str() <<endl;
+         cout<< "Couldn't open: "<<input.c_str()<<endl;
          return false;
       }
-
-      int iFile = 0;
       string line;
       while(getline(instr, line)) {
-         if (line.empty())
+         if(line.empty())
             continue;
-
-         //define histograms based on the first file
-         if(iFile == 0){
-            hists1D = GetAllTH1DHistograms(line);
-            hists2D = GetAllTH2FHistograms(line);
-            ++iFile;
-            continue;
-         }
-
-         vector<pair<TH1D*, TString>> hists1D_current = GetAllTH1DHistograms(line);
-         if(hists1D.size() != hists1D_current.size()){
-            cerr << "Size of hists1D is not equal to hists1D_current for file: " << line << endl;
+         inputFile = TFile::Open(line.c_str(), "read");
+         if(!inputFile){
+            cout << "Couldn't open: " << line.c_str() << endl;
             return false;
-         }
-
-         for (int i = 0; i < hists1D.size(); ++i){
-            for (int j = 0; j < hists1D_current.size(); ++j){  
-               if(hists1D_current[j].second == hists1D[i].second)
-                  hists1D[i].first->Add(hists1D_current[j].first);
-            }//current1D loop
-         }//hists1D loop
-
-         vector<pair<TH2F*, TString>> hists2D_current = GetAllTH2FHistograms(line);
-         if(hists2D.size() != hists2D_current.size()){
-            cerr << "Size of hists2D is not equal to hists2D_current for file: " << line << endl;
-            return false;
-         }
-         for (int i = 0; i < hists2D.size(); ++i){
-            for (int j = 0; j < hists2D_current.size(); ++j){  
-               if(hists2D_current[j].second == hists2D[i].second)
-                  hists2D[i].first->Add(hists2D_current[j].first);
-            }//current2D loop
-         }//hists2D loop
-
-
+         } 
+         filenames.push_back(line);
       }//while
-   }
-   else{
-      cerr << "Didn't find .list or .root in input file. Returning..." << endl;
+   }//else if
+
+   return filenames;
+}
+
+
+
+bool connectHists(const char* inputPath, const char* outputFilename) {
+   map<string, unique_ptr<TH1>> mergedTH1Hists;
+   map<string, unique_ptr<TH2>> mergedTH2Hists;
+
+
+   std::vector<string> filenames = getFilenames(inputPath.c_str());
+
+   if(filenames.size() == 0 ){
+      cout << "Empty vector of filenames" << endl;
       return false;
    }
-   
-   if(saveHists()){
-      return true;
-   } else {
-      return false;
-   }
-}
 
-
-
-vector<pair<TH2F*, TString>> GetAllTH2FHistograms(const string& fileName) {
-    // Open the ROOT file
-   TString inputFileName = fileName;
-
-   file2 = TFile::Open(inputFileName);
-   if (!file2 || file2->IsZombie()) {
-      std::cerr << "Error opening file: " << fileName << std::endl;
-      return {};
-   }
-
-   // Vector to store pointers to TH1D histograms
-   vector<pair<TH2F*,TString>> histograms;
-
-   // Iterate over all keys in the file
-   TKey *key;
-   TIter next(file2->GetListOfKeys());
-   while ((key = (TKey*)next())) {
-      // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
-      TObject *obj = key->ReadObj();
-      if (TH2F *h1 = dynamic_cast<TH2F*>(obj)) {
-         // If the object is a TH2F histogram, add it to the vector
-         histograms.push_back(make_pair(h1, h1->GetName()));
-      } else {
-         // If not a TH1D, delete the object to free memory
-         delete obj;
+   for (const auto& filename : filenames) {
+      std::unique_ptr<TFile> file(TFile::Open(filename.c_str(), "READ"));
+      if (!file || file->IsZombie()) {
+         std::cerr << "Error opening file: " << filename << std::endl;
+         continue;
       }
-   }
+      TIter nextKey(file->GetListOfKeys());
+      TKey* key;
+      while ((key = (TKey*)nextKey())) {
+         // Get object class type
+         TClass* cls = TClass::GetClass(key->GetClassName());
+         if (!cls) continue;
+            // Check if it is a histogram (TH1 base class)
+            if (cls->InheritsFrom("TH1")) {
+                TH1* hist = static_cast<TH1*>(key->ReadObj());
+                string histName = hist->GetName();
 
-   return histograms;
+                // Merge histograms with the same name
+                if (mergedTH1Hists.find(histName) == mergedTH1Hists.end()) {
+                    // First instance, clone the histogram
+                    mergedTH1Hists[histName] = std::unique_ptr<TH1>(static_cast<TH1*>(hist->Clone()));
+                    mergedTH1Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
+                } else {
+                    // Add to existing histogram
+                    mergedTH1Hists[histName]->Add(hist);
+                }
+            }
+            // Check if it is a TH2 class
+            if (cls->InheritsFrom("TH2")) {
+                TH2* hist = static_cast<TH2*>(key->ReadObj());
+                string histName = hist->GetName();
+
+                // Merge histograms with the same name
+                if (mergedTH2Hists.find(histName) == mergedTH2Hists.end()) {
+                    // First instance, clone the histogram
+                    mergedTH2Hists[histName] = unique_ptr<TH2>(static_cast<TH2*>(hist->Clone()));
+                    mergedTH2Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
+                } else {
+                    // Add to existing histogram
+                    mergedTH2Hists[histName]->Add(hist);
+                }
+            }
+
+            // possible to add other objects to merge and save to histfile
+        }
+    }
+
+    // Save merged histograms to new ROOT file
+    std::unique_ptr<TFile> histFile(TFile::Open(outputFilename.c_str(), "RECREATE"));
+    if (!histFile || histFile->IsZombie()) {
+        std::cerr << "Error creating output file: " << outputFilename << std::endl;
+        return;
+    }
+
+    histFile->cd();
+    for (const auto& [name, hist] : mergedTH1Hists) {
+        hist->Write();
+    }
+
+    for (const auto& [name, hist] : mergedTH2Hists) {
+        hist->Write();
+    }
+
+    std::cout << "Merged histograms saved in " << outputFilename << std::endl;
 }
-
-
-vector<pair<TH1D*, TString>> GetAllTH1DHistograms(const string& fileName) {
-    // Open the ROOT file
-   TString inputFileName = fileName;
-   file1 = TFile::Open(inputFileName);
-   if (!file1 || file1->IsZombie()) {
-      std::cerr << "Error opening file: " << fileName << std::endl;
-      return {};
-   }
-
-   // Vector to store pointers to TH1D histograms
-   vector<pair<TH1D*,TString>> histograms;
-
-   // Iterate over all keys in the file
-   TKey *key;
-   TIter next(file1->GetListOfKeys());
-   while ((key = (TKey*)next())) {
-      // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
-      TObject *obj = key->ReadObj();
-      if (TH1D *h1 = dynamic_cast<TH1D*>(obj)) {
-         // If the object is a TH2F histogram, add it to the vector
-         histograms.push_back(make_pair(h1, h1->GetName()));
-      } else {
-         // If not a TH1D, delete the object to free memory
-         delete obj;
-      }
-
-   }
-
-   return histograms;
-}
-
-bool saveHists() {
-
-   if (!mOutFile || mOutFile->IsZombie()) {
-    std::cerr << "Error: Output file is not open or is corrupted." << std::endl;
-    return false; // or handle the error appropriately
-   } else{
-      cout << "outfile connected successfully." << endl;
-   }
-
-   mOutFile->cd();
-
-   
-   for (int i = 0; i < hists1D.size(); ++i){
-      //cout << "histogram with name " << hists1D[i].first->GetName() << endl;
-
-      if(hists1D[i].first){
-         hists1D[i].first->Write();
-      }else{
-         return false;
-      }
-   }
-
-   for (int i = 0; i < hists2D.size(); ++i){
-      hists2D[i].first->Write();
-   }
-
-   
-   return true;
-}
-
-
-//_____________________________________________________________________________
-TFile *CreateOutputFile(const string& out) {
-
-   TFile *outputFile = TFile::Open(out.c_str(), "RECREATE");
-   if(!outputFile) 
-      return 0x0;
-
-   return outputFile;
-}//CreateOutputFile
-
-
-void Clear() {
-   if(mOutFile){
-      mOutFile->Close();
-      delete mOutFile;
-   }
-
-   if(file1){
-      file1->Close();
-      delete file1;
-   }
-   if(file2){
-      file2->Close();
-      delete file2;
-   }
-}
-
-
 
 #endif
 

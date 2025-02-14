@@ -1,12 +1,8 @@
 #include "../include/Plot.h"
 
-Plot::Plot(TFile *mOutFile, const string mInputList, const char* filePath){
-   inFile = mOutFile;
+Plot::Plot(const string mInputList, const char* filePath){
    outputPosition = filePath;
    inputPosition = mInputList;
-   //nameOfTree = treeName;
-   //plots = plotsFromManager;
-   //mUtil = new Util();
 }
 Plot::~Plot(){
    //if(mUtil) delete mUtil;
@@ -112,6 +108,18 @@ void Plot::DrawSTARpp510(double xl, double yl, double xr, double yr, double text
    textpp510 -> SetFillColor(0);
    textpp510 -> SetTextFont(62);
    textpp510->AddText(ppSTAR);
+   textpp510 -> Draw("same");
+}
+
+void Plot::DrawSTARpp510JPsi(double xl, double yl, double xr, double yr, double textSizeRel){
+   
+   TPaveText *textpp510;
+   textpp510 = new TPaveText(xl, yl, xr, yr,"brNDC");
+   textpp510 -> SetTextSize(textSize + textSizeRel);
+   textpp510 -> SetTextAlign(11);
+   textpp510 -> SetFillColor(0);
+   textpp510 -> SetTextFont(62);
+   textpp510->AddText(ppSTARJPsi);
    textpp510 -> Draw("same");
 }
 
@@ -249,24 +257,31 @@ int Plot::fitGaussPol2(TH1D **histToFit, Int_t binWidth, Double_t minRange, Doub
 
 
 
-bool Plot::ConnectInputTree(const string& input, TString nameOfTree) {
+bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBcgTree) {
    
    int nInputFiles;
    //cout << "Input from: " << input.c_str() << endl;
 
    TFile *inputFile;
    chain = new TChain(nameOfTree);
+   TString inputFilePath;
+   if(alsoBcgTree){
+      bcgChain = new TChain(nameOfTree + TString("_Bcg"));
+   }
 
    //cout << "Input file: " << input.c_str() << endl;
    if(input.find(".root") != string::npos){
          cout << "Input from root file: "<< input << endl;
       inputFile = TFile::Open(input.c_str(), "read");
+      inputFilePath = input;
       if(!inputFile){
          cout<< "Couldn't open input root file..."<<endl;
          return false;
       } 
       chain->AddFile(input.c_str());
       nInputFiles = 1;
+      if(alsoBcgTree)
+         bcgChain->AddFile(input.c_str());
    } 
    else if(input.find(".list") != string::npos ){
       cout << "Input from root list: " << input.c_str() << endl;
@@ -282,6 +297,7 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree) {
          if(line.empty())
             continue;
          inputFile = TFile::Open(line.c_str(), "read");
+         inputFilePath = line;
          if(!inputFile){
             cout << "Couldn't open: " << line.c_str() << endl;
             return false;
@@ -289,21 +305,29 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree) {
          currentTree = dynamic_cast<TTree*>( inputFile->Get(nameOfTree) );
          if(currentTree){
             chain->AddFile(line.c_str());
+            if(alsoBcgTree)
+               bcgChain->AddFile(line.c_str());
          } else {
             cout << "Name of tree: " << nameOfTree << endl;
             cout << "Couldn't open .root file with name: " << line.c_str() << endl;
          }  
          lineId++;
          nInputFiles++;
-
+         //all histograms should be added together from the input files, saved to .root file, and then the .root file should be opened with pointer inFile. So far i am pointing to the last inputFile, because I use only one. Fuck off i will finish this one day ;)
       }//while
 
       instr.close();
       tree = dynamic_cast<TTree*>( chain );
+      bcgTree = dynamic_cast<TTree*>( bcgChain );
+
    }//else if
 
-   inputFile->Close();
-   //might take a lot of memory
+   if(inputFile){
+      inputFile->Close();
+      delete inputFile;
+   }
+
+   inFile = unique_ptr<TFile>(TFile::Open(inputFilePath, "READ"));
    
    cout << "Input from " << nInputFiles << " files..." << endl;
    return true;
@@ -352,8 +376,10 @@ vector<pair<TH1D*, TString>> Plot::GetAllTH1D() {
    TKey *key;
    TIter next(inFile->GetListOfKeys());
    while ((key = (TKey*)next())) {
+      //cout << "object being iterated" << endl;
       // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
       TObject *obj = key->ReadObj();
+      //cout << "Name of object: " << obj->GetName() << endl;
       if (TH1D *h1 = dynamic_cast<TH1D*>(obj)) {
          // If the object is a TH2F histogram, add it to the vector
          histograms.push_back(make_pair(h1, h1->GetName()));
@@ -388,7 +414,7 @@ void Plot::TH1DGeneral(TString nameOfHist,TH1D* hist) {
       canvas->SetLogy();
       SetGPad(false, 0.14, 0.05,0.11,0.06);
       DrawSTARpp510(0.6,0.85,0.9,0.85, 0.02);
-   }else if(strcmp(hist->GetName(), "hNTpcTracks") == 0 || strcmp(hist->GetName(), "hNTofTracks") == 0 || strcmp(hist->GetName(), "hPointingAngle") == 0){
+   }else if(strcmp(hist->GetName(), "hNTpcTracks") == 0 || strcmp(hist->GetName(), "hNTofTracks") == 0 || strcmp(hist->GetName(), "hPointingAngle") == 0 || strcmp(hist->GetName(), "hTrackQualityFlow") == 0 ){
       canvas->SetLogy();
    }else{
       SetGPad(false, 0.14, 0.05,0.11,0.06);

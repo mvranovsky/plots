@@ -150,6 +150,14 @@ RooArgList.h
 Libraries.h
 /star/u/mvranovsk/plots/include/Libraries.h
 
+/star/u/mvranovsk/plots/include/PlotAnaJPsi.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+../../star-upcDst/work/include/RunDef.h
+/star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+
 /star/u/mvranovsk/plots/include/PlotAnaV0.h
 Util.h
 /star/u/mvranovsk/plots/include/Util.h
@@ -166,7 +174,7 @@ Plot.h
 ../../star-upcDst/work/include/RunDef.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
-/star/u/mvranovsk/plots/include/PlotGeneral.h
+/star/u/mvranovsk/plots/include/PlotTofEff.h
 Util.h
 /star/u/mvranovsk/plots/include/Util.h
 Plot.h
@@ -174,7 +182,7 @@ Plot.h
 ../../star-upcDst/work/include/RunDef.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
-/star/u/mvranovsk/plots/include/PlotTofEff.h
+/star/u/mvranovsk/plots/include/PlotTofEffMult.h
 Util.h
 /star/u/mvranovsk/plots/include/Util.h
 Plot.h
@@ -190,6 +198,10 @@ Libraries.h
 ../include/Plot.h
 /star/u/mvranovsk/plots/include/Plot.h
 
+/star/u/mvranovsk/plots/src/PlotAnaJPsi.cxx
+../include/PlotAnaJPsi.h
+/star/u/mvranovsk/plots/include/PlotAnaJPsi.h
+
 /star/u/mvranovsk/plots/src/PlotAnaV0.cxx
 ../include/PlotAnaV0.h
 /star/u/mvranovsk/plots/include/PlotAnaV0.h
@@ -198,13 +210,13 @@ Libraries.h
 ../include/PlotAnaV0Mult.h
 /star/u/mvranovsk/plots/include/PlotAnaV0Mult.h
 
-/star/u/mvranovsk/plots/src/PlotGeneral.cxx
-../include/PlotGeneral.h
-/star/u/mvranovsk/plots/include/PlotGeneral.h
-
 /star/u/mvranovsk/plots/src/PlotTofEff.cxx
 ../include/PlotTofEff.h
 /star/u/mvranovsk/plots/include/PlotTofEff.h
+
+/star/u/mvranovsk/plots/src/PlotTofEffMult.cxx
+../include/PlotTofEffMult.h
+/star/u/mvranovsk/plots/include/PlotTofEffMult.h
 
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 vector
@@ -213,4 +225,6 @@ bitset
 -
 TString.h
 /star/u/mvranovsk/star-upcDst/work/include/TString.h
+TMath.h
+/star/u/mvranovsk/star-upcDst/work/include/TMath.h
 

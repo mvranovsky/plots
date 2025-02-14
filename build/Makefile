@@ -163,6 +163,33 @@ src/Plot.cxx.s:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/Plot.cxx.s
 .PHONY : src/Plot.cxx.s
 
+src/PlotAnaJPsi.o: src/PlotAnaJPsi.cxx.o
+
+.PHONY : src/PlotAnaJPsi.o
+
+# target to build an object file
+src/PlotAnaJPsi.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o
+.PHONY : src/PlotAnaJPsi.cxx.o
+
+src/PlotAnaJPsi.i: src/PlotAnaJPsi.cxx.i
+
+.PHONY : src/PlotAnaJPsi.i
+
+# target to preprocess a source file
+src/PlotAnaJPsi.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.i
+.PHONY : src/PlotAnaJPsi.cxx.i
+
+src/PlotAnaJPsi.s: src/PlotAnaJPsi.cxx.s
+
+.PHONY : src/PlotAnaJPsi.s
+
+# target to generate assembly for a file
+src/PlotAnaJPsi.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.s
+.PHONY : src/PlotAnaJPsi.cxx.s
+
 src/PlotAnaV0.o: src/PlotAnaV0.cxx.o
 
 .PHONY : src/PlotAnaV0.o
@@ -216,33 +243,6 @@ src/PlotAnaV0Mult.s: src/PlotAnaV0Mult.cxx.s
 src/PlotAnaV0Mult.cxx.s:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.s
 .PHONY : src/PlotAnaV0Mult.cxx.s
-
-src/PlotGeneral.o: src/PlotGeneral.cxx.o
-
-.PHONY : src/PlotGeneral.o
-
-# target to build an object file
-src/PlotGeneral.cxx.o:
-	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.o
-.PHONY : src/PlotGeneral.cxx.o
-
-src/PlotGeneral.i: src/PlotGeneral.cxx.i
-
-.PHONY : src/PlotGeneral.i
-
-# target to preprocess a source file
-src/PlotGeneral.cxx.i:
-	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.i
-.PHONY : src/PlotGeneral.cxx.i
-
-src/PlotGeneral.s: src/PlotGeneral.cxx.s
-
-.PHONY : src/PlotGeneral.s
-
-# target to generate assembly for a file
-src/PlotGeneral.cxx.s:
-	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotGeneral.cxx.s
-.PHONY : src/PlotGeneral.cxx.s
 
 src/PlotTofEff.o: src/PlotTofEff.cxx.o
 
@@ -338,15 +338,15 @@ help:
 	@echo "... src/Plot.o"
 	@echo "... src/Plot.i"
 	@echo "... src/Plot.s"
+	@echo "... src/PlotAnaJPsi.o"
+	@echo "... src/PlotAnaJPsi.i"
+	@echo "... src/PlotAnaJPsi.s"
 	@echo "... src/PlotAnaV0.o"
 	@echo "... src/PlotAnaV0.i"
 	@echo "... src/PlotAnaV0.s"
 	@echo "... src/PlotAnaV0Mult.o"
 	@echo "... src/PlotAnaV0Mult.i"
 	@echo "... src/PlotAnaV0Mult.s"
-	@echo "... src/PlotGeneral.o"
-	@echo "... src/PlotGeneral.i"
-	@echo "... src/PlotGeneral.s"
 	@echo "... src/PlotTofEff.o"
 	@echo "... src/PlotTofEff.i"
 	@echo "... src/PlotTofEff.s"

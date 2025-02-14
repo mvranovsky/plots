@@ -1,7 +1,7 @@
 #include "../include/PlotAnaV0Mult.h"
 
 
-PlotAnaV0Mult::PlotAnaV0Mult(TFile *mOutFile, const string mInputList, const char* filePath): Plot(mOutFile, mInputList, filePath){}
+PlotAnaV0Mult::PlotAnaV0Mult(const string mInputList, const char* filePath): Plot(mInputList, filePath){}
 
 void PlotAnaV0Mult::Make(){
 
@@ -10,7 +10,7 @@ void PlotAnaV0Mult::Make(){
 
 void PlotAnaV0Mult::Init(){
 	//define the output file which will store all the canvases
-	outFile = new TFile(outputPosition, "recreate");
+	outFile = unique_ptr<TFile>( TFile::Open(outputPosition, "recreate") );
 
 
 	//load the tree chain from the input file

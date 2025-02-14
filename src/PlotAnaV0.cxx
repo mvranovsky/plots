@@ -1,7 +1,7 @@
 #include "../include/PlotAnaV0.h"
 
 
-PlotAnaV0::PlotAnaV0(TFile *mOutFile, const string mInputList, const char* filePath): Plot(mOutFile, mInputList, filePath){}
+PlotAnaV0::PlotAnaV0(const string mInputList, const char* filePath): Plot(mInputList, filePath){}
 
 void PlotAnaV0::Make(){
 
@@ -132,9 +132,9 @@ void PlotAnaV0::Make(){
 
 void PlotAnaV0::Init(){
 	//define the output file which will store all the canvases
-	outFile = new TFile(outputPosition, "recreate");
+	outFile = unique_ptr<TFile>(TFile::Open(outputPosition, "recreate") );
 
-	if(!outFile){
+	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
 	}
 

@@ -14,7 +14,7 @@ using namespace UTIL;
 class PlotTofEffMult : public Plot {
 	public:
 		//accessible from outside the class
-		PlotTofEffMult(TFile *mOutFile, const string mInputList, const char* filePath);
+		PlotTofEffMult(const string mInputList, const char* filePath);
       	~PlotTofEffMult(){};
       
       	//overrides the original Make() from class Plot

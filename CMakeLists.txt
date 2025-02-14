@@ -3,13 +3,13 @@ project (upc-reader)
 
 #sources for LIB_READER
 set (SRCS
-  #src/PlotsManager.cxx
   src/Plot.cxx
   src/PlotAnaV0.cxx
-  src/PlotGeneral.cxx
+  #src/PlotGeneral.cxx
   src/PlotAnaV0Mult.cxx
   src/PlotTofEff.cxx
   src/PlotTofEffMult.cxx
+  src/PlotAnaJPsi.cxx
   )
 
 #name of LIB_READER
