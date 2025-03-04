@@ -41,8 +41,8 @@ int main(int argc, char *argv[]){
     	return 1;
     }
 
-    //mPlot->Init();
-    //mPlot->Make();
+    mPlot->Init();
+    mPlot->Make();
 
 
 

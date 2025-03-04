@@ -17,12 +17,9 @@ using namespace std;
 //using namespace UTIL;
 
 
-TFile *file1, *file2;
 const char* nameOfTree;
 std::vector<std::pair<TString, bool>> plots;
 
-std::vector<std::pair<TH1D*, TString>> hists1D;
-std::vector<std::pair<TH2F*, TString>> hists2D;
 
 Int_t nInputFiles;
 
@@ -62,7 +59,7 @@ vector<string> getFilenames(const string& input){
       while(getline(instr, line)) {
          if(line.empty())
             continue;
-         unique_ptr<TFile> inputFile(TFile::Open(line.c_str(), "read") );
+         unique_ptr<TFile> inputFile(new TFile(line.c_str(), "read"));
          if(!inputFile || inputFile->IsZombie()){
             cout << "Couldn't open: " << line.c_str() << endl;
             return {};
@@ -76,8 +73,8 @@ vector<string> getFilenames(const string& input){
 
 
 bool connectHists(const char* inputPath, const char* outputFilename) {
-   map<string, unique_ptr<TH1>> mergedTH1Hists;
-   map<string, unique_ptr<TH2>> mergedTH2Hists;
+   map<string, TH1*> mergedTH1Hists;
+   map<string, TH2*> mergedTH2Hists;
 
 
    std::vector<string> filenames = getFilenames(inputPath);
@@ -88,7 +85,7 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
    }
 
    for (const auto& filename : filenames) {
-      std::unique_ptr<TFile> file(TFile::Open(filename.c_str(), "READ"));
+      std::unique_ptr<TFile> file( new TFile(filename.c_str(), "READ") );
       if (!file || file->IsZombie()) {
          std::cerr << "Error opening file: " << filename << std::endl;
          continue;
@@ -99,57 +96,56 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
          // Get object class type
          TClass* cls = TClass::GetClass(key->GetClassName());
          if (!cls) continue;
-            // Check if it is a histogram (TH1 base class)
-            if (cls->InheritsFrom("TH1")) {
-                TH1* hist = static_cast<TH1*>(key->ReadObj());
-                string histName = hist->GetName();
+         // Check if it is a histogram (TH1 base class)
+         if (cls->InheritsFrom("TH1D") || cls->InheritsFrom("TH1F") || cls->InheritsFrom("TH1I")) {
+             TH1* hist = static_cast<TH1*>(key->ReadObj());
+             string histName = hist->GetName();
 
-                // Merge histograms with the same name
-                if (mergedTH1Hists.find(histName) == mergedTH1Hists.end()) {
-                    // First instance, clone the histogram
-                    mergedTH1Hists[histName] = std::unique_ptr<TH1>(static_cast<TH1*>(hist->Clone()));
-                    mergedTH1Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
-                } else {
-                    // Add to existing histogram
-                    mergedTH1Hists[histName]->Add(hist);
-                }
-            }
-            // Check if it is a TH2 class
-            if (cls->InheritsFrom("TH2")) {
-                TH2* hist = static_cast<TH2*>(key->ReadObj());
-                string histName = hist->GetName();
+             // Merge histograms with the same name
+             if (mergedTH1Hists.find(histName) == mergedTH1Hists.end()) {
+                 // First instance, clone the histogram
+                 mergedTH1Hists[histName] = static_cast<TH1*>(hist->Clone());
+                 mergedTH1Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
+             } else {
+                 // Add to existing histogram
+                 mergedTH1Hists[histName]->Add(hist);
+             }
+         }
+         // Check if it is a TH2 class
+         if (cls->InheritsFrom("TH2D") || cls->InheritsFrom("TH2F") || cls->InheritsFrom("TH2I")) {
+             TH2* hist = static_cast<TH2*>(key->ReadObj());
+             string histName = hist->GetName();
 
-                // Merge histograms with the same name
-                if (mergedTH2Hists.find(histName) == mergedTH2Hists.end()) {
-                    // First instance, clone the histogram
-                    mergedTH2Hists[histName] = unique_ptr<TH2>(static_cast<TH2*>(hist->Clone()));
-                    mergedTH2Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
-                } else {
-                    // Add to existing histogram
-                    mergedTH2Hists[histName]->Add(hist);
-                }
-            }
-
-            // possible to add other objects to merge and save to histfile
-        }
-    }
+             // Merge histograms with the same name
+             if (mergedTH2Hists.find(histName) == mergedTH2Hists.end()) {
+                 // First instance, clone the histogram
+                 mergedTH2Hists[histName] = static_cast<TH2*>(hist->Clone());
+                 mergedTH2Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
+             } else {
+                 // Add to existing histogram
+                 mergedTH2Hists[histName]->Add(hist);
+             }
+         }
+         // possible to add other objects to merge and save to histfile
+      }
+   }
 
     // Save merged histograms to new ROOT file
-    std::unique_ptr<TFile> histFile(TFile::Open(outputFilename, "RECREATE"));
+    std::unique_ptr<TFile> histFile(new TFile(outputFilename, "RECREATE"));
     if (!histFile || histFile->IsZombie()) {
         std::cerr << "Error creating output file: " << outputFilename << std::endl;
         return false;
     }
 
-    histFile->cd();
+   histFile->cd();
    for (const auto& entry : mergedTH1Hists) {
-       TH1* hist = entry.second.get();          // Get the raw pointer from unique_ptr
-       hist->Write();
+       entry.second->Write();      
    }
    for (const auto& entry : mergedTH2Hists) {
-       TH2* hist = entry.second.get();          // Get the raw pointer from unique_ptr
-       hist->Write();
+       entry.second->Write();        
    }
+   histFile->Close();
+   histFile.reset();
 
     cout << "Merged histograms saved in " << outputFilename << endl;
     return true;

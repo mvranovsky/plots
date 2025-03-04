@@ -3,7 +3,7 @@
 
 // include headers
 #include "Libraries.h"
-
+#include <memory>
 
 
 using namespace std;
@@ -37,9 +37,9 @@ class Plot{
 		
 		// methods to handle TH1 and TH2 histograms
 		bool handleHistograms();
-		void TH1General(TString nameOfHist,TH1* hist);
+		void TH1General(TString nameOfHist,TH1*& hist);
 		void SetHistStyle(TH1* hist, Int_t color, Int_t markStyle);
-		void TH2General(TString nameOfHist , TH2* hist);
+		void TH2General(TString nameOfHist , TH2*& hist);
 		void SetTH2Style(TH2* hist);
 		vector<pair<TH1*, TString>> GetAllTH1();
 		vector<pair<TH2*, TString>> GetAllTH2();
@@ -65,7 +65,8 @@ class Plot{
 		const int heightTypical = 800;
 		const int markerStyleTypical = 20;
 		TString ppSTAR = "p+p #sqrt{s} = 510 GeV";
-		TString ppSTARJPsi = "p+p #rightarrow p #oplus J/#Psi #oplus p, #sqrt{s} = 510 GeV";
+
+		TString ppSTARJPsi[2] = {"p+p #rightarrow p #oplus J/#psi #oplus p", "#sqrt{s} = 510 GeV"};
 
 		const TString yAxisTitle = "counts"; //entries/counts
 		const int textAlign = 12;

@@ -116,10 +116,12 @@ void Plot::DrawSTARpp510JPsi(double xl, double yl, double xr, double yr, double 
    TPaveText *textpp510;
    textpp510 = new TPaveText(xl, yl, xr, yr,"brNDC");
    textpp510 -> SetTextSize(textSize + textSizeRel);
-   textpp510 -> SetTextAlign(11);
-   textpp510 -> SetFillColor(0);
+   textpp510 -> SetTextAlign(33);
+   textpp510 -> SetFillStyle(4000);
+   textpp510 -> SetFillColorAlpha(kWhite, 0.0);  // Blue background with 30% opacity
    textpp510 -> SetTextFont(62);
-   textpp510->AddText(ppSTARJPsi);
+   textpp510->AddText(ppSTARJPsi[0]);
+   textpp510->AddText(ppSTARJPsi[1]);
    textpp510 -> Draw("same");
 }
 
@@ -216,9 +218,7 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBc
    int nInputFiles;
    //cout << "Input from: " << input.c_str() << endl;
 
-   TFile *inputFile;
    chain = new TChain(nameOfTree);
-   TString inputFilePath;
    if(alsoBcgTree){
       bcgChain = new TChain(nameOfTree + TString("_Bcg"));
    }
@@ -226,9 +226,8 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBc
    //cout << "Input file: " << input.c_str() << endl;
    if(input.find(".root") != string::npos){
          cout << "Input from root file: "<< input << endl;
-      inputFile = TFile::Open(input.c_str(), "read");
-      inputFilePath = input;
-      if(!inputFile){
+      unique_ptr<TFile> inputFile(new TFile(input.c_str(), "read") );
+      if(!inputFile || inputFile->IsZombie() || !inputFile->IsOpen()){
          cout<< "Couldn't open input root file..."<<endl;
          return false;
       } 
@@ -250,8 +249,7 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBc
        while(getline(instr, line)) {
          if(line.empty())
             continue;
-         inputFile = TFile::Open(line.c_str(), "read");
-         inputFilePath = line;
+         unique_ptr<TFile> inputFile(new TFile(line.c_str(), "read") ); 
          if(!inputFile){
             cout << "Couldn't open: " << line.c_str() << endl;
             return false;
@@ -331,9 +329,12 @@ vector<pair<TH2*, TString>> Plot::GetAllTH2() {
    while ((key = (TKey*)next())) {
       // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
       TObject *obj = key->ReadObj();
-      if (TH2 *h1 = dynamic_cast<TH2*>(obj)) {
+      if (obj->InheritsFrom(TH2D::Class()) || obj->InheritsFrom(TH2F::Class()) || obj->InheritsFrom(TH2I::Class())) {
          // If the object is a TH2F histogram, add it to the vector
-         histograms.push_back(make_pair(h1, h1->GetName()));
+         TH2 *h2 = dynamic_cast<TH2*>(obj);
+         histograms.push_back(make_pair(h2, h2->GetName()));
+         cout << "Just added 2D histogram: " << h2->GetName() << endl;
+
       }
    }
 
@@ -345,27 +346,26 @@ vector<pair<TH1*, TString>> Plot::GetAllTH1() {
 
    // Vector to store pointers to TH1D histograms
    vector<pair<TH1*,TString>> histograms;
-
    // Iterate over all keys in the file
    TKey *key;
    TIter next(histFile->GetListOfKeys());
    while ((key = (TKey*)next())) {
-      //cout << "object being iterated" << endl;
       // Retrieve the object pointed by the key. Use ReadObj() to avoid memory leaks caused by Clone()
       TObject *obj = key->ReadObj();
       //cout << "Name of object: " << obj->GetName() << endl;
-      if (TH1 *h1 = dynamic_cast<TH1*>(obj)) {
-         // If the object is a TH2F histogram, add it to the vector
+      if (obj->InheritsFrom(TH1D::Class()) || obj->InheritsFrom(TH1F::Class()) || obj->InheritsFrom(TH1I::Class())) {
+         // If the object is a TH1 histogram, add it to the vector
+         TH1 *h1 = dynamic_cast<TH1*>(obj);
          histograms.push_back(make_pair(h1, h1->GetName()));
+         cout << "Just added 1D histogram: " << h1->GetName() << endl;
       }
    }
-
    return histograms;
 }
 
 
 
-void Plot::TH1General(TString nameOfHist,TH1* hist) {
+void Plot::TH1General(TString nameOfHist,TH1*& hist) {
 
    if (!hist){
       cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
@@ -387,12 +387,19 @@ void Plot::TH1General(TString nameOfHist,TH1* hist) {
    if(strcmp(hist->GetName(), "hAnalysisFlow") == 0){
       canvas->SetLogy();
       SetGPad(false, 0.14, 0.05,0.11,0.06);
-      DrawSTARpp510(0.6,0.85,0.9,0.85, 0.02);
-   }else if(strcmp(hist->GetName(), "hNTpcTracks") == 0 || strcmp(hist->GetName(), "hNTofTracks") == 0 || strcmp(hist->GetName(), "hPointingAngle") == 0 || strcmp(hist->GetName(), "hTrackQualityFlow") == 0 ){
+      hist->GetXaxis()->SetLabelOffset(0.01);
+   }else if(strcmp(hist->GetName(), "hNTpcTracks") == 0 || strcmp(hist->GetName(), "hNTofTracks") == 0 || strcmp(hist->GetName(), "hPointingAngle") == 0 ){
       canvas->SetLogy();
+   }else if(strcmp(hist->GetName(), "hTrackQualityFlow") == 0){
+      canvas->SetLogy();
+      SetGPad(false, 0.14,0.1, 0.11,0.06);
    }else{
       SetGPad(false, 0.14, 0.05,0.11,0.06);
-      DrawSTARpp510(0.6,0.85,0.9,0.85, 0.02);
+   }
+   DrawSTARpp510JPsi(0.6,0.85,0.93,0.93, 0.01);
+
+   if(strcmp(hist->GetName(),"hNTracksRP") == 0){
+      canvas->SetLogy();
    }
 
    canvas->Update();
@@ -403,17 +410,23 @@ void Plot::TH1General(TString nameOfHist,TH1* hist) {
 }
 
 
-void Plot::TH2General(TString nameOfHist , TH2* hist){
+void Plot::TH2General(TString nameOfHist , TH2*& hist){
    CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
    SetGPad(false,0.12, 0.16,0.11, 0.06 );
    if (!hist){
       cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
       return;
    }
+
+
    canvas->Clear();
    SetTH2Style(hist);
+
    hist->Draw("COLZ");
-   DrawSTARpp510();
+   DrawSTARpp510JPsi(0.53,0.85,0.82,0.93, 0.01);
+   if(nameOfHist.Contains("hRPcorr") ){
+      DrawFiducial();
+   }
 
    outFile->cd();
    canvas->Write();

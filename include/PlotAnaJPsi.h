@@ -24,12 +24,13 @@ class PlotAnaJPsi : public Plot {
     private:
     	//store variables, which can be accessed only from within this class
 
-    	void invMassJPsi(int numBins, Double_t minRange, Double_t maxRange);
+    	void invMassJPsi(int numBins, Double_t minRange, Double_t maxRange, TString nameOfSignal, TString nameOfBcg);
     	void nSigmaCorr();
 		double GoodnessOfFit(RooPlot*& frame, RooAddPdf& model, RooDataHist& data);
 		TString convertToString(double val);
 		int makeInt(double val);
 		void roofit_invMassFit_Misa(int numBins, Double_t minRange, Double_t maxRange);
+		void processTreeForPt(TString nameOfTree);
 
 
 };
