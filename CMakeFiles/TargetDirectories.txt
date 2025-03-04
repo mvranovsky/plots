@@ -1,0 +1,4 @@
+/star/u/mvranovsk/PaperProposalCEP/MisoCodes/plots/CMakeFiles/rebuild_cache.dir
+/star/u/mvranovsk/PaperProposalCEP/MisoCodes/plots/CMakeFiles/edit_cache.dir
+/star/u/mvranovsk/PaperProposalCEP/MisoCodes/plots/CMakeFiles/PlotsManager.dir
+/star/u/mvranovsk/PaperProposalCEP/MisoCodes/plots/CMakeFiles/upc-reader.dir
