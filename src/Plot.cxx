@@ -289,7 +289,7 @@ bool Plot::handleHistograms(){
       cerr << "Couldn't load 1D histograms from file. Leaving..." << endl;
       return false;
    }
-   for (int i = 0; i < hists1D.size(); ++i){
+   for (unsigned int i = 0; i < hists1D.size(); ++i){
       if(!hists1D[i].first){
          cerr << "Couldn't load histogram " << hists1D[i].second << ". Leaving..." << endl;
          return false;
@@ -304,7 +304,7 @@ bool Plot::handleHistograms(){
       cerr << "Couldn't load 2D histograms from file. Leaving..." << endl;
       return false;
    }
-   for (int i = 0; i < hists2D.size(); ++i){
+   for (unsigned int i = 0; i < hists2D.size(); ++i){
       if(!hists2D[i].first){
          cerr << "Couldn't load histogram " << hists2D[i].second << ". Leaving..." << endl;
          return false;

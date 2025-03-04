@@ -175,7 +175,7 @@ void PlotAnaJPsi::invMassJPsi(int numBins, Double_t minRange, Double_t maxRange,
 
     //integration - raw yield
     x.setRange("signal",2.8682,3.2462);
-    double i_s, i_b, y;
+    double i_s, i_b;
     RooAbsReal *intPeakX = model.createIntegral(x,NormSet(x),Range("signal"));   //under peak of pol+gaus
     RooAbsReal *intBKGx = bkg.createIntegral(x,NormSet(x), Range("signal")) ;     //(2.908, 3.261); 
     i_s = intPeakX->getVal()*(nsig.getVal()+nbkg.getVal()); 
@@ -321,6 +321,8 @@ void PlotAnaJPsi::roofit_invMassFit_Misa(int numBins, Double_t minRange, Double_
     RooRealVar cbalpha("cb alpha","cb_alpha",2,1,10);
     RooCBShape cb("cb","cb",x,cbmean,cbsigma,cbalpha,cbn) ;
 
+
+
     //combine function into model
     RooRealVar bkgfrac("bkgfrac","bkgfrac",0.5,0.,1.);
     //RooAddPdf model("model","model",RooArgList(cb,bkg),bkgfrac);
@@ -333,7 +335,6 @@ void PlotAnaJPsi::roofit_invMassFit_Misa(int numBins, Double_t minRange, Double_
 
     //fit data with model
     RooFitResult* fitResult = model.fitTo(dh, RooFit::Save()); 
-
 
     //plotting
     model.plotOn(frame, Name("model"));
@@ -350,7 +351,7 @@ void PlotAnaJPsi::roofit_invMassFit_Misa(int numBins, Double_t minRange, Double_
 
     //integration - raw yield
     x.setRange("signal",2.8682,3.2462);
-    double i_s, i_b, y;
+    double i_s, i_b;
     RooAbsReal *intPeakX = model.createIntegral(x,NormSet(x),Range("signal"));   //under peak of pol+gaus
     RooAbsReal *intBKGx = bkg.createIntegral(x,NormSet(x), Range("signal")) ;     //(2.908, 3.261); 
     i_s = intPeakX->getVal()*(nsig.getVal()+nbkg.getVal()); 
