@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o"
+  "CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o"
+  "CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o"
   "libupc-reader.pdb"
   "libupc-reader.so"
 )

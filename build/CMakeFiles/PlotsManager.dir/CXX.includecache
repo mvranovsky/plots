@@ -157,8 +157,8 @@ Util.h
 /star/u/mvranovsk/plots/include/Util.h
 Plot.h
 /star/u/mvranovsk/plots/include/Plot.h
-../../star-upcDst/work/include/RunDef.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+-
 
 /star/u/mvranovsk/plots/include/PlotAnaV0.h
 Util.h
@@ -175,6 +175,24 @@ Plot.h
 /star/u/mvranovsk/plots/include/Plot.h
 ../../star-upcDst/work/include/RunDef.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+
+/star/u/mvranovsk/plots/include/PlotEmbeddingJPsi.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+/star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+-
+
+/star/u/mvranovsk/plots/include/PlotGoodRun.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+/star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+-
+Libraries.h
+/star/u/mvranovsk/plots/include/Libraries.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
 
 /star/u/mvranovsk/plots/include/PlotTofEff.h
 Util.h
@@ -203,6 +221,10 @@ PlotTofEffMult.h
 /star/u/mvranovsk/plots/include/PlotTofEffMult.h
 PlotAnaJPsi.h
 /star/u/mvranovsk/plots/include/PlotAnaJPsi.h
+PlotGoodRun.h
+/star/u/mvranovsk/plots/include/PlotGoodRun.h
+PlotEmbeddingJPsi.h
+/star/u/mvranovsk/plots/include/PlotEmbeddingJPsi.h
 TFile.h
 -
 TKey.h

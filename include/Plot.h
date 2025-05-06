@@ -37,10 +37,10 @@ class Plot{
 		
 		// methods to handle TH1 and TH2 histograms
 		bool handleHistograms();
-		void TH1General(TString nameOfHist,TH1*& hist);
-		void SetHistStyle(TH1* hist, Int_t color, Int_t markStyle);
-		void TH2General(TString nameOfHist , TH2*& hist);
-		void SetTH2Style(TH2* hist);
+		void TH1General(TString nameOfHist,TH1*& hist, int RUNNUMBER = 0);
+		void SetHistStyle(TH1*& hist, Int_t color, Int_t markStyle);
+		void TH2General(TString nameOfHist , TH2*& hist, int RUNNUMBER = 0);
+		void SetTH2Style(TH2*& hist);
 		vector<pair<TH1*, TString>> GetAllTH1();
 		vector<pair<TH2*, TString>> GetAllTH2();
 		

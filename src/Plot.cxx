@@ -34,7 +34,7 @@ void Plot::CreateCanvas(TCanvas **canvas, TString canvasName, int canvasWidth, i
 }
 
 
-void Plot::SetHistStyle(TH1* hist, Int_t color, Int_t markStyle)
+void Plot::SetHistStyle(TH1*& hist, Int_t color, Int_t markStyle)
 {
    hist->GetYaxis()->SetTitle(yAxisTitle);
    hist->SetStats(false);
@@ -57,7 +57,7 @@ void Plot::SetHistStyle(TH1* hist, Int_t color, Int_t markStyle)
    hist->SetMarkerStyle(markerStyle);
 }//SetHistStyle
 
-void Plot::SetTH2Style(TH2* hist)
+void Plot::SetTH2Style(TH2*& hist)
 {
    hist->SetStats(false);
    hist->GetXaxis()->SetTitleFont(textFont);
@@ -77,7 +77,8 @@ void Plot::SetTH2Style(TH2* hist)
    hist->GetZaxis()->SetTitleOffset(0.9);
 }//SetTH2Style
 
-void Plot::CreateLegend(TLegend **legend, double xl, double yl, double xr, double yr)
+
+void Plot:: CreateLegend(TLegend **legend, double xl, double yl, double xr, double yr)
 {
    *legend = new TLegend(xl, yl,xr, yr);
    (*legend)->SetFillStyle(0);
@@ -214,25 +215,28 @@ void Plot::SetLineStyle(TLine* line)
 
 
 bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBcgTree) {
-   
-   int nInputFiles;
-   //cout << "Input from: " << input.c_str() << endl;
 
    chain = new TChain(nameOfTree);
    if(alsoBcgTree){
       bcgChain = new TChain(nameOfTree + TString("_Bcg"));
    }
 
+   vector<TFile*> inputFiles;
    //cout << "Input file: " << input.c_str() << endl;
-   if(input.find(".root") != string::npos){
+   if(input.find(".root") != string::npos){   //!!!! something is wrong
          cout << "Input from root file: "<< input << endl;
-      unique_ptr<TFile> inputFile(new TFile(input.c_str(), "read") );
+      TFile *inputFile = new TFile(input.c_str(), "read");
       if(!inputFile || inputFile->IsZombie() || !inputFile->IsOpen()){
          cout<< "Couldn't open input root file..."<<endl;
          return false;
       } 
-      chain->AddFile(input.c_str());
-      nInputFiles = 1;
+
+      inputFiles.push_back(inputFile);  // Store the file so it doesn't get deleted
+
+      TTree* currentTree = dynamic_cast<TTree*>(inputFile->Get(nameOfTree));
+      if (currentTree) {
+         chain->AddFile(input.c_str());
+      }
       if(alsoBcgTree)
          bcgChain->AddFile(input.c_str());
    } 
@@ -249,11 +253,16 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBc
        while(getline(instr, line)) {
          if(line.empty())
             continue;
-         unique_ptr<TFile> inputFile(new TFile(line.c_str(), "read") ); 
-         if(!inputFile){
+         if(line.find(".root") == string::npos)
+            continue;
+         
+         TFile *inputFile = new TFile(line.c_str(), "read");
+         if(!inputFile || inputFile->IsZombie() || !inputFile->IsOpen()){
             cout << "Couldn't open: " << line.c_str() << endl;
-            return false;
-         } 
+            continue;
+         }
+         inputFiles.push_back(inputFile);  // Store the file so it doesn't get deleted
+
          currentTree = dynamic_cast<TTree*>( inputFile->Get(nameOfTree) );
          if(currentTree){
             chain->AddFile(line.c_str());
@@ -264,17 +273,18 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, bool alsoBc
             cout << "Couldn't open .root file with name: " << line.c_str() << endl;
          }  
          lineId++;
-         nInputFiles++;
          //all histograms should be added together from the input files, saved to .root file, and then the .root file should be opened with pointer inFile. So far i am pointing to the last inputFile, because I use only one. Fuck off i will finish this one day ;)
       }//while
 
       instr.close();
       tree = dynamic_cast<TTree*>( chain );
-      bcgTree = dynamic_cast<TTree*>( bcgChain );
+      if(alsoBcgTree){
+         bcgTree = dynamic_cast<TTree*>( bcgChain );
+      }
 
    }//else if
 
-   cout << "Input from " << nInputFiles << " files..." << endl;
+   cout << "Input from " << inputFiles.size() << " files..." << endl;
    return true;
 }
 
@@ -289,7 +299,7 @@ bool Plot::handleHistograms(){
       cerr << "Couldn't load 1D histograms from file. Leaving..." << endl;
       return false;
    }
-   for (int i = 0; i < hists1D.size(); ++i){
+   for (unsigned int i = 0; i < hists1D.size(); ++i){
       if(!hists1D[i].first){
          cerr << "Couldn't load histogram " << hists1D[i].second << ". Leaving..." << endl;
          return false;
@@ -304,7 +314,7 @@ bool Plot::handleHistograms(){
       cerr << "Couldn't load 2D histograms from file. Leaving..." << endl;
       return false;
    }
-   for (int i = 0; i < hists2D.size(); ++i){
+   for (unsigned int i = 0; i < hists2D.size(); ++i){
       if(!hists2D[i].first){
          cerr << "Couldn't load histogram " << hists2D[i].second << ". Leaving..." << endl;
          return false;
@@ -365,7 +375,7 @@ vector<pair<TH1*, TString>> Plot::GetAllTH1() {
 
 
 
-void Plot::TH1General(TString nameOfHist,TH1*& hist) {
+void Plot::TH1General(TString nameOfHist,TH1*& hist, int RUNNUMBER ) {
 
    if (!hist){
       cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
@@ -380,7 +390,7 @@ void Plot::TH1General(TString nameOfHist,TH1*& hist) {
 
    canvas->Clear();
    SetHistStyle(hist, kBlack, markerStyleTypical);
-   hist->Draw("same E hist");
+   hist->Draw("same hist");
    //canvas->SetLogy();
 
 
@@ -404,13 +414,26 @@ void Plot::TH1General(TString nameOfHist,TH1*& hist) {
 
    canvas->Update();
 
+
+   TPaveText *runNumText;
+   if(RUNNUMBER != 0){
+      runNumText = new TPaveText(0.2, 0.83, 0.5, 0.88, "brNDC");
+      runNumText->SetFillColorAlpha(kWhite, 0);
+      runNumText->SetBorderSize(0);
+      runNumText->SetTextSize(0.04);
+      runNumText->SetTextAlign(11);
+      runNumText->AddText(Form("Run number: %d", RUNNUMBER));
+      runNumText->Draw("SAME");
+   }
+
+
    outFile->cd();
    canvas->Write();
    //hist->Write();
 }
 
 
-void Plot::TH2General(TString nameOfHist , TH2*& hist){
+void Plot::TH2General(TString nameOfHist , TH2*& hist, int RUNNUMBER){
    CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
    SetGPad(false,0.12, 0.16,0.11, 0.06 );
    if (!hist){
@@ -426,6 +449,20 @@ void Plot::TH2General(TString nameOfHist , TH2*& hist){
    DrawSTARpp510JPsi(0.53,0.85,0.82,0.93, 0.01);
    if(nameOfHist.Contains("hRPcorr") ){
       DrawFiducial();
+   }
+   else if(nameOfHist.Contains("hNSigma")){
+      gPad->SetLogz();
+   }
+
+   TPaveText *runNumText;
+   if(RUNNUMBER != 0){
+      runNumText = new TPaveText(0.2, 0.83, 0.5, 0.88, "brNDC");
+      runNumText->SetFillColorAlpha(kWhite, 0);
+      runNumText->SetBorderSize(0);
+      runNumText->SetTextSize(0.04);
+      runNumText->SetTextAlign(11);
+      runNumText->AddText(Form("Run number: %d", RUNNUMBER));
+      runNumText->Draw("SAME");
    }
 
    outFile->cd();

@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/star/u/mvranovsk/plots/src/PlotAnaJPsi.cxx" "/star/u/mvranovsk/plots/build/CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o"
   "/star/u/mvranovsk/plots/src/PlotAnaV0.cxx" "/star/u/mvranovsk/plots/build/CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o"
   "/star/u/mvranovsk/plots/src/PlotAnaV0Mult.cxx" "/star/u/mvranovsk/plots/build/CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o"
+  "/star/u/mvranovsk/plots/src/PlotEmbeddingJPsi.cxx" "/star/u/mvranovsk/plots/build/CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o"
+  "/star/u/mvranovsk/plots/src/PlotGoodRun.cxx" "/star/u/mvranovsk/plots/build/CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o"
   "/star/u/mvranovsk/plots/src/PlotTofEff.cxx" "/star/u/mvranovsk/plots/build/CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o"
   "/star/u/mvranovsk/plots/src/PlotTofEffMult.cxx" "/star/u/mvranovsk/plots/build/CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o"
   )

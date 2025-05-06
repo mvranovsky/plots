@@ -120,7 +120,6 @@ void PlotTofEff::Init(){
 void PlotTofEff::fitK0s(Double_t minRange, Double_t maxRange, int numBins, bool is2TOF) {
 
     TH1D *signalFinal = new TH1D("fitPeakK0sSignalFit", "fitPeakK0sSignalFit", numBins, minRange, maxRange);
-    TH1D *histCheck = new TH1D("histCheck", "", numBins, minRange, maxRange);
 
     signalFinal->GetXaxis()->SetTitle("m_{#pi^{+} #pi^{-}} [GeV/c^{2}]");
     
@@ -280,7 +279,6 @@ vector<pair<int,double>> PlotTofEff::effFit(int Switch ,double Min, double Max,D
 	}
 
 
-	double normalisation = (topRange - lowRange)/nBins;
 	// considering bins from 0.45 to 0.54, signal from 0.48 to 0.52, background 0.46-0.48 and 0.52-0.54
 	double sumSignal1 = 0;
 	double sumBcg1 = 0;
@@ -536,7 +534,7 @@ void PlotTofEff::efficiency(int switcher, int runSeparatePions = 0) {
 
 	cout << "Beginning efficiency plot for " << variable << endl;
 	vector<pair<int,double>> binContent1, binContent2, current_yield, current_bcgSub, binContentBcgSub1, binContentBcgSub2;
-	Double_t arg1[2], arg2[2], arg3[2], arg4[2];
+	Double_t arg1[2], arg2[2], arg3[2];
 	for (int iBin = 0; iBin < binCount; ++iBin){ // considering 18 bins fro -0.9 to 0.9, skipping from -0.2 to 0.2 
 		//run fits over all bins
 		cout << "Running " << variable << " bin number: " << iBin << endl;
@@ -616,13 +614,13 @@ void PlotTofEff::efficiency(int switcher, int runSeparatePions = 0) {
 	}
 	cout << "-------------------------------------------------------------------------" << endl;
 	cout << "RESULTS FOR INTEGRATION:" << endl;
-	for (int i = 0; i < binContentBcgSub1.size(); ++i){
+	for (unsigned int i = 0; i < binContentBcgSub1.size(); ++i){
 		cout << variable << " bin number " << i << ",contentBcgSub 1: value: " << binContentBcgSub1[i].first << ", error: " << binContentBcgSub1[i].second << endl;
 		cout << variable << " bin number " << i << ",contentBcgSub 2: value: " << binContentBcgSub2[i].first << ", error: " << binContentBcgSub2[i].second << endl;
 	}
 	cout << "-------------------------------------------------------------------------" << endl;
 	cout << "RESULTS FOR FITS:" << endl;
-	for (int i = 0; i < binContent1.size(); ++i){
+	for (unsigned int i = 0; i < binContent1.size(); ++i){
 		cout << variable << " bin number " << i << ",content 1: value: " << binContent1[i].first << ", error: " << binContent1[i].second << endl;
 		cout << variable << " bin number " << i << ",content 2: value: " << binContent2[i].first << ", error: " << binContent2[i].second << endl;
 	}
@@ -715,9 +713,9 @@ void PlotTofEff::invMassLambda(Double_t minRange, Double_t maxRange, int numBins
 	CreateCanvas(&canvas,"invMassLambda", widthTypical, heightTypical);
 	SetGPad(); //might set log y scale, watchout
 
-    TH1D *signalFinal = new TH1D("invMassLambdaSignal", "invMassLambdaSignal", numBins, minRange, maxRange);
+    TH1 *signalFinal = new TH1D("invMassLambdaSignal", "invMassLambdaSignal", numBins, minRange, maxRange);
     signalFinal->GetXaxis()->SetTitle("m_{p #pi} [GeV/c^{2}]");
-    TH1D *bcgFinal = new TH1D("invMassLambdaBcg", "invMassLambdaBcg", numBins, minRange, maxRange);
+    TH1 *bcgFinal = new TH1D("invMassLambdaBcg", "invMassLambdaBcg", numBins, minRange, maxRange);
     bcgFinal->GetXaxis()->SetTitle("m_{p #pi} [GeV/c^{2}]");
 
     
@@ -732,7 +730,7 @@ void PlotTofEff::invMassLambda(Double_t minRange, Double_t maxRange, int numBins
     cout << "Command: " << cmd << endl;
     cout << "Condition: " << condition << endl;
     tree->Draw(cmd, condition);
-    signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+    signalFinal->Add((TH1*)gPad->GetPrimitive( TString("hist") ) );
 
 	cmd = TString::Format("invMass>>bcg(%d, %f, %f)", numBins, minRange,maxRange);
     if(is2TOF){
@@ -743,7 +741,7 @@ void PlotTofEff::invMassLambda(Double_t minRange, Double_t maxRange, int numBins
     cout << "Command: " << cmd << endl;
     cout << "Condition: " << condition << endl;
     tree->Draw(cmd, condition);
-    bcgFinal->Add((TH1D*)gPad->GetPrimitive(TString("bcg")));
+    bcgFinal->Add((TH1*)gPad->GetPrimitive(TString("bcg")));
     
 
 	canvas->Clear();
@@ -780,9 +778,9 @@ void PlotTofEff::invMassK0s(Double_t minRange, Double_t maxRange, int numBins, b
 	CreateCanvas(&canvas,"invMassK0s", widthTypical, heightTypical);
 	SetGPad(); //might set log y scale, watchout
 
-    TH1D *signalFinal = new TH1D("invMassK0sSignal", "invMassK0sSignal", numBins, minRange, maxRange);
+    TH1 *signalFinal = new TH1D("invMassK0sSignal", "invMassK0sSignal", numBins, minRange, maxRange);
     signalFinal->GetXaxis()->SetTitle("m_{#pi #pi} [GeV/c^{2}]");
-    TH1D *bcgFinal = new TH1D("invMassK0sBcg", "invMassK0sBcg", numBins, minRange, maxRange);
+    TH1 *bcgFinal = new TH1D("invMassK0sBcg", "invMassK0sBcg", numBins, minRange, maxRange);
     bcgFinal->GetXaxis()->SetTitle("m_{#pi #pi} [GeV/c^{2}]");
 
     TString cmd, condition;
@@ -798,7 +796,7 @@ void PlotTofEff::invMassK0s(Double_t minRange, Double_t maxRange, int numBins, b
     cout << "Command: " << cmd << endl;
     cout << "Condition: " << condition << endl;
     tree->Draw(cmd, condition);
-    signalFinal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+    signalFinal->Add((TH1*)gPad->GetPrimitive( TString("hist") ) );
     
     cmd = TString::Format("invMass>>bcg(%d, %f, %f)", numBins, minRange,maxRange);
     if(is2TOF){
@@ -809,7 +807,7 @@ void PlotTofEff::invMassK0s(Double_t minRange, Double_t maxRange, int numBins, b
     cout << "Command: " << cmd << endl;
     cout << "Condition: " << condition << endl;
 	tree->Draw(cmd, condition);
-    bcgFinal->Add((TH1D*)gPad->GetPrimitive(TString("bcg")));
+    bcgFinal->Add((TH1*)gPad->GetPrimitive(TString("bcg")));
     
     cout << "Histograms for K0S created" << endl;
 

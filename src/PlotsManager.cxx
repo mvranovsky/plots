@@ -4,7 +4,7 @@
 //argv[1] = outputFile
 int main(int argc, char *argv[]){ 
 	
-	cout<<"Starting the analysis..."<<endl;
+	cout<<"Starting making plots..."<<endl;
 	if (argc != 3 ){
 		cout << "Incorrect number of arguments. First argument is the input source, second is the outputfile position."<<endl;
 		return 1;
@@ -33,9 +33,15 @@ int main(int argc, char *argv[]){
     } else if( strstr(inputPosition, "TofEff") ){
     	cout << "Creating plots from TofEff..." << endl;
     	mPlot = new PlotTofEff(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "AnaJPsi") || strstr(inputPosition, "AnaJPSI") ){
+    } else if( strstr(inputPosition, "AnaJPsi") ){
         cout << "Creating plots from AnaJPsi..." << endl;
         mPlot = new PlotAnaJPsi(inputPosition, outputPosition);
+    } else if( strstr(inputPosition, "EmbeddingJPsi") ){
+        cout << "Creating plots from EmbeddingJPsi..." << endl;
+        mPlot = new PlotEmbeddingJPsi(inputPosition, outputPosition);
+    }else if( strstr(inputPosition, "AnaGoodRun") ){
+        cout << "Creating plots from AnaGoodRun" << endl;
+        mPlot = new PlotGoodRun(inputPosition, outputPosition);
     }else{
     	cout << "No plots to run. Leaving..." << endl;
     	return 1;
@@ -43,8 +49,6 @@ int main(int argc, char *argv[]){
 
     mPlot->Init();
     mPlot->Make();
-
-
 
     cout << "Ending analysis. All plots created. Goodbye..." << endl;
 

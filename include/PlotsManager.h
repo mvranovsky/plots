@@ -8,6 +8,8 @@
 #include "PlotTofEff.h"
 #include "PlotTofEffMult.h"
 #include "PlotAnaJPsi.h"
+#include "PlotGoodRun.h"
+#include "PlotEmbeddingJPsi.h"
 #include <TFile.h>
 #include <TKey.h>
 #include <TClass.h>

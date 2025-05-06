@@ -10,6 +10,9 @@ set (SRCS
   src/PlotTofEff.cxx
   src/PlotTofEffMult.cxx
   src/PlotAnaJPsi.cxx
+  src/PlotGoodRun.cxx
+  src/PlotEmbeddingJPsi.cxx
+  src/SysStudy.cxx
   )
 
 #name of LIB_READER

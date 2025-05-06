@@ -26,6 +26,20 @@ CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: ../include/Util.h
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: ../src/PlotAnaV0Mult.cxx
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
+CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../include/Libraries.h
+CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../include/Plot.h
+CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../include/PlotEmbeddingJPsi.h
+CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../include/Util.h
+CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../src/PlotEmbeddingJPsi.cxx
+CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+
+CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o: ../include/Libraries.h
+CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o: ../include/Plot.h
+CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o: ../include/PlotGoodRun.h
+CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o: ../include/Util.h
+CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o: ../src/PlotGoodRun.cxx
+CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../include/Libraries.h
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../include/Plot.h
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../include/PlotTofEff.h

@@ -6,10 +6,10 @@ CMakeFiles/upc-reader.dir/src/Plot.cxx.o
  /star/u/mvranovsk/plots/include/Plot.h
  /star/u/mvranovsk/plots/src/Plot.cxx
 CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o
- /star/u/mvranovsk/plots/include/Libraries.h
- /star/u/mvranovsk/plots/include/Plot.h
- /star/u/mvranovsk/plots/include/PlotAnaJPsi.h
- /star/u/mvranovsk/plots/include/Util.h
+ ../include/Libraries.h
+ ../include/Plot.h
+ ../include/PlotAnaJPsi.h
+ ../include/Util.h
  /star/u/mvranovsk/plots/src/PlotAnaJPsi.cxx
  /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o
@@ -25,6 +25,20 @@ CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o
  /star/u/mvranovsk/plots/include/PlotAnaV0Mult.h
  /star/u/mvranovsk/plots/include/Util.h
  /star/u/mvranovsk/plots/src/PlotAnaV0Mult.cxx
+ /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o
+ ../include/Libraries.h
+ ../include/Plot.h
+ ../include/PlotEmbeddingJPsi.h
+ ../include/Util.h
+ /star/u/mvranovsk/plots/src/PlotEmbeddingJPsi.cxx
+ /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o
+ ../include/Libraries.h
+ ../include/Plot.h
+ ../include/PlotGoodRun.h
+ ../include/Util.h
+ /star/u/mvranovsk/plots/src/PlotGoodRun.cxx
  /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o
  /star/u/mvranovsk/plots/include/Libraries.h

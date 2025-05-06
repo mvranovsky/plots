@@ -22,7 +22,7 @@ args = sys.argv
 inputSource = ""
 tag = ""
 inputDirectory = ""
-args.pop(0) # cut first input from terminal = ./SubmitPlugin
+args.pop(0) # cut first input from terminal = ./RunPlot.py
 if len(args) == 2:
     tag = args.pop(0) # read third input from terminal = tag (outputDir)
     inputSource = args.pop(0) # read second input from terminal = inputSource

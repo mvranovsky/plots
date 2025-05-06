@@ -367,7 +367,6 @@ vector<pair<int,double>> PlotTofEffMult::effFit(int Switch ,double Min, double M
 	//TH1D* hist1 = new TH1D("effK0s1" + variable + convertToString( Min ) + TString("to") + convertToString( Max ), "fit peak for a specific bin;m_{#pi^{+} #pi^{-}} [GeV/c^{2}]; counts", nBins, lowRange, topRange);
 	//TH1D* hist2 = new TH1D("effK0s2" + variable + convertToString( Min ) + TString("to") + convertToString( Max ), "fit peak for a specific bin;m_{#pi^{+} #pi^{-}} [GeV/c^{2}]; counts", nBins, lowRange, topRange);
 
-	double normalisation = (topRange - lowRange)/nBins;
 	// considering bins from 0.45 to 0.54, signal from 0.48 to 0.52, background 0.46-0.48 and 0.52-0.54
 	double sumSignal1 = 0;
 	double sumBcg1 = 0;
@@ -656,7 +655,7 @@ void PlotTofEffMult::efficiency(int switcher, int runSeparatePions = 0) {
 
 	cout << "Beginning efficiency plot for " << variable << endl;
 	vector<pair<int,double>> binContent1, binContent2, current_yield, current_bcgSub, binContentBcgSub1, binContentBcgSub2;
-	Double_t arg1[2], arg2[2], arg3[2], arg4[2];
+	Double_t arg1[2], arg2[2], arg3[2];
 	for (int iBin = 0; iBin < binCount; ++iBin){ // considering 18 bins fro -0.9 to 0.9, skipping from -0.2 to 0.2 
 		//run fits over all bins
 		cout << "Running " << variable << " bin number: " << iBin << endl;
@@ -757,13 +756,13 @@ void PlotTofEffMult::efficiency(int switcher, int runSeparatePions = 0) {
 
 	cout << "-------------------------------------------------------------------------" << endl;
 	cout << "RESULTS FOR INTEGRATION:" << endl;
-	for (int i = 0; i < binContentBcgSub1.size(); ++i){
+	for (unsigned int i = 0; i < binContentBcgSub1.size(); ++i){
 		cout << variable << " bin number " << i << ",contentBcgSub 1: value: " << binContentBcgSub1[i].first << ", error: " << binContentBcgSub1[i].second << endl;
 		cout << variable << " bin number " << i << ",contentBcgSub 2: value: " << binContentBcgSub2[i].first << ", error: " << binContentBcgSub2[i].second << endl;
 	}
 	cout << "-------------------------------------------------------------------------" << endl;
 	cout << "RESULTS FOR FITS:" << endl;
-	for (int i = 0; i < binContent1.size(); ++i){
+	for (unsigned int i = 0; i < binContent1.size(); ++i){
 		cout << variable << " bin number " << i << ",content 1: value: " << binContent1[i].first << ", error: " << binContent1[i].second << endl;
 		cout << variable << " bin number " << i << ",content 2: value: " << binContent2[i].first << ", error: " << binContent2[i].second << endl;
 	}
@@ -920,7 +919,7 @@ double PlotTofEffMult::CalculateSystematicError(int switcher,TGraphAsymmErrors* 
 
     for (int i = 0; i < nDataPoints; ++i) {
         double xData, yData, exlData, exhData, eylData, eyhData;
-        double xMC, yMC, exlMC, exhMC, eylMC, eyhMC;
+        double xMC, yMC, eylMC, eyhMC;
 
         // Get point and errors for Data
         gData->GetPoint(i, xData, yData);
@@ -931,8 +930,6 @@ double PlotTofEffMult::CalculateSystematicError(int switcher,TGraphAsymmErrors* 
 
         // Get point and errors for MC
         gMC->GetPoint(i, xMC, yMC);
-        exlMC = gMC->GetErrorXlow(i);
-        exhMC = gMC->GetErrorXhigh(i);
         eylMC = gMC->GetErrorYlow(i);
         eyhMC = gMC->GetErrorYhigh(i);
 
@@ -1056,8 +1053,7 @@ TGraphAsymmErrors* PlotTofEffMult::getTrueMC(int switcher){
 	        double y = hTrueMC->GetBinContent(i);             // Bin content
 	        double exl = hTrueMC->GetBinCenter(i) - hTrueMC->GetBinLowEdge(i);  // Left error in X
 	        double exh = hTrueMC->GetBinWidth(i) - exl;       // Right error in X
-	        double eyl = hTrueMC->GetBinError(i);             // Y error (assuming symmetric here)
-	        double eyh = eyl;                              // Set as symmetric Y error
+	        //double eyl = hTrueMC->GetBinError(i);             // Y error (assuming symmetric here)
 
 	        // Set the point and its errors in the graph
 	        graph->SetPoint(i - 1, x*180/TMath::Pi(), y);                  // TGraph indices start at 0
@@ -1070,8 +1066,7 @@ TGraphAsymmErrors* PlotTofEffMult::getTrueMC(int switcher){
 	        double y = hTrueMC->GetBinContent(i);             // Bin content
 	        double exl = hTrueMC->GetBinCenter(i) - hTrueMC->GetBinLowEdge(i);  // Left error in X
 	        double exh = hTrueMC->GetBinWidth(i) - exl;       // Right error in X
-	        double eyl = hTrueMC->GetBinError(i);             // Y error (assuming symmetric here)
-	        double eyh = eyl;                              // Set as symmetric Y error
+	        //double eyl = hTrueMC->GetBinError(i);             // Y error (assuming symmetric here)
 
 	        // Set the point and its errors in the graph
 	        graph->SetPoint(i - 1, x, y);                  // TGraph indices start at 0

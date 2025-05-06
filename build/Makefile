@@ -244,6 +244,60 @@ src/PlotAnaV0Mult.cxx.s:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.s
 .PHONY : src/PlotAnaV0Mult.cxx.s
 
+src/PlotEmbeddingJPsi.o: src/PlotEmbeddingJPsi.cxx.o
+
+.PHONY : src/PlotEmbeddingJPsi.o
+
+# target to build an object file
+src/PlotEmbeddingJPsi.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o
+.PHONY : src/PlotEmbeddingJPsi.cxx.o
+
+src/PlotEmbeddingJPsi.i: src/PlotEmbeddingJPsi.cxx.i
+
+.PHONY : src/PlotEmbeddingJPsi.i
+
+# target to preprocess a source file
+src/PlotEmbeddingJPsi.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.i
+.PHONY : src/PlotEmbeddingJPsi.cxx.i
+
+src/PlotEmbeddingJPsi.s: src/PlotEmbeddingJPsi.cxx.s
+
+.PHONY : src/PlotEmbeddingJPsi.s
+
+# target to generate assembly for a file
+src/PlotEmbeddingJPsi.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.s
+.PHONY : src/PlotEmbeddingJPsi.cxx.s
+
+src/PlotGoodRun.o: src/PlotGoodRun.cxx.o
+
+.PHONY : src/PlotGoodRun.o
+
+# target to build an object file
+src/PlotGoodRun.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o
+.PHONY : src/PlotGoodRun.cxx.o
+
+src/PlotGoodRun.i: src/PlotGoodRun.cxx.i
+
+.PHONY : src/PlotGoodRun.i
+
+# target to preprocess a source file
+src/PlotGoodRun.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.i
+.PHONY : src/PlotGoodRun.cxx.i
+
+src/PlotGoodRun.s: src/PlotGoodRun.cxx.s
+
+.PHONY : src/PlotGoodRun.s
+
+# target to generate assembly for a file
+src/PlotGoodRun.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.s
+.PHONY : src/PlotGoodRun.cxx.s
+
 src/PlotTofEff.o: src/PlotTofEff.cxx.o
 
 .PHONY : src/PlotTofEff.o
@@ -347,6 +401,12 @@ help:
 	@echo "... src/PlotAnaV0Mult.o"
 	@echo "... src/PlotAnaV0Mult.i"
 	@echo "... src/PlotAnaV0Mult.s"
+	@echo "... src/PlotEmbeddingJPsi.o"
+	@echo "... src/PlotEmbeddingJPsi.i"
+	@echo "... src/PlotEmbeddingJPsi.s"
+	@echo "... src/PlotGoodRun.o"
+	@echo "... src/PlotGoodRun.i"
+	@echo "... src/PlotGoodRun.s"
 	@echo "... src/PlotTofEff.o"
 	@echo "... src/PlotTofEff.i"
 	@echo "... src/PlotTofEff.s"
