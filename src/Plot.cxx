@@ -418,6 +418,10 @@ void Plot::TH2General(TString nameOfHist , TH2*& hist){
       return;
    }
 
+   if(nameOfHist.Contains("hNSigma")){
+      hist->SetMinimum(0.98);
+   }
+
 
    canvas->Clear();
    SetTH2Style(hist);
