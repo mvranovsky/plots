@@ -556,6 +556,15 @@ void Plot::TH2General(TString nameOfHist , TH2*& hist, TString dir){
       return;
    }
 
+<<<<<<< HEAD
+=======
+   if(nameOfHist.Contains("hNSigma")){
+      hist->SetMinimum(0.98);
+   }
+
+
+   canvas->Clear();
+>>>>>>> master
    SetTH2Style(hist);
 
    hist->Draw("COLZ");
