@@ -26,20 +26,27 @@ namespace UTIL {
    enum ARM_ID { EU_WD, ED_WU, nArms };
    enum STATION_ID { E1, E2, W1, W2, nStations };
    enum STATION_ORDER { RP1, RP2, nStationPerSide, nRpPerStation = nStationPerSide};
-   enum PARTICLE { PION = 0, KAON, PROTON,nParticles };
+   enum PARTICLE { PION = 0, KAON, PROTON, ELECTRON,nParticles };
    enum NEUTRALPARTICLE { K0S = 0, LAMBDA, LAMBDABAR , nNeutralParticles};
    enum TPC_TRACK_TYPE { GLO, PRI, TOF, QUA, nTpcTrkTypes }; // GLO=global(all), PRI=primary, TOF=PRI&TofMatched, QUA=TOF&QualityCuts
    enum BUNCH_CROSSING { CB, AG, nBnchXngsTypes }; // CB=colliding bunches, AG=abort gaps
    enum QSUM_2TRKS { OPPO, SAME, nCharges2Trks };
    enum SIGN { PLUS, MINUS, nSigns };
    enum LIST_OF_EFF_CORRECTIONS { RPACC, TPCRECOEFF, TOFMATCHEFF, nEffCorrections };
-   enum ANALYSIS_CUT { ALL = 1, TRIG, TWORPTRKS, INFID, ONETOFVX, ZVERTEX, TWOTOFTRKS, ETA, OPPOSITE, PIPI, PPI, PIPBAR, nAnalysisCuts };
-   enum V0SELECTION_CUT {V0ALL = 1, V0TRIG, V0ETA ,V0PID, V0FLAG, V0PAIR, V0ZVERTEX, V0OPPOSITE, V0PIPI, V0PPI, V0PIPBAR , nV0SelectionCuts };
+   enum V0SELECTION_CUT {V0ALL = 1, V0TRIG,V0FLAG, V0PID, V0PAIR, V0ETAVTXZ, V0OPPOSITE, V0PIPI, V0PPI, V0PIPBAR , nV0SelectionCuts };
+   enum JPSISELECTION_CUT {JPSIALL = 1, JPSITRIG, JPSI1VTX,JPSIBEMC , JPSIVTXZETA, JPSIBACKTOBACK,JPSIPID, JPSI1RP, JPSIRPFIDCUT,JPSIQTOT, nJPSISelectionCuts };
+   enum JPSISELECTION_CUT2 {JPSI2ALL = 1, JPSI2TRIG, JPSI21VTX,JPSI24TRACKS, JPSI2VTXZETA, JPSI2PID, JPSI2QTOT,nJPSI2SelectionCuts };
+   enum EMBEDDING{ EMBEDDINGALL = 1, EMBEDDING2BEMC, EMBEDDINGBACKTOBACK, EMBEDDINGETA,EMBEDDINGPID, EMBEDDINGQTOT, nEmbeddingCuts };
+   enum GOODRUN_CUT {GRALL = 1, GRTRIGGER , GRRP, GRGOODTRACKTPC, GRGOODTRACKBEMC, nGRCuts };
+   enum TOFEFF_CUT {TOFALL = 1, TOFTRIG, TOFTRACKQUALITY, TOFETAVTXZ, TOFPAIR, TOFOPPOSITE , nTOFEFFCuts};
    enum RANGE_LIMIT { MIN, MAX };
    enum DATASET { MC = 0, MCZB, DATA, nDataSets };
    enum DATATAG { TRUEMC = 0, RECO, nDataTag };
-   enum NUMBEREDHADRONS {PLUS1 = 0, MINUS1, PLUS2, MINUS2, PLUS3, MINUS3, PLUS4, MINUS4, PLUS5, MINUS5, nHadrons};
-   enum NUMBEREDSTATES {STATE0, STATE1, STATE2, STATE3, STATE4, STATE5, STATE6, STATE7, STATE8, STATE9, nStates};
+   enum NUMBEREDHADRONS {PLUS0 = 0,MINUS0, PLUS1, MINUS1, PLUS2, MINUS2, PLUS3, MINUS3, PLUS4, MINUS4,/*PLUS5,MINUS5, PLUS6, MINUS6, PLUS7, MINUS7, PLUS8, MINUS8,PLUS9, MINU9,*/ nHadrons};
+   enum NUMBEREDSTATES {STATE0 = 0, STATE1, STATE2, STATE3, STATE4,/*STATE5,STATE6, STATE7,STATE8,STATE9,*/ nStates};
+   enum VARIABLES {NHITSFIT = 0,NHITSDEDX,PID, ETA, VERTEXZ , DCAZINCM , DCAXYINCM , nVariables };
+	enum VARIATIONS {NOMINAL = 0,TIGHT, LOOSE, nVariations};
+
 }
 
 using namespace std;
@@ -66,11 +73,18 @@ class UTIL::Util{
       inline TString qSum2TrksName(UInt_t id) const { if(id<nCharges2Trks) return mChargeSum2TrksName[id]; else{ std::cerr << "ERROR in Util::qSum2TrksName(UInt_t id): id out of range" << std::endl; return TString("");} }
       inline TString signName(UInt_t id) const { if(id<nSigns) return mSignName[id]; else{ std::cerr << "ERROR in Util::signName(UInt_t id): id out of range" << std::endl; return TString("");} }
       inline TString efficiencyName(UInt_t id) const { if(id<nEffCorrections) return mEfficiencyName[id]; else{ std::cerr << "ERROR in Util::efficiencyName(UInt_t id): id out of range" << std::endl; return TString("");} }
-      inline TString analysisCutName(UInt_t id) const { if(id<nAnalysisCuts) return mCutName[id]; else{ std::cerr << "ERROR in Util::analysisCutName(UInt_t id): id out of range" << std::endl; return TString("");} }
-      inline TString analysisV0SelectionName(UInt_t id) const { if(id<nV0SelectionCuts) return mV0CutName[id]; else{ std::cerr << "ERROR in Util::analysisCutName(UInt_t id): id out of range" << std::endl; return TString("");} }
+      inline TString analysisV0SelectionName(UInt_t id) const { if(id<nV0SelectionCuts) return mV0CutName[id]; else{ std::cerr << "ERROR in Util::AnaV0CutName(UInt_t id): id out of range" << std::endl; return TString("");} }
+      inline TString analysisJPSI(UInt_t id) const { if(id<nJPSISelectionCuts) return mJPSICutName[id]; else{ std::cerr << "ERROR in Util::JPsiCutName(UInt_t id): id out of range" << std::endl; return TString("");} }
+      inline TString analysisJPSI2(UInt_t id) const { if(id<nJPSI2SelectionCuts) return mJPSI2CutName[id]; else{ std::cerr << "ERROR in Util::JPSI2CutName(UInt_t id): id out of range" << std::endl; return TString("");} }
+      inline TString embeddingName(UInt_t id) const { if(id<nEmbeddingCuts) return mEmbeddingName[id]; else{ std::cerr << "ERROR in Util::embeddingName(UInt_t id): id out of range" << std::endl; return TString("");} }
+      inline TString analysisGoodRun(UInt_t id) const { if(id<nGRCuts) return mGRCutName[id]; else{ std::cerr << "ERROR in Util::GRCutName(UInt_t id): id out of range" << std::endl; return TString("");} }
+      inline TString analysisTofEff(UInt_t id) const { if(id<nTOFEFFCuts) return mTOFEFFName[id]; else{ std::cerr << "ERROR in Util::analysisTofEff(UInt_t id): id out of range" << std::endl; return TString("");} }      
       inline TString dataSetName(UInt_t id) const { if(id<nDataSets) return mDataSetName[id]; else{ std::cerr << "ERROR in Util::dataSetName(UInt_t id): id out of range" << std::endl; return TString("");} }
       inline TString dataTagName(UInt_t id) const { if(id<nDataTag) return mDataTagName[id]; else{ std::cerr << "ERROR in Util::dataTagName(UInt_t id): id out of range" << std::endl; return TString("");} }
 
+      inline TString nameOfVariable(UInt_t id) const { if(id<nVariables) return nameOfVar[id]; else{ std::cerr << "ERROR in Util::nameOfVariable(UInt_t id): id out of range" << std::endl; return TString("");} }
+      inline TString variationName(UInt_t id) const { if(id<nVariations) return variations[id]; else{ std::cerr << "ERROR in Util::variationName(UInt_t id): id out of range" << std::endl; return TString("");} }
+      inline TString variableLatex(UInt_t id) const { if(id<nVariables) return mVarLatex[id]; else{ std::cerr << "ERROR in Util::variableLatex(UInt_t id): id out of range" << std::endl; return TString("");} }
 
       inline Double_t mass(int name) const{ return mParticleMass[name]; }
       inline Double_t c() const{ return mSpeedOfLight; }
@@ -120,8 +134,17 @@ class UTIL::Util{
       TString* mEfficiencyName;
       TString* mCutName;
       TString* mV0CutName;
+      TString* mJPSICutName;
+      TString* mJPSI2CutName;
       TString* mDataSetName;
       TString* mDataTagName;
+      TString* mTOFEFFName;
+      TString* mGRCutName;
+      TString* mEmbeddingName;
+      TString* nameOfVar;
+      TString* variations;
+      TString* mVarLatex;
+
           
       Double_t mParticleMass[nParticles]; // GeV/c^2
       const Double_t mSpeedOfLight; // m/s

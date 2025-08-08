@@ -58,7 +58,7 @@ void PlotTofEffMult::Make(){
 	*/
 	// create canvases for all TH1D 
 
-	handleHistograms();
+	handleHistograms(nameOfTofEffMultDir);
 
 	outFile->Close();
 	histFile->Close();
@@ -70,7 +70,6 @@ void PlotTofEffMult::Make(){
 
 void PlotTofEffMult::Init(){
 	//define the output file which will store all the canvases
-	outFile = unique_ptr<TFile>(TFile::Open(outputPosition, "recreate"));
 
 	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
@@ -87,7 +86,7 @@ void PlotTofEffMult::Init(){
 
 
 	//load the tree chain from the input file
-	if(!ConnectInputTree(inputPosition, nameOfTofEffMultTree) || !tree ){
+	if(!ConnectInputTree(inputPosition, nameOfTofEffMultTree, tree, bcgTree) || !tree ){
 		cout << "Could not connect input tree correctly." << endl;
 		return;
 	}

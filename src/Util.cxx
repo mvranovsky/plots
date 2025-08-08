@@ -72,7 +72,7 @@ Util::Util(): mSpeedOfLight(299792458), mBeamMomentum(254.867), mPi(3.1415926535
    mStationName[W2] = TString("W2");
    
    mParticleName = new TString[nParticles];
-//   mParticleName[ELECTRON] = TString("electron");
+   mParticleName[ELECTRON] = TString("electron");
 //   mParticleName[MUON] = TString("muon");
    mParticleName[PION] = TString("pion");
    mParticleName[KAON] = TString("kaon");
@@ -106,34 +106,65 @@ Util::Util(): mSpeedOfLight(299792458), mBeamMomentum(254.867), mPi(3.1415926535
    mEfficiencyName[TPCRECOEFF] = TString("TpcRecoEff");
    mEfficiencyName[TOFMATCHEFF] = TString("TofMatchEff");
 
-   mCutName = new TString[nAnalysisCuts];
-   mCutName[ALL] = TString("All");
-   mCutName[TRIG] = TString("CPT");
-   mCutName[TWORPTRKS] = TString("2 RP tracks");
-   mCutName[INFID] = TString("RP fiducial");
-   mCutName[ONETOFVX] = TString("1 TOF vertex");
-   mCutName[ZVERTEX] = TString("|V_{z}| < 80 cm");
-   mCutName[TWOTOFTRKS] = TString("2 TOF tracks");
-   mCutName[ETA] = TString("|#eta| < 0.7");
-   mCutName[OPPOSITE] = TString("TotQ = 0");
-   //mCutName[TPCRPVX_MATCHED] = TString("TPC-RP vrtx match");
-   mCutName[PIPI] = TString("#pi^{+}#pi^{-}");
-   mCutName[PPI] = TString("p#pi^{-}");
-   mCutName[PIPBAR] = TString("#pi^{+}#bar{p}");
-
    mV0CutName = new TString[nV0SelectionCuts];
    mV0CutName[V0ALL] = TString("All");
    mV0CutName[V0TRIG] = TString("CPT");
-   mV0CutName[V0ETA] = TString("|#eta| < 0.7");
+   //mV0CutName[V0ETA] = TString("|#eta| < 0.7");
    mV0CutName[V0PID] = TString("PID");
-   mV0CutName[V0FLAG] = TString("tracks with V0 flag");
+   mV0CutName[V0FLAG] = TString("V0 flag");
    mV0CutName[V0PAIR] = TString("V0 pair selection");
-   mV0CutName[V0ZVERTEX] = TString("|V_{z}| < 80 cm");
+   mV0CutName[V0ETAVTXZ] = TString("eta + vertex range");
    mV0CutName[V0OPPOSITE] = TString("Unlike-sign");
    mV0CutName[V0PIPI] = TString("#pi^{+}#pi^{-}");
    mV0CutName[V0PPI] = TString("p#pi^{-}");
    mV0CutName[V0PIPBAR] = TString("#pi^{+}#bar{p}");
    
+   mTOFEFFName = new TString[nTOFEFFCuts];
+   mTOFEFFName[TOFALL] = TString("All");
+   mTOFEFFName[TOFTRIG] = TString("CPT");
+   mTOFEFFName[TOFTRACKQUALITY] = TString("Good track quality");
+   mTOFEFFName[TOFETAVTXZ] = TString("#eta - Vtx_{Z}");
+   mTOFEFFName[TOFPAIR] = TString("topology");
+   mTOFEFFName[TOFOPPOSITE] = TString("Q_{tot} = 0");
+
+   mJPSICutName = new TString[nJPSISelectionCuts];
+   mJPSICutName[JPSIALL] = TString("All");
+   mJPSICutName[JPSITRIG] = TString("J/#Psi trigger");
+   mJPSICutName[JPSI1VTX] = TString("1 Vertex");
+   mJPSICutName[JPSIBEMC] = TString("2 BEMC tracks");
+   mJPSICutName[JPSIVTXZETA] = TString("V_{Z} - #eta cut");
+   mJPSICutName[JPSIBACKTOBACK] = TString("Back-to-back");
+   mJPSICutName[JPSIPID] = TString("PID");
+   mJPSICutName[JPSI1RP] = TString("1 RP track");
+   mJPSICutName[JPSIRPFIDCUT] = TString("Fiducial RP cut");
+   mJPSICutName[JPSIQTOT] = TString("Q_{tot} = 0");
+
+   mJPSI2CutName = new TString[nJPSI2SelectionCuts];
+   mJPSI2CutName[JPSI2ALL] = TString("All");
+   mJPSI2CutName[JPSI2TRIG] = TString("J/#Psi trigger");
+   mJPSI2CutName[JPSI21VTX] = TString("1 vertex");
+   mJPSI2CutName[JPSI24TRACKS] = TString("4 good tracks");
+   mJPSI2CutName[JPSI2VTXZETA] = TString("V_{Z} - #eta cut");
+   mJPSI2CutName[JPSI2PID] = TString("PID");
+   mJPSI2CutName[JPSI2QTOT] = TString("Q_{tot} = 0");
+
+
+   mEmbeddingName = new TString[nEmbeddingCuts];
+   mEmbeddingName[EMBEDDINGALL] = TString("All");
+   mEmbeddingName[EMBEDDING2BEMC] = TString("2 BEMC tracks");
+   mEmbeddingName[EMBEDDINGBACKTOBACK] = TString("Back-to-back");
+   mEmbeddingName[EMBEDDINGETA] = TString("|#eta| < 0.9");
+   mEmbeddingName[EMBEDDINGPID] = TString("PID");
+   mEmbeddingName[EMBEDDINGQTOT] = TString("Q_{tot} = 0");
+
+   mGRCutName = new TString[nGRCuts];
+   mGRCutName[GRALL] = TString("All");
+   mGRCutName[GRTRIGGER] = TString("J/#psi Trigger");
+   mGRCutName[GRRP] = TString("RP working");
+   mGRCutName[GRGOODTRACKTPC] = TString("Good TPC track");
+   mGRCutName[GRGOODTRACKBEMC] = TString("Good BEMC track");
+
+
    mDataSetName = new TString[nDataSets];
    mDataSetName[MC] = TString("PureMc");
    mDataSetName[MCZB] = TString("MCZB");
@@ -146,6 +177,7 @@ Util::Util(): mSpeedOfLight(299792458), mBeamMomentum(254.867), mPi(3.1415926535
    mParticleMass[PION] = 0.13957018;
    mParticleMass[KAON] = 0.493667;
    mParticleMass[PROTON] = 0.93827208;
+   mParticleMass[ELECTRON] = 0.000510998;
    
    mBranchPerRp[E1U] = EU;
    mBranchPerRp[E2U] = EU;
@@ -210,6 +242,32 @@ Util::Util(): mSpeedOfLight(299792458), mBeamMomentum(254.867), mPi(3.1415926535
    mBranchConfigMap[Down][Down] =  CONF_ED_WD;
    mBranchConfigMap[Up][Down] =  CONF_EU_WD;
    mBranchConfigMap[Down][Up] =  CONF_ED_WU;
+
+
+
+   nameOfVar = new TString[nVariables];
+   nameOfVar[NHITSFIT] = TString("nHitsFit");
+   nameOfVar[NHITSDEDX] = TString("nHitsDedx");
+   nameOfVar[DCAZINCM] = TString("dcaZInCm");
+   nameOfVar[DCAXYINCM] = TString("dcaXYInCm");
+   nameOfVar[PID] = TString("PID");
+   nameOfVar[VERTEXZ] = TString("vertexZInCm");
+   nameOfVar[ETA] = TString("etaHadron");
+
+   mVarLatex = new TString[nVariables];
+   mVarLatex[NHITSFIT] = TString("N^{Fit}_{Hits}");
+   mVarLatex[NHITSDEDX] = TString("N^{dEdx}_{Hits}");
+   mVarLatex[DCAZINCM] = TString("DCA_{Z}");
+   mVarLatex[DCAXYINCM] = TString("DCA_{XY}");
+   mVarLatex[PID] = TString("PID");
+   mVarLatex[VERTEXZ] = TString("V_{Z}");
+   mVarLatex[ETA] = TString("#eta");
+
+   variations = new TString[nVariations];
+   variations[NOMINAL] = TString("nominal");
+   variations[TIGHT] = TString("tight");
+   variations[LOOSE] = TString("loose");
+
 }
 
 Util::~Util(){
@@ -316,7 +374,7 @@ TH1D* Util::bkgdHistogram(const TH2* hMissPtVsX, Double_t ptMissCut, Double_t fi
    const double integralLimit_MAX = missingPtHist->GetXaxis()->GetBinUpEdge( missingPtHist->GetXaxis()->FindBin( fitLimitMax ) );
    if( mode==0 ){ // default mode
       TF1 *pTMissExtrapolationFunc = new TF1();
-      double bkgdFrac = bkgdFraction( missingPtHist, ptMissCut, fitLimitMin, fitLimitMax, pTMissExtrapolationFunc);
+      //double bkgdFrac = bkgdFraction( missingPtHist, ptMissCut, fitLimitMin, fitLimitMax, pTMissExtrapolationFunc);
       const double integralRatio_signalRegion_to_bkgdFreeRegion = pTMissExtrapolationFunc->Integral(0, ptMissCut) / pTMissExtrapolationFunc->Integral(integralLimit_MIN, integralLimit_MAX);
       //     double nBkgdEvents = bkgdFrac*integratePtMiss( missingPtHist, ptMissCut );
       for(int i=0; i<=(hBkgd->GetNbinsX()+1); ++i){
@@ -381,7 +439,7 @@ void Util::subtractBackground(TH1* hSignalPlusBkgd, const TH1* hBkgd) const{
       const double signalPlusBkgdError = hSignalPlusBkgd->GetBinError(i);
       const double backgroundContent = hBkgd->GetBinContent(i);
       const double bkgdFraction = backgroundContent / signalPlusBkgdContent;
-      const double bkgdFractionError = sqrt(bkgdFraction*(1.-bkgdFraction) / signalPlusBkgdContent ); //ALERT binomial error approximation
+      //const double bkgdFractionError = sqrt(bkgdFraction*(1.-bkgdFraction) / signalPlusBkgdContent ); //ALERT binomial error approximation
       
       const double pureSignalContent = signalPlusBkgdContent - backgroundContent;
       if( pureSignalContent<0 ) std::cerr << "WARNING in subtractBackground(): Background larger than signal" << std::endl;

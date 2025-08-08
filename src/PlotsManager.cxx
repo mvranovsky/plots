@@ -1,9 +1,10 @@
-
 #include "../include/PlotsManager.h"
 //argv[0] = inputSource
 //argv[1] = outputFile
 int main(int argc, char *argv[]){ 
 	
+
+
 	cout<<"Starting making plots..."<<endl;
 	if (argc != 3 ){
 		cout << "Incorrect number of arguments. First argument is the input source, second is the outputfile position."<<endl;
@@ -13,14 +14,11 @@ int main(int argc, char *argv[]){
 	const char* outputPosition = argv[2];
     const char* histogramFilePath = "histFile.root";
 
-
-    if (!connectHists(inputPosition, histogramFilePath)){
-    	cout << "Couldn't connect all histograms." << endl;
-    	return 1;
+    if(strstr(argv[1], "-runCS")){
+        runCrossSection(outputPosition);
     }
-    cout << "Successfully added all histograms together..." << endl;
-
-
+    
+    
     if( strstr(inputPosition, "AnaV0Mult") ){
     	cout << "Creating plots from AnaV0Mult..." << endl;
     	mPlot = new PlotAnaV0Mult(inputPosition, outputPosition);
@@ -31,12 +29,12 @@ int main(int argc, char *argv[]){
         cout << "Creating plots from TofEffMult..." << endl;
         mPlot = new PlotTofEffMult(inputPosition, outputPosition);
     } else if( strstr(inputPosition, "TofEff") ){
-    	cout << "Creating plots from TofEff..." << endl;
+        cout << "Creating plots from TofEff..." << endl;
     	mPlot = new PlotTofEff(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "AnaJPsi") ){
+    } else if( strstr(inputPosition, "AnaJPsi") || strstr(inputPosition, "SysStudy") ){
         cout << "Creating plots from AnaJPsi..." << endl;
         mPlot = new PlotAnaJPsi(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "EmbeddingJPsi") ){
+    } else if( strstr(inputPosition, "EmbeddingJPsi") || strstr(inputPosition, "SysStudyEmbedding") ){
         cout << "Creating plots from EmbeddingJPsi..." << endl;
         mPlot = new PlotEmbeddingJPsi(inputPosition, outputPosition);
     }else if( strstr(inputPosition, "AnaGoodRun") ){
@@ -46,7 +44,14 @@ int main(int argc, char *argv[]){
     	cout << "No plots to run. Leaving..." << endl;
     	return 1;
     }
+    
+    if (!connectHists(inputPosition, histogramFilePath)){
+        cout << "Couldn't connect all histograms." << endl;
+        return 1;
+    }
+    cout << "Successfully added all histograms together..." << endl;
 
+    
     mPlot->Init();
     mPlot->Make();
 

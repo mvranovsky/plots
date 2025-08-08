@@ -6,5 +6,5 @@ CXX_FLAGS = -Wall -g -Wl,--no-as-needed -pthread -std=c++11 -Wno-deprecated-decl
 
 CXX_DEFINES = -Dupc_reader_EXPORTS
 
-CXX_INCLUDES = -I/star/u/mvranovsk/plots/include 
+CXX_INCLUDES = -I/star/u/mvranovsk/plots/include -I/star/u/mvranovsk/star-upcDst/work/include 
 

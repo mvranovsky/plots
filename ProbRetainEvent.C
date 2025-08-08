@@ -104,14 +104,7 @@ void ProbRetainEvent(TString filename ) {  // argument is the name of the output
 
 
 
-    TLegend *legend = new TLegend(0.12, 0.7, 0.3, 0.88);
-    legend->AddEntry(graph, "Data", "lp");
-    legend->AddEntry(fit, "Exponential fit", "lp");
-    legend->SetBorderSize(0);
-    legend->SetFillColorAlpha(0,0);
-    legend->SetTextSize(0.04);
-    legend->Draw("same");
-
+    
     TPaveText *textpp510 = new TPaveText(0.77, 0.77, 0.94, 0.96,"brNDC");
     textpp510 -> SetTextSize(0.04);
     textpp510 -> SetTextAlign(33);
@@ -121,7 +114,7 @@ void ProbRetainEvent(TString filename ) {  // argument is the name of the output
     textpp510->AddText("p+p #rightarrow p #oplus J/#psi #oplus p");
     textpp510->AddText( "#sqrt{s} = 510 GeV");
     textpp510 -> Draw("same");
-
+    
     TPaveText *text = new TPaveText(0.77, 0.6, 0.94, 0.75,"brNDC");
     text -> SetTextSize(0.04);
     text -> SetTextAlign(33);
@@ -137,8 +130,8 @@ void ProbRetainEvent(TString filename ) {  // argument is the name of the output
     text -> AddText(Form("A = %.3f #pm %.3f", fit->GetParameter(0), fit->GetParError(0)));
     text -> AddText(Form("B = %.3f #pm %.3f", fit->GetParameter(1), fit->GetParError(1)));
     text -> Draw("same");
-
-
+    
+    
     TH1D *h = new TH1D("h", "", 100, -0.5,0.5 );
     // loop over all points in the graph 
     for (int i = 0; i < graph->GetN(); i++) {
@@ -148,16 +141,42 @@ void ProbRetainEvent(TString filename ) {  // argument is the name of the output
         // difference between y and function value
         h->Fill(y-funcVal);   
     }
-
+    
     vector<double> fitPars= fitGaussian(h,data);
     if(fitPars.size() == 0){
         cout << "Error fitting Gaussian." << endl;
         return;
     }
-
+    
     writeToFile("goodRun17.list", data, fitPars[0], fitPars[1], fit->GetParameter(0), fit->GetParameter(1));
-
+    
     cout << "Data written to file: goodRun17.list" << endl;
+    
+    // draw lines with TF1 at +- 9 sigma
+    double mean = fitPars[0];
+    double sigma = fitPars[1];
+    TF1 *linePlus = new TF1("linePlus", "[0]*exp([1]*x) + [2]", 60,160);
+    linePlus->SetParameters(fit->GetParameter(0), fit->GetParameter(1), 9 * sigma);
+    linePlus->SetLineColor(kBlack);
+    linePlus->SetLineStyle(2);
+    linePlus->SetLineWidth(2);
+    linePlus->Draw("same");
+    
+    TF1 *lineMinus = new TF1("lineMinus", "[0]*exp([1]*x) - [2]", 60,160);
+    lineMinus->SetParameters(fit->GetParameter(0), fit->GetParameter(1), 9 * sigma);
+    lineMinus->SetLineColor(kBlack);
+    lineMinus->SetLineStyle(2);
+    lineMinus->SetLineWidth(2);
+    lineMinus->Draw("same");
+    
+    TLegend *legend = new TLegend(0.12, 0.7, 0.3, 0.88);
+    legend->AddEntry(graph, "Data", "lp");
+    legend->AddEntry(fit, "Exponential fit", "lp");
+    legend->AddEntry(linePlus, "Mean #pm 9#sigma", "l");
+    legend->SetBorderSize(0);
+    legend->SetFillColorAlpha(0,0);
+    legend->SetTextSize(0.04);
+    legend->Draw("same");
 
 
     cout << "back in main function" << endl;

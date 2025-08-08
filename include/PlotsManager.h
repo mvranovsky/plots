@@ -10,6 +10,7 @@
 #include "PlotAnaJPsi.h"
 #include "PlotGoodRun.h"
 #include "PlotEmbeddingJPsi.h"
+#include "CrossSectionMaker.h"
 #include <TFile.h>
 #include <TKey.h>
 #include <TClass.h>
@@ -39,9 +40,18 @@ vector<TH1D*> histograms;
 
 Plot* mPlot;
 
-bool connectHists(const char* inputPath, const char* outputFilename);
-vector<string> getFilenames(const string& input);
 
+void runCrossSection(const char* outputFile) {
+   cout << "Running CrossSectionMaker..." << endl;
+
+   TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_withRP_6.8.25/merged/StRP_production.list";
+   TString embedDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/EmbeddingJPsi/merged/StRP_production.list";
+   TString goodRunDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaGoodRun_4.8.25/merged/StRP_production.list";
+
+   CrossSectionMaker *crossSectionMaker = new CrossSectionMaker(anaDir, embedDir, goodRunDir, TString(outputFile));
+   crossSectionMaker->Make();
+   delete crossSectionMaker;
+}
 
 
 vector<string> getFilenames(const string& input){
@@ -65,12 +75,31 @@ vector<string> getFilenames(const string& input){
          if(!inputFile || inputFile->IsZombie()){
             cout << "Couldn't open: " << line.c_str() << endl;
             return {};
-         } 
+         }
          filenames.push_back(line);
       }//while
    }//else if
 
    return filenames;
+}
+
+vector<TDirectory*> getDirectories(unique_ptr<TFile>& file) {
+   vector<TDirectory*> directories;
+   if (!file || file->IsZombie()) {
+      cerr << "Error: File is not open or is a zombie." << endl;
+      return directories;
+   }
+
+   TIter nextKey(file->GetListOfKeys());
+   TKey* key;
+   while ((key = (TKey*)nextKey())) {
+      TClass* cls = TClass::GetClass(key->GetClassName());
+      if (!cls || !cls->InheritsFrom("TDirectory")) continue;
+      TDirectory* dir = static_cast<TDirectory*>(key->ReadObj());
+      directories.push_back(dir);
+   }
+   return directories;
+
 }
 
 
@@ -94,64 +123,114 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
       }
       TIter nextKey(file->GetListOfKeys());
       TKey* key;
-      while ((key = (TKey*)nextKey())) {
-         // Get object class type
-         TClass* cls = TClass::GetClass(key->GetClassName());
-         if (!cls) continue;
-         // Check if it is a histogram (TH1 base class)
-         if (cls->InheritsFrom("TH1D") || cls->InheritsFrom("TH1F") || cls->InheritsFrom("TH1I")) {
-             TH1* hist = static_cast<TH1*>(key->ReadObj());
-             string histName = hist->GetName();
 
-             // Merge histograms with the same name
-             if (mergedTH1Hists.find(histName) == mergedTH1Hists.end()) {
-                 // First instance, clone the histogram
-                 mergedTH1Hists[histName] = static_cast<TH1*>(hist->Clone());
-                 mergedTH1Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
-             } else {
-                 // Add to existing histogram
-                 mergedTH1Hists[histName]->Add(hist);
-             }
-         }
-         // Check if it is a TH2 class
-         if (cls->InheritsFrom("TH2D") || cls->InheritsFrom("TH2F") || cls->InheritsFrom("TH2I")) {
-             TH2* hist = static_cast<TH2*>(key->ReadObj());
-             string histName = hist->GetName();
+      for(const auto& dir : getDirectories(file)) {
+         if (!dir) continue;
+         // Iterate over all keys in the directory
+         TIter nextKey(dir->GetListOfKeys());
+         while ((key = (TKey*)nextKey())) {
+            TObject* obj = key->ReadObj();
+            if (!obj) continue;
 
-             // Merge histograms with the same name
-             if (mergedTH2Hists.find(histName) == mergedTH2Hists.end()) {
-                 // First instance, clone the histogram
-                 mergedTH2Hists[histName] = static_cast<TH2*>(hist->Clone());
-                 mergedTH2Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
-             } else {
-                 // Add to existing histogram
-                 mergedTH2Hists[histName]->Add(hist);
-             }
+            // Check if it is a histogram (TH1 base class)
+            TClass* cls = TClass::GetClass(key->GetClassName());
+            if (!cls) continue;
+            if (cls->InheritsFrom("TH1D") || cls->InheritsFrom("TH1F") || cls->InheritsFrom("TH1I")) {
+               TH1* hist = static_cast<TH1*>(obj);
+
+               string histName;
+               if(TString(hist->GetName()).Contains("hVtxZFillNum") ){
+                  histName = ( TString("hVtxZFillNum/") + TString(hist->GetName()) ).Data();
+               }else{
+                  histName = ( TString(dir->GetName()) + TString("/") + TString(hist->GetName()) ).Data();
+               }
+
+
+               // Merge histograms with the same name
+               if (mergedTH1Hists.find(histName) == mergedTH1Hists.end()) {
+                  // First instance, clone the histogram
+                  mergedTH1Hists[histName] = static_cast<TH1*>(hist->Clone());
+                  mergedTH1Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
+               } else {
+                  // Add to existing histogram
+                  mergedTH1Hists[histName]->Add(hist);
+               }
+            }
+            // Check if it is a TH2 class
+            if (cls->InheritsFrom("TH2D") || cls->InheritsFrom("TH2F") || cls->InheritsFrom("TH2I")) {
+               TH2* hist = static_cast<TH2*>(obj);
+               string histName = (TString(dir->GetName()) + TString("/") + TString(hist->GetName()) ).Data();
+
+               // Merge histograms with the same name
+               if (mergedTH2Hists.find(histName) == mergedTH2Hists.end()) {
+                  // First instance, clone the histogram
+                  mergedTH2Hists[histName] = static_cast<TH2*>(hist->Clone());
+                  mergedTH2Hists[histName]->SetDirectory(nullptr); // Prevent ownership transfer
+               } else {
+                  // Add to existing histogram
+                  mergedTH2Hists[histName]->Add(hist);
+               }
+            }
          }
-         // possible to add other objects to merge and save to histfile
       }
    }
 
-    // Save merged histograms to new ROOT file
-    std::unique_ptr<TFile> histFile(new TFile(outputFilename, "RECREATE"));
-    if (!histFile || histFile->IsZombie()) {
-        std::cerr << "Error creating output file: " << outputFilename << std::endl;
-        return false;
-    }
+      // Save merged histograms to new ROOT file
+      std::unique_ptr<TFile> histFile(new TFile(outputFilename, "RECREATE"));
+      if (!histFile || histFile->IsZombie()) {
+         std::cerr << "Error creating output file: " << outputFilename << std::endl;
+         return false;
+      }
 
+   map<TString,int> saved;
    histFile->cd();
    for (const auto& entry : mergedTH1Hists) {
-       entry.second->Write();      
+      // get the directory name from the histogram name
+      size_t pos = entry.first.find_last_of('/');
+      if (pos != string::npos) {
+         string dirName = entry.first.substr(0, pos);
+         if (!histFile->GetDirectory(dirName.c_str())) {
+            histFile->mkdir(dirName.c_str());
+         } 
+         histFile->cd(dirName.c_str());
+      } else {
+         histFile->cd();
+      }
+      if(saved.find(entry.first) == saved.end()){
+         saved[entry.first] = 1;
+         entry.second->Write();
+      }
+      histFile->cd();
    }
    for (const auto& entry : mergedTH2Hists) {
-       entry.second->Write();        
+      // get the directory name from the histogram name
+
+      size_t pos = entry.first.find_last_of('/');
+      if (pos != string::npos) {
+         string dirName = entry.first.substr(0, pos);
+         if (!histFile->GetDirectory(dirName.c_str())) {
+            histFile->mkdir(dirName.c_str());
+         }
+         histFile->cd(dirName.c_str());
+      } else {
+         histFile->cd();
+      }
+      if(saved.find(entry.first) == saved.end()){
+         saved[entry.first] = 1;
+         entry.second->Write();
+      }else{
+         cout << "Histogram " << entry.first << " already saved. Skipping." << endl;
+      }
+      histFile->cd();
    }
    histFile->Close();
-   histFile.reset();
+   //histFile.reset();
 
-    cout << "Merged histograms saved in " << outputFilename << endl;
-    return true;
+   cout << "Merged histograms saved in " << outputFilename << endl;
+   return true;
 }
+
+
 
 #endif
 

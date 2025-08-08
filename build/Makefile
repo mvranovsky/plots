@@ -39,10 +39,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /afs/rhic.bnl.gov/@sys/opt/star/sl73_gcc485/bin/cmake
+CMAKE_COMMAND = /direct/star+nfs4/AFS/opt/star/sl73_gcc485/bin/cmake
 
 # The command to remove a file.
-RM = /afs/rhic.bnl.gov/@sys/opt/star/sl73_gcc485/bin/cmake -E remove -f
+RM = /direct/star+nfs4/AFS/opt/star/sl73_gcc485/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /star/u/mvranovsk/plots/build
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/afs/rhic.bnl.gov/@sys/opt/star/sl73_gcc485/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/direct/star+nfs4/AFS/opt/star/sl73_gcc485/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/afs/rhic.bnl.gov/@sys/opt/star/sl73_gcc485/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/direct/star+nfs4/AFS/opt/star/sl73_gcc485/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -135,6 +135,60 @@ upc-reader: cmake_check_build_system
 upc-reader/fast:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/build
 .PHONY : upc-reader/fast
+
+src/CrossSectionMaker.o: src/CrossSectionMaker.cxx.o
+
+.PHONY : src/CrossSectionMaker.o
+
+# target to build an object file
+src/CrossSectionMaker.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o
+.PHONY : src/CrossSectionMaker.cxx.o
+
+src/CrossSectionMaker.i: src/CrossSectionMaker.cxx.i
+
+.PHONY : src/CrossSectionMaker.i
+
+# target to preprocess a source file
+src/CrossSectionMaker.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.i
+.PHONY : src/CrossSectionMaker.cxx.i
+
+src/CrossSectionMaker.s: src/CrossSectionMaker.cxx.s
+
+.PHONY : src/CrossSectionMaker.s
+
+# target to generate assembly for a file
+src/CrossSectionMaker.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.s
+.PHONY : src/CrossSectionMaker.cxx.s
+
+src/FitJPsi.o: src/FitJPsi.cxx.o
+
+.PHONY : src/FitJPsi.o
+
+# target to build an object file
+src/FitJPsi.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o
+.PHONY : src/FitJPsi.cxx.o
+
+src/FitJPsi.i: src/FitJPsi.cxx.i
+
+.PHONY : src/FitJPsi.i
+
+# target to preprocess a source file
+src/FitJPsi.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.i
+.PHONY : src/FitJPsi.cxx.i
+
+src/FitJPsi.s: src/FitJPsi.cxx.s
+
+.PHONY : src/FitJPsi.s
+
+# target to generate assembly for a file
+src/FitJPsi.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.s
+.PHONY : src/FitJPsi.cxx.s
 
 src/Plot.o: src/Plot.cxx.o
 
@@ -379,6 +433,60 @@ src/PlotsManager.cxx.s:
 	$(MAKE) -f CMakeFiles/PlotsManager.dir/build.make CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.s
 .PHONY : src/PlotsManager.cxx.s
 
+src/ProbRetainEvent.o: src/ProbRetainEvent.cxx.o
+
+.PHONY : src/ProbRetainEvent.o
+
+# target to build an object file
+src/ProbRetainEvent.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o
+.PHONY : src/ProbRetainEvent.cxx.o
+
+src/ProbRetainEvent.i: src/ProbRetainEvent.cxx.i
+
+.PHONY : src/ProbRetainEvent.i
+
+# target to preprocess a source file
+src/ProbRetainEvent.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.i
+.PHONY : src/ProbRetainEvent.cxx.i
+
+src/ProbRetainEvent.s: src/ProbRetainEvent.cxx.s
+
+.PHONY : src/ProbRetainEvent.s
+
+# target to generate assembly for a file
+src/ProbRetainEvent.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.s
+.PHONY : src/ProbRetainEvent.cxx.s
+
+src/Util.o: src/Util.cxx.o
+
+.PHONY : src/Util.o
+
+# target to build an object file
+src/Util.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/Util.cxx.o
+.PHONY : src/Util.cxx.o
+
+src/Util.i: src/Util.cxx.i
+
+.PHONY : src/Util.i
+
+# target to preprocess a source file
+src/Util.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/Util.cxx.i
+.PHONY : src/Util.cxx.i
+
+src/Util.s: src/Util.cxx.s
+
+.PHONY : src/Util.s
+
+# target to generate assembly for a file
+src/Util.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/Util.cxx.s
+.PHONY : src/Util.cxx.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -389,6 +497,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... PlotsManager"
 	@echo "... upc-reader"
+	@echo "... src/CrossSectionMaker.o"
+	@echo "... src/CrossSectionMaker.i"
+	@echo "... src/CrossSectionMaker.s"
+	@echo "... src/FitJPsi.o"
+	@echo "... src/FitJPsi.i"
+	@echo "... src/FitJPsi.s"
 	@echo "... src/Plot.o"
 	@echo "... src/Plot.i"
 	@echo "... src/Plot.s"
@@ -416,6 +530,12 @@ help:
 	@echo "... src/PlotsManager.o"
 	@echo "... src/PlotsManager.i"
 	@echo "... src/PlotsManager.s"
+	@echo "... src/ProbRetainEvent.o"
+	@echo "... src/ProbRetainEvent.i"
+	@echo "... src/ProbRetainEvent.s"
+	@echo "... src/Util.o"
+	@echo "... src/Util.i"
+	@echo "... src/Util.s"
 .PHONY : help
 
 

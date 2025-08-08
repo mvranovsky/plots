@@ -6,6 +6,9 @@
         "AsciiToTree_2body.C": "cpp",
         "ProbRetainEvent.C": "cpp",
         "*.tcc": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "bichselG10.C": "cpp",
+        "random": "cpp",
+        "new": "cpp"
     }
 }

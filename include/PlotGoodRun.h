@@ -3,52 +3,68 @@
 
 
 #include "Plot.h"
-#include "/star/u/mvranovsk/star-upcDst/work/include/RunDef.h"
+#include "RunDef.h"
 #include "Libraries.h"
 #include "Util.h"
+#include "ProbRetainEvent.h"
 
 using namespace RooFit;
 using namespace std;
+
+
 
 class PlotGoodRun : public Plot {
 	public:
 		//accessible from outside the class
 		PlotGoodRun(const string mInputList, const char* filePath);
+		PlotGoodRun(const string mInputList, unique_ptr<TFile> &file);
       	~PlotGoodRun(){};
       
       	//overrides the original Make() from class Plot
       	void Make() override;
       	void Init() override;
 
+		double getTriggerEfficiency() const { return triggerEfficiency; }
+		double getTriggerEfficiencyBeforeCuts() const { return triggerEfficiencyBeforeCuts; }
+		vector<int> getGoodRunList() const { return goodRunList; }
+		vector<int> getRpGoodRunList() const { return rpGoodRunList; }
+		
+
 
     private:
     	//store variables, which can be accessed only from within this class
 		pair<double,double> FitEtaDistributions(TH1D* hist, int SWITCH);
 		Double_t GetMean(TH1* hist);
-		void AnalysisBEMC(vector<int> runNumberList);
-		void createGoodRunList(vector<int> goodRunList);
-		vector<int> loadProbRetainEventList();
+		void createGoodRunList(vector<int> goodRunList, TString outName);
 		vector<int> loadBadEtaPhiRuns(TString nameOfFile);
+		//void createAverageTrackHists(vector<pair<array<int, 2>, array<double, 10>>> runNumberMap);
 
-		void createAverageTrackHists(vector<pair<array<int, 2>, array<double, 10>>> runNumberMap);
+		bool inRangeEtaBemc(double average);
+		bool inRangePhiBemc(double average);
+		vector<int> getPREList();
+		void setBranchAddresses();
 
+		TTree *ZBTree;
 
-		Int_t mIsRpOk , mIsJPsiTrigger1, mIsJPsiTrigger2, mIsJPsiTrigger3, nTracksBemc, nTracksTof, nClustersBemc, runNumber;
-		vector<Double_t> mTpcTrack_phi, mTpcTrack_eta, mBemcTrack_eta, mBemcTrack_phi, mTpcNHitsFit, mTpcNHitsDEdx, mTpcNSigmaElectron, mTpcNSigmaPion, mTpcNSigmaProton, mTpcNSigmaKaon;
-	    // set branch addresses to these variables:
-		UInt_t mFillNumber,mEventNumber, mBunchCrossId, mBunchCrossId7bit;
-		UShort_t mTofMult;
-		UInt_t mNVertecies, mNGoodTpcTrks;
 		TH1* hGoodRunListFlow;
-
-
-
-		int mRunNumber, atLeast1JPsiTrigger, RPsClose, nEventsAll, nEventsPassed;
-		double luminosity, luminosityError, nTracksBEMC, nClustersBEMC, nTracksTPC, nTracksTOF, nVertices;
+		int mRunNumber;
+		int atLeast1JPsiTrigger, RPsClose, nEventsZBVetoAll, nEventsZBVetoPassed, nEventsTEAll, nEventsTEPassed, nEventsLumiFile, nEventsJPsi;
+		double luminosity, luminosityError, instLumi;
+		double vetoEfficiency, topologyEfficiency;
+		double nTracksBEMC, nClustersBEMC, nTracksTPC, nTracksTOF, nVertices;
 		double tpcEtaAverage, bemcEtaAverage, tpcPhiAverage, bemcPhiAverage;
 	
+	    vector<int> goodRunList, rpGoodRunList;
+
+		//trigger efficiency variables
+		TGraph *hTrigEff;
+		double triggerEfficiency = 0.0;
+		double triggerEfficiencyBeforeCuts= 0.0;
 
 
+		// average tracks plots
+		void createAverageTracksPlots();
+		pair<double,double> bemcFitPars, tpcFitPars, bemcPhiFitPars;
 };
 
 

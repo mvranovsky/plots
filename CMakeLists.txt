@@ -5,6 +5,7 @@ project (upc-reader)
 set (SRCS
   src/Plot.cxx
   src/PlotAnaV0.cxx
+  src/Util.cxx
   #src/PlotGeneral.cxx
   src/PlotAnaV0Mult.cxx
   src/PlotTofEff.cxx
@@ -12,7 +13,9 @@ set (SRCS
   src/PlotAnaJPsi.cxx
   src/PlotGoodRun.cxx
   src/PlotEmbeddingJPsi.cxx
-  src/SysStudy.cxx
+  src/ProbRetainEvent.cxx
+  src/FitJPsi.cxx
+  src/CrossSectionMaker.cxx
   )
 
 #name of LIB_READER
@@ -24,6 +27,8 @@ set (BIN PlotsManager)
 #UPC picoDsts library
 set (UPC_INC /star/u/mvranovsk/plots/include)
 
+set (RUN_DEF /star/u/mvranovsk/star-upcDst/work/include/)
+
 
 #general compiler options
 set (CMAKE_CXX_COMPILER /usr/bin/g++)
@@ -31,8 +36,9 @@ set (CMAKE_CXX_STANDARD 11)
 #option -Wl,--no-as-needed is necessary only with root5
 set (CMAKE_CXX_FLAGS "-Wall -g -Wl,--no-as-needed")
 include_directories (include ${UPC_INC})
+include_directories (include ${RUN_DEF})
 
-#ROOT section
+
 
 #compiler flags
 execute_process(COMMAND root-config --cflags OUTPUT_VARIABLE ROOT_FLAGS_CMD)

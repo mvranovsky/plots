@@ -11,33 +11,50 @@
 #--------------------------------------------------------------
 
 import os
-from subprocess import Popen
+from subprocess import Popen, PIPE
 import re
 import sys
 
 #_____________________________________________________________________________
+if __name__ == "__main__":
+    #name of config file from command line argument
+    args = sys.argv
+    inputSource = ""
+    tag = ""
+    inputDirectory = ""
+    args.pop(0) # cut first input from terminal = ./RunPlot.py
+    if len(args) == 2:
+        tag = args.pop(0) # read third input from terminal = tag (outputDir)
+        inputSource = args.pop(0) # read second input from terminal = inputSource
+    elif len(args) == 1:
+        tag = args.pop(0) # read third input from terminal = tag (outputDir)
+        inputSource = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + tag + "/merged/StRP_production.list"
+        #inputSource = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + tag + "/merged/StRP_production_0000.root" #set only to the first file, if running whole, switch to upper line->list
 
-#name of config file from command line argument
-args = sys.argv
-inputSource = ""
-tag = ""
-inputDirectory = ""
-args.pop(0) # cut first input from terminal = ./RunPlot.py
-if len(args) == 2:
-    tag = args.pop(0) # read third input from terminal = tag (outputDir)
-    inputSource = args.pop(0) # read second input from terminal = inputSource
-elif len(args) == 1:
-    tag = args.pop(0) # read third input from terminal = tag (outputDir)
-    inputSource = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + tag + "/merged/StRP_production.list"
-    #inputSource = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + tag + "/merged/StRP_production_0000.root" #set only to the first file, if running whole, switch to upper line->list
+        inputDirectory = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + tag + "/merged"
+    else:
+        print "Wrong input arguments"
+        exit()
 
-    inputDirectory = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + tag + "/merged"
-else:
-    print "Wrong input arguments"
-    exit()
 
-#run command
-outputFile = inputDirectory + "/AnalysisOutput.root"
-runCmd = "./PlotsManager " + inputSource + " " + outputFile
-#print runCmd
-Popen(runCmd, shell=True).communicate()
+    #run command
+    outputFile = inputDirectory + "/AnalysisOutput.root"
+    runCmd = "./PlotsManager " + inputSource + " " + outputFile
+    #print runCmd
+    if "CrossSection" in tag:
+        runCmd = "./PlotsManager " + "-runCS " + outputFile
+
+    Popen(runCmd, shell=True).communicate()
+
+    # run PID plots
+    # open up a session
+    cmd = "starver pro"
+    out = Popen(cmd, shell=True, stdout=PIPE).communicate()[0]
+
+
+    if "AnaGoodRun" not in tag and "CrossSection" not in tag:
+        cmd = "root4star -l -b -q '../src/bichselG10.C(\"" + tag + "\")'"
+        out = Popen(cmd, shell=True, stdout=PIPE).communicate()[0]
+        print out
+
+    print "Plots for tag: " + tag + " are done."

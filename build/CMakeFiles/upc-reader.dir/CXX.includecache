@@ -6,6 +6,32 @@
 
 #IncludeRegexTransform: 
 
+../include/CrossSectionMaker.h
+Plot.h
+../include/Plot.h
+Libraries.h
+../include/Libraries.h
+Util.h
+../include/Util.h
+ProbRetainEvent.h
+../include/ProbRetainEvent.h
+PlotEmbeddingJPsi.h
+../include/PlotEmbeddingJPsi.h
+iostream
+-
+vector
+-
+PlotAnaJPsi.h
+../include/PlotAnaJPsi.h
+PlotGoodRun.h
+../include/PlotGoodRun.h
+
+../include/FitJPsi.h
+Libraries.h
+../include/Libraries.h
+memory
+-
+
 ../include/Libraries.h
 iostream
 -
@@ -159,6 +185,8 @@ Plot.h
 ../include/Plot.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 -
+FitJPsi.h
+../include/FitJPsi.h
 
 ../include/PlotEmbeddingJPsi.h
 Util.h
@@ -167,16 +195,24 @@ Plot.h
 ../include/Plot.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 -
+FitJPsi.h
+../include/FitJPsi.h
 
 ../include/PlotGoodRun.h
 Plot.h
 ../include/Plot.h
-/star/u/mvranovsk/star-upcDst/work/include/RunDef.h
--
+RunDef.h
+../include/RunDef.h
 Libraries.h
 ../include/Libraries.h
 Util.h
 ../include/Util.h
+ProbRetainEvent.h
+../include/ProbRetainEvent.h
+
+../include/ProbRetainEvent.h
+Libraries.h
+../include/Libraries.h
 
 ../include/Util.h
 Libraries.h
@@ -364,9 +400,17 @@ Plot.h
 Libraries.h
 /star/u/mvranovsk/plots/include/Libraries.h
 
+/star/u/mvranovsk/plots/src/CrossSectionMaker.cxx
+CrossSectionMaker.h
+/star/u/mvranovsk/plots/src/CrossSectionMaker.h
+
+/star/u/mvranovsk/plots/src/FitJPsi.cxx
+FitJPsi.h
+/star/u/mvranovsk/plots/src/FitJPsi.h
+
 /star/u/mvranovsk/plots/src/Plot.cxx
-../include/Plot.h
-/star/u/mvranovsk/plots/include/Plot.h
+Plot.h
+/star/u/mvranovsk/plots/src/Plot.h
 
 /star/u/mvranovsk/plots/src/PlotAnaJPsi.cxx
 PlotAnaJPsi.h
@@ -396,6 +440,14 @@ PlotGoodRun.h
 ../include/PlotTofEffMult.h
 /star/u/mvranovsk/plots/include/PlotTofEffMult.h
 
+/star/u/mvranovsk/plots/src/ProbRetainEvent.cxx
+ProbRetainEvent.h
+/star/u/mvranovsk/plots/src/ProbRetainEvent.h
+
+/star/u/mvranovsk/plots/src/Util.cxx
+../include/Util.h
+/star/u/mvranovsk/plots/include/Util.h
+
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 vector
 -
@@ -403,6 +455,4 @@ bitset
 -
 TString.h
 /star/u/mvranovsk/star-upcDst/work/include/TString.h
-TMath.h
-/star/u/mvranovsk/star-upcDst/work/include/TMath.h
 

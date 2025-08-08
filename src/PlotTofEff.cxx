@@ -50,7 +50,7 @@ void PlotTofEff::Make(){
 	*/
 	// create canvases for all TH1D 
 
-	handleHistograms();
+	handleHistograms(nameOfTofEffDir);
 
 	outFile->Close();
 	histFile->Close();
@@ -65,7 +65,6 @@ void PlotTofEff::Make(){
 
 void PlotTofEff::Init(){
 	//define the output file which will store all the canvases
-	outFile = unique_ptr<TFile>( TFile::Open(outputPosition, "recreate") );
 
 	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
@@ -82,7 +81,7 @@ void PlotTofEff::Init(){
 
 
 	//load the tree chain from the input file
-	ConnectInputTree(inputPosition, nameOfTofEffTree);
+	ConnectInputTree(inputPosition, nameOfTofEffTree, tree, bcgTree);
 
     if(!tree){
     	cerr << "Couldn't open tree with data. Returning." << endl;

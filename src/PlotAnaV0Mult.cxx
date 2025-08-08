@@ -5,7 +5,7 @@ PlotAnaV0Mult::PlotAnaV0Mult(const string mInputList, const char* filePath): Plo
 
 void PlotAnaV0Mult::Make(){
 
-	handleHistograms();
+	handleHistograms(nameOfAnaV0MultDir);
 
 
 	outFile->Close();
@@ -14,7 +14,6 @@ void PlotAnaV0Mult::Make(){
 
 void PlotAnaV0Mult::Init(){
 	//define the output file which will store all the canvases
-	outFile = unique_ptr<TFile>( TFile::Open(outputPosition, "recreate") );
 
 	if(!outFile || outFile->IsZombie()){
 		cerr << "Could not open outFile. Leaving..." << endl;
@@ -29,7 +28,7 @@ void PlotAnaV0Mult::Init(){
 	}
 
 	//load the tree chain from the input file
-	ConnectInputTree(inputPosition, nameOfAnaV0MultTree);
+	ConnectInputTree(inputPosition, nameOfAnaV0MultTree, tree, bcgTree);
 
     if(!tree){
     	cerr << "Couldn't open tree with data. Returning." << endl;

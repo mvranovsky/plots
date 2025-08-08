@@ -1,12 +1,16 @@
 file(REMOVE_RECURSE
   "CMakeFiles/upc-reader.dir/src/Plot.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o"
+  "CMakeFiles/upc-reader.dir/src/Util.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o"
   "CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o"
+  "CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o"
+  "CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o"
+  "CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o"
   "libupc-reader.pdb"
   "libupc-reader.so"
 )

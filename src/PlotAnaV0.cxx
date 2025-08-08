@@ -69,7 +69,7 @@ void PlotAnaV0::Make(){
 	efficiency(4,2); //Vz
 	*/
 
-	handleHistograms();
+	handleHistograms(nameOfAnaV0Dir);
 
 	outFile->Close();
 	histFile->Close();
@@ -81,13 +81,14 @@ void PlotAnaV0::Make(){
 
 void PlotAnaV0::Init(){
 	//define the output file which will store all the canvases
-	outFile = unique_ptr<TFile>(TFile::Open(outputPosition, "recreate") );
 
 	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
 		return;
 	}
 
+
+	//define the file with histograms
 	histFile = unique_ptr<TFile>( TFile::Open("histFile.root", "read"));
 
 
@@ -97,7 +98,7 @@ void PlotAnaV0::Init(){
 	}
 
 	//load the tree chain from the input file
-	ConnectInputTree(inputPosition, nameOfAnaV0Tree);
+	ConnectInputTree(inputPosition, nameOfAnaV0Tree, tree, bcgTree);
 
     if(!tree){
     	cerr << "Couldn't open tree with data. Returning." << endl;

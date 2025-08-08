@@ -34,10 +34,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /afs/rhic.bnl.gov/@sys/opt/star/sl73_gcc485/bin/cmake
+CMAKE_COMMAND = /direct/star+nfs4/AFS/opt/star/sl73_gcc485/bin/cmake
 
 # The command to remove a file.
-RM = /afs/rhic.bnl.gov/@sys/opt/star/sl73_gcc485/bin/cmake -E remove -f
+RM = /direct/star+nfs4/AFS/opt/star/sl73_gcc485/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -83,9 +83,22 @@ CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/PlotAnaV0.cxx -o CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.s
 
+CMakeFiles/upc-reader.dir/src/Util.cxx.o: CMakeFiles/upc-reader.dir/flags.make
+CMakeFiles/upc-reader.dir/src/Util.cxx.o: ../src/Util.cxx
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/upc-reader.dir/src/Util.cxx.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/Util.cxx.o -c /star/u/mvranovsk/plots/src/Util.cxx
+
+CMakeFiles/upc-reader.dir/src/Util.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/upc-reader.dir/src/Util.cxx.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /star/u/mvranovsk/plots/src/Util.cxx > CMakeFiles/upc-reader.dir/src/Util.cxx.i
+
+CMakeFiles/upc-reader.dir/src/Util.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/Util.cxx.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/Util.cxx -o CMakeFiles/upc-reader.dir/src/Util.cxx.s
+
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: CMakeFiles/upc-reader.dir/flags.make
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: ../src/PlotAnaV0Mult.cxx
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o -c /star/u/mvranovsk/plots/src/PlotAnaV0Mult.cxx
 
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.i: cmake_force
@@ -98,7 +111,7 @@ CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.s: cmake_force
 
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: CMakeFiles/upc-reader.dir/flags.make
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o: ../src/PlotTofEff.cxx
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o -c /star/u/mvranovsk/plots/src/PlotTofEff.cxx
 
 CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.i: cmake_force
@@ -111,7 +124,7 @@ CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.s: cmake_force
 
 CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: CMakeFiles/upc-reader.dir/flags.make
 CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../src/PlotTofEffMult.cxx
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o -c /star/u/mvranovsk/plots/src/PlotTofEffMult.cxx
 
 CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.i: cmake_force
@@ -124,7 +137,7 @@ CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.s: cmake_force
 
 CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o: CMakeFiles/upc-reader.dir/flags.make
 CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o: ../src/PlotAnaJPsi.cxx
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o -c /star/u/mvranovsk/plots/src/PlotAnaJPsi.cxx
 
 CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.i: cmake_force
@@ -137,7 +150,7 @@ CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.s: cmake_force
 
 CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o: CMakeFiles/upc-reader.dir/flags.make
 CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o: ../src/PlotGoodRun.cxx
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o -c /star/u/mvranovsk/plots/src/PlotGoodRun.cxx
 
 CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.i: cmake_force
@@ -150,7 +163,7 @@ CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.s: cmake_force
 
 CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: CMakeFiles/upc-reader.dir/flags.make
 CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../src/PlotEmbeddingJPsi.cxx
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o -c /star/u/mvranovsk/plots/src/PlotEmbeddingJPsi.cxx
 
 CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.i: cmake_force
@@ -161,31 +174,78 @@ CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/PlotEmbeddingJPsi.cxx -o CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.s
 
+CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o: CMakeFiles/upc-reader.dir/flags.make
+CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o: ../src/ProbRetainEvent.cxx
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o -c /star/u/mvranovsk/plots/src/ProbRetainEvent.cxx
+
+CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /star/u/mvranovsk/plots/src/ProbRetainEvent.cxx > CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.i
+
+CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/ProbRetainEvent.cxx -o CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.s
+
+CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o: CMakeFiles/upc-reader.dir/flags.make
+CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o: ../src/FitJPsi.cxx
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o -c /star/u/mvranovsk/plots/src/FitJPsi.cxx
+
+CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /star/u/mvranovsk/plots/src/FitJPsi.cxx > CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.i
+
+CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/FitJPsi.cxx -o CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.s
+
+CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: CMakeFiles/upc-reader.dir/flags.make
+CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../src/CrossSectionMaker.cxx
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o -c /star/u/mvranovsk/plots/src/CrossSectionMaker.cxx
+
+CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /star/u/mvranovsk/plots/src/CrossSectionMaker.cxx > CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.i
+
+CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /star/u/mvranovsk/plots/src/CrossSectionMaker.cxx -o CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.s
+
 # Object files for target upc-reader
 upc__reader_OBJECTS = \
 "CMakeFiles/upc-reader.dir/src/Plot.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o" \
+"CMakeFiles/upc-reader.dir/src/Util.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o" \
 "CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o" \
-"CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o"
+"CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o" \
+"CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o" \
+"CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o" \
+"CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o"
 
 # External object files for target upc-reader
 upc__reader_EXTERNAL_OBJECTS =
 
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/Plot.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotAnaV0.cxx.o
+libupc-reader.so: CMakeFiles/upc-reader.dir/src/Util.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotTofEff.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotAnaJPsi.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotGoodRun.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o
+libupc-reader.so: CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o
+libupc-reader.so: CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o
+libupc-reader.so: CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o
 libupc-reader.so: CMakeFiles/upc-reader.dir/build.make
 libupc-reader.so: CMakeFiles/upc-reader.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX shared library libupc-reader.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/star/u/mvranovsk/plots/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX shared library libupc-reader.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/upc-reader.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

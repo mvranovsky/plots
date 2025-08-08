@@ -6,6 +6,32 @@
 
 #IncludeRegexTransform: 
 
+/star/u/mvranovsk/plots/include/CrossSectionMaker.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+Libraries.h
+/star/u/mvranovsk/plots/include/Libraries.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+ProbRetainEvent.h
+/star/u/mvranovsk/plots/include/ProbRetainEvent.h
+PlotEmbeddingJPsi.h
+/star/u/mvranovsk/plots/include/PlotEmbeddingJPsi.h
+iostream
+-
+vector
+-
+PlotAnaJPsi.h
+/star/u/mvranovsk/plots/include/PlotAnaJPsi.h
+PlotGoodRun.h
+/star/u/mvranovsk/plots/include/PlotGoodRun.h
+
+/star/u/mvranovsk/plots/include/FitJPsi.h
+Libraries.h
+/star/u/mvranovsk/plots/include/Libraries.h
+memory
+-
+
 /star/u/mvranovsk/plots/include/Libraries.h
 iostream
 -
@@ -159,6 +185,8 @@ Plot.h
 /star/u/mvranovsk/plots/include/Plot.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 -
+FitJPsi.h
+/star/u/mvranovsk/plots/include/FitJPsi.h
 
 /star/u/mvranovsk/plots/include/PlotAnaV0.h
 Util.h
@@ -183,16 +211,20 @@ Plot.h
 /star/u/mvranovsk/plots/include/Plot.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 -
+FitJPsi.h
+/star/u/mvranovsk/plots/include/FitJPsi.h
 
 /star/u/mvranovsk/plots/include/PlotGoodRun.h
 Plot.h
 /star/u/mvranovsk/plots/include/Plot.h
-/star/u/mvranovsk/star-upcDst/work/include/RunDef.h
--
+RunDef.h
+/star/u/mvranovsk/plots/include/RunDef.h
 Libraries.h
 /star/u/mvranovsk/plots/include/Libraries.h
 Util.h
 /star/u/mvranovsk/plots/include/Util.h
+ProbRetainEvent.h
+/star/u/mvranovsk/plots/include/ProbRetainEvent.h
 
 /star/u/mvranovsk/plots/include/PlotTofEff.h
 Util.h
@@ -225,6 +257,8 @@ PlotGoodRun.h
 /star/u/mvranovsk/plots/include/PlotGoodRun.h
 PlotEmbeddingJPsi.h
 /star/u/mvranovsk/plots/include/PlotEmbeddingJPsi.h
+CrossSectionMaker.h
+/star/u/mvranovsk/plots/include/CrossSectionMaker.h
 TFile.h
 -
 TKey.h
@@ -233,6 +267,10 @@ TClass.h
 -
 cstring
 -
+
+/star/u/mvranovsk/plots/include/ProbRetainEvent.h
+Libraries.h
+/star/u/mvranovsk/plots/include/Libraries.h
 
 /star/u/mvranovsk/plots/include/Util.h
 Libraries.h
@@ -249,6 +287,4 @@ bitset
 -
 TString.h
 /star/u/mvranovsk/star-upcDst/work/include/TString.h
-TMath.h
-/star/u/mvranovsk/star-upcDst/work/include/TMath.h
 
