@@ -19,6 +19,7 @@ class PlotTofEff : public Plot {
       	//overrides the original Make() from class Plot
       	void Make() override;
       	void Init() override;
+		void Finish() override;
 
 
     private:

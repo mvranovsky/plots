@@ -60,12 +60,15 @@ void PlotTofEffMult::Make(){
 
 	handleHistograms(nameOfTofEffMultDir);
 
-	outFile->Close();
-	histFile->Close();
-	MCAna->Close();
+	
+}
+
+void PlotTofEffMult::Finish(){
+	if(outFile) outFile->Close();
+	if(histFile) histFile->Close();
+	if(MCAna) MCAna->Close();
 	cout << "All histograms successfully saved to canvases..." << endl;
 	cout << "The output file is saved: " << outputPosition << endl;
-
 }
 
 void PlotTofEffMult::Init(){
@@ -76,7 +79,7 @@ void PlotTofEffMult::Init(){
 		return;
 	}
 
-	histFile = unique_ptr<TFile>( TFile::Open("histFile.root", "read"));
+	histFile = shared_ptr<TFile>( TFile::Open("histFile.root", "read"));
 
 
 	if(!histFile || histFile->IsZombie()){

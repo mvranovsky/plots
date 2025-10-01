@@ -71,12 +71,16 @@ void PlotAnaV0::Make(){
 
 	handleHistograms(nameOfAnaV0Dir);
 
-	outFile->Close();
-	histFile->Close();
-	MCAna->Close();
+	
+}
+
+void PlotAnaV0::Finish(){
+	
+	if(outFile) outFile->Close();
+	if(histFile) histFile->Close();
+	if(MCAna) MCAna->Close();
 	cout << "All histograms successfully saved to canvases..." << endl;
 	cout << "The output file is saved: " << outputPosition << endl;
-
 }
 
 void PlotAnaV0::Init(){
@@ -89,7 +93,7 @@ void PlotAnaV0::Init(){
 
 
 	//define the file with histograms
-	histFile = unique_ptr<TFile>( TFile::Open("histFile.root", "read"));
+	histFile = shared_ptr<TFile>( TFile::Open("histFile.root", "read"));
 
 
 	if(!histFile || histFile->IsZombie()){

@@ -52,15 +52,16 @@ void PlotTofEff::Make(){
 
 	handleHistograms(nameOfTofEffDir);
 
-	outFile->Close();
-	histFile->Close();
-	MCAna->Close();
+	
+}
+
+void PlotTofEff::Finish(){
+
+	if(outFile) outFile->Close();
+	if(histFile) histFile->Close();
+	if(MCAna) MCAna->Close();
 	cout << "All histograms successfully saved to canvases..." << endl;
 	cout << "The output file is saved: " << outputPosition << endl;
-
-
-
-
 }
 
 void PlotTofEff::Init(){
@@ -71,7 +72,7 @@ void PlotTofEff::Init(){
 		return;
 	}
 
-	histFile = unique_ptr<TFile>( TFile::Open("histFile.root", "read"));
+	histFile = shared_ptr<TFile>( TFile::Open("histFile.root", "read"));
 
 
 	if(!histFile || histFile->IsZombie()){

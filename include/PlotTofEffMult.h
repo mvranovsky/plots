@@ -18,8 +18,9 @@ class PlotTofEffMult : public Plot {
       	~PlotTofEffMult(){};
       
       	//overrides the original Make() from class Plot
-      	void Make() override;
-      	void Init() override;
+		void Make() override;
+		void Init() override;
+		void Finish() override;
 
 
     private:

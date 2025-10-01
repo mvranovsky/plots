@@ -12,7 +12,6 @@ void PlotAnaJPsi::Make(){
     double upperLim = 3.5;
 
     TH1D* invMass = loadInvMassHist(nBins, lowerLim, upperLim, getCondition());  // automatically subtracts background if bcg tree is loaded
-    
     if(!invMass){
         cout << "Could not load invariant mass histogram. Returning." << endl;
         return;
@@ -42,42 +41,29 @@ void PlotAnaJPsi::Make(){
 
     outFile->cd(); // Explicitly set our file as current directory
     outFile->cd(nameOfAnaJPsiDir);
-    invMass->Write();
     fitCanvas->Write();
     fitCanvas->Close();
     outFile->cd();
 
-    
     cout << "About to run vertexZStudy()" << endl;
-    //vertexZStudy();
-    
+    vertexZStudy();
+
     runSysStudy();
-    
+
     controlPlotsComparison(true); // true = JPsi, false = all
     
     // save all the histograms to canvases into outfile
-    handleHistograms(nameOfAnaJPsiDir, "JPsiData");
+    handleHistograms(nameOfAnaJPsiDir);
     
-
-    plotContinuum(90, 0.5, 5);
-
-    if(noRomanPots){
-        plotRapidityDependence(4);
-    }
-
     // takes quite long, comment out if running fast
     //peakFittingStudy();
-    
-    
-}
 
-void PlotAnaJPsi::Finish(){
-    
-    if(outFile) outFile->Close();
-    if(histFile) histFile->Close();
+
+    outFile->Close();
+    histFile->Close();
     cout << "All histograms successfully saved to canvases..." << endl;
     cout << "The output file is saved: " << outputPosition << endl;
-
+    
 }
 
 void PlotAnaJPsi::Init(){
@@ -111,12 +97,11 @@ void PlotAnaJPsi::Init(){
     	return;
     }
 
-    if(inputPosition.find("noRP") != string::npos || inputPosition.find("NoRP") != string::npos ){
+    if(strstr(outputPosition, "noRP") || strstr(outputPosition, "NoRP") ){
         noRomanPots = true;
     }else{
         noRomanPots = false;
     }
-    cout << "Running analysis with Roman Pots: " << !noRomanPots << endl;
 
     // print level for RooFit
     RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
@@ -596,24 +581,15 @@ void PlotAnaJPsi::peakFittingStudy(){
     outFile->mkdir(dir);
 
     double minYield, maxYield;
-    int nBins;
     if(noRomanPots){
         minYield = 1200;
-        maxYield = 1500;
-        nBins = 80;
+        maxYield = 1600;
     }else{
         minYield = 50;
         maxYield = 150;
-        nBins = 50;
     }
-    double minN = 0.5;
-    double maxN = 5.0;
-    double minAlpha = 0.5;
-    double maxAlpha = 5.0;
-
-    TH1D *hYield = new TH1D("hYield", "hMeans; Yield ; counts", nBins, minYield, maxYield);
-    TH1D *hN = new TH1D("hN", "hMeans; N ; counts", 90, minN, maxN);
-    TH1D *hAlpha = new TH1D("hAlpha", "hMeans; Alpha ; counts",  90, minAlpha, maxAlpha);
+    
+    TH1D *hYield = new TH1D("hYield", "hMeans; Yield ; counts", 50, minYield, maxYield);
 
     vector<double> lowLim = { 2.0, 2.1, 2.2, 2.3, 2.4, 2.5};
     vector<double> topLim = { 3.5, 3.6, 3.7, 3.8, 3.9, 4.0};
@@ -641,62 +617,42 @@ void PlotAnaJPsi::peakFittingStudy(){
                 delete hBackground;
             
                 FitJPsi *fit = new FitJPsi(hSignal, "poly1");
-                fit->setAlphaLoose(true);
-                fit->setNLoose(true);
                 fit->fitPeak();
                 int yield = fit->getYield();
                 fit->saveCanvas(outFile, Form("PeakFittingStudy_%d_%.1f_%.1f", nBins, low, top), dir);
+
                 if(yield < 0){
                     cout << "Something went wrong with peak fitting. Leaving." << endl;
                     return;
                 }
-
-                if(fit->getChiSquare() > 300){
-                    cout << "Chi square is too high: " << fit->getChiSquare() << endl;
-                    continue;
-                }
-
                 hYield->Fill(yield);
-                hN->Fill(fit->getN());
-                hAlpha->Fill(fit->getAlpha());
             }
         }
     }
 
 
-    drawAndFitHist(hN, "FittingStudy_n", minN, maxN );
-    drawAndFitHist(hAlpha, "FittingStudy_alpha", minAlpha, maxAlpha);    
-    drawAndFitHist(hYield, "FittingStudy_rawYield", minYield, maxYield);
-    
-}
-
-
-void PlotAnaJPsi::drawAndFitHist(TH1D *h, TString outName, double min, double max){
-
-
-    CreateCanvas(&canvas,outName, 1200, 800);
+    CreateCanvas(&canvas,"PeakFittingStudy", 1200, 800);
     SetGPad();
 
+
     // Fit the histogram with a Gaussian function
-    TF1 *gauss = new TF1("gauss", "gaus", min, max);
+    TF1 *gauss = new TF1("gauss", "gaus", minYield, maxYield);
+    gauss->SetParameters(30, 1400, 10);
     gauss->SetLineColor(kRed);
     gauss->SetLineWidth(2);
-    h->Fit(gauss, "R");
+    hYield->Fit(gauss, "R");
 
     // Draw the results
     canvas->cd();
-    h->Draw("E hist");
+    hYield->Draw("E hist");
     gauss->Draw("same");
 
     DrawSTARInternal(0.77, 0.89, 0.9, 0.93);
 
     // create text similarly under which display the mean and sigma of the fit
-    TPaveText *res = new TPaveText(0.7, 0.63, 0.9, 0.72, "brNDC");
+    TPaveText *res = new TPaveText(0.65, 0.63, 0.88, 0.72, "brNDC");
     res->SetTextColor(kBlack);
-    res->SetFillStyle(0);
-    res->SetFillColorAlpha(0, 0);
     res->SetFillColor(0);
-    res->SetBorderSize(0);
     res->SetTextSize(textSize);
     res->SetTextFont(textFont);
     res->SetTextAlign(11);
@@ -709,91 +665,12 @@ void PlotAnaJPsi::drawAndFitHist(TH1D *h, TString outName, double min, double ma
 
     canvas->Update();
     outFile->cd("FittingStudy");
-    canvas->Write(outName);
+    canvas->Write("FittingStudy");
 
-    if(outName.Contains("FittingStudy_rawYield") ){
-        setPeakFittingMean(gauss->GetParameter(1));
-        setPeakFittingSigma(gauss->GetParameter(2));
-        setPeakFittingMeanError(gauss->GetParError(1));
-        setPeakFittingSigmaError(gauss->GetParError(2));
-    }
+    peakFittingMean = gauss->GetParameter(1);
+    peakFittingSigma = gauss->GetParameter(2);
+    peakFittingMeanError = gauss->GetParError(1);
+    peakFittingSigmaError = gauss->GetParError(2);
 
 
-    return;
-
-}
-
-void PlotAnaJPsi::plotContinuum(int nBins, double low, double top){
-
-    TH1D* h = loadInvMassHist(nBins, low, top, getCondition());
-
-    if(!h || h->GetEntries() == 0){
-        cerr << "ERROR: Could not load histogram for continuum fit." << endl;
-        return;
-    }
-
-    FitJPsi* fit = new FitJPsi(h, "gauss");
-    fit->fitContinuum();
-
-    TCanvas *c = fit->getCanvas();
-    DrawSTARInternal();
-
-    outFile->cd();
-    outFile->cd(nameOfAnaJPsiDir);
-    c->SetName("ContinuumFit");
-    c->SetTitle("");
-    c->Write();
-    
-    return;
-}
-
-
-void PlotAnaJPsi::plotRapidityDependence(int nRapBins){
-
-    double lowRap = -1.0;
-    double topRap = 1.0;
-
-    for(int bin = 1; bin <= nRapBins; bin++){
-
-        double binLow = lowRap + (topRap - lowRap)/nRapBins * (bin - 1);
-        double binTop = lowRap + (topRap - lowRap)/nRapBins * bin;
-
-        TString condition = Form("pairRapidity > %f && pairRapidity < %f && ", binLow, binTop);
-
-        TH1D* invMass = loadInvMassHist(40, 2.5, 3.5, condition + getCondition("") );  // automatically subtracts background if bcg tree is loaded
-        
-        if(!invMass){
-            cout << "Could not load invariant mass histogram for rapidity bin " << bin << ". Returning." << endl;
-            return;
-        }
-        
-        FitJPsi* fit = new FitJPsi(invMass, "Poly1");
-        fit->fitPeak();
-
-        double yield = fit->getYield();
-        double yieldErr = fit->getErrYield();
-
-        TCanvas *fitCanvas = fit->getCanvas();
-        if(!fitCanvas){
-            cout << "Could not get fit canvas for rapidity bin " << bin << ". Returning." << endl;
-            return;
-        }
-        fitCanvas->SetName(Form("fitJPsiCanvas_rapBin_%d", bin));
-        fitCanvas->SetTitle("");
-        DrawSTARpp510JPsi();
-        CreateText(Form("Rapidity J/#psi: [%.2f, %.2f]", binLow, binTop), 62,0.7,0.75,0.85,0.77);
-
-        outFile->cd(); // Explicitly set our file as current directory
-        outFile->cd(nameOfAnaJPsiDir);
-        invMass->Write(Form("invMass_rapBin_%d", bin));
-        fitCanvas->Write();
-        fitCanvas->Close();
-        outFile->cd();
-
-        mRapidityBins.push_back(make_pair(binLow, binTop));
-        mRapidityYields.push_back(yield);
-        mRapidityYieldsErrors.push_back(yieldErr);
-
-    }
-    return;
 }

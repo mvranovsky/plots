@@ -8,10 +8,12 @@ CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/Plot.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotAnaJPsi.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotAnaV0.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotAnaV0Mult.h
+CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotBemcEfficiency.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotEmbeddingJPsi.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotGoodRun.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotTofEff.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotTofEffMult.h
+CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotZeroBias.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/PlotsManager.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/ProbRetainEvent.h
 CMakeFiles/PlotsManager.dir/src/PlotsManager.cxx.o: ../include/Util.h

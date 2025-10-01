@@ -3,11 +3,11 @@
 Plot::Plot(const string mInputList, const char* filePath){
    outputPosition = filePath;
    inputPosition = mInputList;
-   outFile = unique_ptr<TFile>(new TFile(outputPosition, "RECREATE"));
+   outFile = shared_ptr<TFile>(new TFile(outputPosition, "RECREATE"));
 }
 
-Plot::Plot(const string mInputList, unique_ptr<TFile> &file) : inputPosition(mInputList), outFile(file.get()) {
-   outputPosition = outFile->GetName();
+Plot::Plot(const string mInputList, shared_ptr<TFile> file) : inputPosition(mInputList), outFile(file) {
+   outputPosition = file->GetName();
 }
 
 
@@ -101,8 +101,39 @@ void Plot::SetTGraphStyle(TGraph*& graph, Int_t color, Int_t markStyle)
    graph->GetXaxis()->SetTitleSize(labelSize);
    graph->GetYaxis()->SetTitleSize(labelSize);
 }
+void Plot::SetTGraphStyle(TGraphErrors*& graph, Int_t color, Int_t markStyle)
+{
+   graph->SetLineColor(color);
+   graph->SetLineWidth(2);
+   graph->SetMarkerColor(color);
+   graph->SetMarkerStyle(markStyle);
+   graph->SetMarkerSize(1.5);
+   graph->GetXaxis()->SetTitleFont(textFont);
+   graph->GetYaxis()->SetTitleFont(textFont);
+   graph->GetXaxis()->SetLabelFont(textFont);
+   graph->GetYaxis()->SetLabelFont(textFont);
+   graph->GetXaxis()->SetLabelSize(labelSize);
+   graph->GetYaxis()->SetLabelSize(labelSize);
+   graph->GetXaxis()->SetTitleSize(labelSize);
+   graph->GetYaxis()->SetTitleSize(labelSize);
+}
 
-
+void Plot::SetTGraphStyle(TGraphAsymmErrors*& graph, Int_t color, Int_t markStyle)
+{
+   graph->SetLineColor(color);
+   graph->SetLineWidth(2);
+   graph->SetMarkerColor(color);
+   graph->SetMarkerStyle(markStyle);
+   graph->SetMarkerSize(1.5);
+   graph->GetXaxis()->SetTitleFont(textFont);
+   graph->GetYaxis()->SetTitleFont(textFont);
+   graph->GetXaxis()->SetLabelFont(textFont);
+   graph->GetYaxis()->SetLabelFont(textFont);
+   graph->GetXaxis()->SetLabelSize(labelSize);
+   graph->GetYaxis()->SetLabelSize(labelSize);
+   graph->GetXaxis()->SetTitleSize(labelSize);
+   graph->GetYaxis()->SetTitleSize(labelSize);
+}
 
 void Plot:: CreateLegend(TLegend **legend, double xl, double yl, double xr, double yr)
 {
@@ -120,7 +151,9 @@ void Plot::DrawSTARInternal(double xl, double yl, double xr, double yr)
    TPaveText *textSTAR;
    textSTAR = new TPaveText(xl, yl, xr, yr,"brNDC");
    textSTAR -> SetTextSize(textSize+0.01);
-   textSTAR -> SetFillColorAlpha(0,0);
+   textSTAR -> SetFillStyle(0);
+   textSTAR -> SetFillColorAlpha(kWhite,0);
+   textSTAR -> SetBorderSize(0);
    textSTAR -> SetTextFont(72);
    textSTAR -> SetTextAlign(33);
    textSTAR->AddText("STAR Internal");
@@ -129,12 +162,41 @@ void Plot::DrawSTARInternal(double xl, double yl, double xr, double yr)
    TPaveText *textpp510;
    textpp510 = new TPaveText(xl, yl - 0.05, xr, yr - 0.05,"brNDC");
    textpp510 -> SetTextSize(textSize);
-   textpp510 -> SetTextAlign(33);
-   textpp510 -> SetFillColor(0);
+   textpp510 -> SetFillStyle(0);
+   textpp510 -> SetFillColorAlpha(kWhite,0);
+   textpp510 -> SetBorderSize(0);
    textpp510 -> SetTextFont(62);
+   textpp510 -> SetTextAlign(33);
    textpp510->AddText("p+p #sqrt{s} = 510 GeV");
    textpp510 -> Draw("same");
 }
+
+void Plot::DrawSTARInternalZB(double xl, double yl, double xr, double yr)
+{
+   TPaveText *textSTAR;
+   textSTAR = new TPaveText(xl, yl, xr, yr,"brNDC");
+   textSTAR -> SetTextSize(textSize+0.01);
+   textSTAR -> SetFillStyle(0);
+   textSTAR -> SetFillColorAlpha(kWhite,0);
+   textSTAR -> SetBorderSize(0);
+   textSTAR -> SetTextFont(72);
+   textSTAR -> SetTextAlign(33);
+   textSTAR->AddText("STAR Internal");
+   textSTAR -> Draw("same");
+
+   TPaveText *textpp510;
+   textpp510 = new TPaveText(xl, yl - 0.07, xr, yr - 0.05,"brNDC");
+   textpp510 -> SetTextSize(textSize);
+   textpp510 -> SetFillStyle(0);
+   textpp510 -> SetFillColorAlpha(kWhite,0);
+   textpp510 -> SetBorderSize(0);
+   textpp510 -> SetTextFont(62);
+   textpp510 -> SetTextAlign(33);
+   textpp510->AddText("RP_zerobias data");
+   textpp510->AddText("p+p #sqrt{s} = 510 GeV");
+   textpp510 -> Draw("same");
+}
+
 
 void Plot::DrawSTARpp510(double xl, double yl, double xr, double yr, double textSizeRel){
    
@@ -142,7 +204,10 @@ void Plot::DrawSTARpp510(double xl, double yl, double xr, double yr, double text
    textpp510 = new TPaveText(xl, yl, xr, yr,"brNDC");
    textpp510 -> SetTextSize(textSize + textSizeRel);
    textpp510 -> SetTextAlign(11);
-   textpp510 -> SetFillColor(0);
+   textpp510 -> SetTextAlign(33);
+   textpp510 -> SetFillStyle(0);
+   textpp510 -> SetFillColorAlpha(kWhite,0);
+   textpp510 -> SetBorderSize(0);
    textpp510 -> SetTextFont(62);
    textpp510->AddText(ppSTAR);
    textpp510 -> Draw("same");
@@ -153,6 +218,8 @@ void Plot::DrawSTARpp510JPsi(double xl, double yl, double xr, double yr, double 
    TPaveText *textSTAR;
    textSTAR = new TPaveText(xl, yl, xr, yr,"brNDC");
    textSTAR -> SetTextSize(textSize+0.01);
+   textSTAR -> SetBorderSize(0);
+   textSTAR -> SetFillStyle(0);
    textSTAR -> SetFillColorAlpha(kWhite, 0.0);
    textSTAR -> SetTextFont(72);
    textSTAR -> SetTextAlign(33);
@@ -163,8 +230,9 @@ void Plot::DrawSTARpp510JPsi(double xl, double yl, double xr, double yr, double 
    textpp510 = new TPaveText(xl, yl-0.05, xr, yr-0.05,"brNDC");
    textpp510 -> SetTextSize(textSize );
    textpp510 -> SetTextAlign(33);
-   textpp510 -> SetFillStyle(4000);
+   textpp510 -> SetFillStyle(0);
    textpp510 -> SetFillColorAlpha(kWhite, 0.0);  // white background with 0% opacity
+   textpp510 -> SetBorderSize(0);
    textpp510 -> SetTextFont(62);
    if(noRomanPots){
       textpp510->AddText(ppSTARJPsi[2]);
@@ -180,6 +248,8 @@ void Plot::DrawEmbeddingpp510JPsi(double xl, double yl, double xr, double yr, do
    TPaveText *textSTAR;
    textSTAR = new TPaveText(xl, yl, xr, yr,"brNDC");
    textSTAR -> SetTextSize(textSize+0.01);
+   textSTAR -> SetBorderSize(0);
+   textSTAR -> SetFillStyle(0);
    textSTAR -> SetFillColorAlpha(kWhite, 0.0);
    textSTAR -> SetTextFont(72);
    textSTAR -> SetTextAlign(33);
@@ -190,8 +260,9 @@ void Plot::DrawEmbeddingpp510JPsi(double xl, double yl, double xr, double yr, do
    textpp510 = new TPaveText(xl, yl-0.05, xr, yr-0.05,"brNDC");
    textpp510 -> SetTextSize(textSize + textSizeRel);
    textpp510 -> SetTextAlign(33);
-   textpp510 -> SetFillStyle(4000);
-   textpp510 -> SetFillColorAlpha(kWhite, 0.0);  
+   textpp510 -> SetFillStyle(0);
+   textpp510 -> SetFillColorAlpha(kWhite, 0.0);
+   textpp510 -> SetBorderSize(0);
    textpp510 -> SetTextFont(42);
    textpp510->AddText("RP zerobias embedding");
    textpp510->AddText("MC: p + p #rightarrow J/#psi");
@@ -202,7 +273,7 @@ void Plot::CreateText(TString writtenText, int textF,double xl, double yl, doubl
 {
    text = new TPaveText(xl, yl, xr, yr,"brNDC");
    text -> SetTextSize(textSize);
-   text -> SetFillColor(0);
+   text -> SetFillColorAlpha(0,0);
    text -> SetTextFont(textF);
    text -> SetTextAlign(11);   
    text -> AddText(writtenText);
@@ -367,7 +438,7 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, TTree *&TRE
 }
 
 
-bool Plot::handleHistograms(TString dir){
+bool Plot::handleHistograms(TString dir, TString addOn){
 
    vector<pair<TH1*,TString>> hists1D;
    vector<pair<TH2*,TString>> hists2D;
@@ -383,7 +454,7 @@ bool Plot::handleHistograms(TString dir){
          cerr << "Couldn't load histogram " << hists1D[i].second << " in dir "<< dir << ". Leaving..." << endl;
          return false;
       }
-      TH1General(hists1D[i].second, hists1D[i].first, dir);
+      TH1General(hists1D[i].second, hists1D[i].first, dir, addOn);
       cout << "Created canvas for 1D histogram " << hists1D[i].second << endl;
    }
 
@@ -399,7 +470,7 @@ bool Plot::handleHistograms(TString dir){
          cerr << "Couldn't load histogram " << hists2D[i].second << ". Leaving..." << endl;
          return false;
       }
-      TH2General(hists2D[i].second, hists2D[i].first, dir);
+      TH2General(hists2D[i].second, hists2D[i].first, dir, addOn);
       cout << "Created canvas for 2D histogram " << hists2D[i].second << endl;
    }
    
@@ -491,7 +562,7 @@ vector<pair<TH1*, TString>> Plot::GetAllTH1(TString dir) {
 }
 
 
-void Plot::TH1General(TString nameOfHist,TH1*& hist,TString dir ) {
+void Plot::TH1General(TString nameOfHist,TH1*& hist,TString dir, TString addOn ) {
 
    if (!hist){
       cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
@@ -499,9 +570,9 @@ void Plot::TH1General(TString nameOfHist,TH1*& hist,TString dir ) {
    }
 
    if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName() + TString("_canvas"), widthTypical, heightTypical );
+      CreateCanvas(&canvas, hist->GetName() + addOn, widthTypical, heightTypical );
    }else{
-      CreateCanvas(&canvas, nameOfHist  + TString("_canvas"), widthTypical, heightTypical );
+      CreateCanvas(&canvas, nameOfHist  + addOn, widthTypical, heightTypical );
    }
 
    canvas->Clear();
@@ -541,12 +612,12 @@ void Plot::TH1General(TString nameOfHist,TH1*& hist,TString dir ) {
 }
 
 
-void Plot::TH2General(TString nameOfHist , TH2*& hist, TString dir){
+void Plot::TH2General(TString nameOfHist , TH2*& hist, TString dir, TString addOn){
    TCanvas* c = nullptr;
    if (nameOfHist == "") {
-      CreateCanvas(&c, TString("canvas_") + hist->GetName(), widthTypical, heightTypical );
+      CreateCanvas(&c, hist->GetName() + addOn, widthTypical, heightTypical );
    }else{
-      CreateCanvas(&c, nameOfHist + TString("_canvas"), widthTypical, heightTypical );
+      CreateCanvas(&c, nameOfHist + addOn, widthTypical, heightTypical );
    }
 
    c->Clear();
@@ -556,19 +627,16 @@ void Plot::TH2General(TString nameOfHist , TH2*& hist, TString dir){
       return;
    }
 
-<<<<<<< HEAD
-=======
    if(nameOfHist.Contains("hNSigma")){
       hist->SetMinimum(0.98);
    }
 
 
-   canvas->Clear();
->>>>>>> master
    SetTH2Style(hist);
 
    hist->Draw("COLZ");
-   DrawSTARpp510JPsi(0.53,0.85,0.82,0.93, 0.01);
+   //DrawSTARpp510JPsi(0.53,0.85,0.82,0.93, 0.01);
+   DrawSTARInternal(0.7, 0.89, 0.83, 0.93);
    if(nameOfHist.Contains("hRPcorr") ){
       DrawFiducial();
    }
@@ -577,7 +645,7 @@ void Plot::TH2General(TString nameOfHist , TH2*& hist, TString dir){
          hist->SetMinimum(0.98);
    }
 
-
+   c->Update();
    outFile->cd();
    if(dir != ""){
       outFile->cd(dir);
@@ -649,7 +717,7 @@ void Plot::nSigmaCorrPlot(int particles, TString condition) {
 
 
 
-TH1D* Plot::loadInvMassHist(int numBins, Double_t minRange, Double_t maxRange, TString c){ 
+TH1D* Plot::loadInvMassHist(int numBins, Double_t minRange, Double_t maxRange, TString c, bool removeBcg){ 
 
    // create a canvas that will hold both fits
    CreateCanvas(&canvas, "invMassJPsi", widthTypical, heightTypical);
@@ -664,8 +732,10 @@ TH1D* Plot::loadInvMassHist(int numBins, Double_t minRange, Double_t maxRange, T
    tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), c);
    hSignal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
 
-   bcgTree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), c);
-   hBcg->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+   if(removeBcg){
+      bcgTree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), c);
+      hBcg->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+   }
 
    if(hSignal->GetEntries() == 0 ){
       cout << "Could not load signal to histograms" << endl;
@@ -740,10 +810,14 @@ TString Plot::getCondition(TString var, int j ){
       }
    }
 
+   //c += Form("isBemcHit0 == 1 && isBemcHit1 == 1 && "); // require both electrons to have matched BEMC hit
+
    //remove the last " && "
-   if(c.EndsWith("&& ")){
+   if(c.EndsWith("&& ") || c.EndsWith(" &&")){
       c.Remove(c.Length() - 3, 3);
    }
+
+   // cout << "Condition for variable " << var << ": " << c << " and j = " << j << endl;
 
    return c;
 

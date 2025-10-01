@@ -7,9 +7,13 @@ void PlotAnaV0Mult::Make(){
 
 	handleHistograms(nameOfAnaV0MultDir);
 
+}
 
-	outFile->Close();
-	histFile->Close();
+void PlotAnaV0Mult::Finish(){
+
+    if(outFile) outFile->Close();
+    if(histFile) histFile->Close();
+
 }
 
 void PlotAnaV0Mult::Init(){
@@ -20,7 +24,7 @@ void PlotAnaV0Mult::Init(){
 		return;
 	}
 
-    histFile = unique_ptr<TFile>( TFile::Open("histFile.root", "read") );
+    histFile = shared_ptr<TFile>( TFile::Open("histFile.root", "read") );
 
 	if(!histFile || histFile->IsZombie()){
 		cerr << "Could not open histFile. Leaving..." << endl;

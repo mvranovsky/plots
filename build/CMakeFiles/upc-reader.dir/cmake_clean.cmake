@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o"
   "CMakeFiles/upc-reader.dir/src/FitJPsi.cxx.o"
   "CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o"
+  "CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o"
+  "CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o"
   "libupc-reader.pdb"
   "libupc-reader.so"
 )

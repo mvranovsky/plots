@@ -12,20 +12,22 @@ using namespace std;
 
 class Plot{
 	public: 
-	// can be accessed from outside the class
-	Plot(const string mInputList, const char* filePath);
-	Plot(const string mInputList, unique_ptr<TFile> &file);
+		// can be accessed from outside the class
+		Plot(const string mInputList, const char* filePath);
+		Plot(const string mInputList, shared_ptr<TFile> file);
 
 		virtual ~Plot();
 		
 		virtual void Make(){cout<<"Hi my name is make"<<endl;};
         virtual void Init(){cout<<"Hi I should not be there but I am"<<endl;};
+		virtual void Finish() {cout << "Hi I should not be there but I am"<<endl;};
 		
 		//can be accessed from within this class or from derived classes
 		bool ConnectInputTree(const string& input, TString nameOfTree,TTree *&TREE, TTree *&BCGTREE);
 		void CreateCanvas(TCanvas **canvas, TString canvasName, int canvasWidth = 1000 , int canvasHeight = 800);
 		void CreateLegend(TLegend **legend,double xl = 0.74, double yl = 0.74, double xr = 0.97, double yr = 0.89);
 		void DrawSTARInternal(double xl = 0.8, double yl = 0.89, double xr = 0.93, double yr = 0.93);
+		void DrawSTARInternalZB(double xl = 0.8, double yl = 0.89, double xr = 0.93, double yr = 0.93);
 		void SetGPad(bool isLogY = false, double left = 0.14, double right = 0.07, double bottom = 0.11, double top = 0.06 ); // (Float_t left, Float_t right, Float_t bottom, Float_t top)
 		void CreateText(TString writtenText, int textF = 42,double xl = 0.65, double yl = 0.68, double xr = 0.88, double yr = 0.88);
 		void DrawFiducial();
@@ -34,19 +36,22 @@ class Plot{
 		void DrawSTARpp510JPsi(double xl = 0.73, double yl = 0.86, double xr = 0.93, double yr = 0.93, double textSizeRel = 0.01);
 		void DrawEmbeddingpp510JPsi(double xl = 0.73, double yl = 0.90, double xr = 0.93, double yr = 0.95, double textSizeRel = 0.0);
 		void CreateLine(double xl, double yl, double xr, double yr);
-		void SetTGraphStyle(TGraph*& graph, Int_t color, Int_t markStyle);
 		TString getCondition(TString var = "", int j = 0);
-		TH1D* loadInvMassHist(int numBins, Double_t minRange, Double_t maxRange, TString c);
+		TH1D* loadInvMassHist(int numBins, Double_t minRange, Double_t maxRange, TString c, bool removeBcg = true); // function to load invariant mass histogram from tree with given cuts. If removeBcg is true, background histogram will be subtracted from signal histogram
 		
-		void TH1General(TString nameOfHist,TH1*& hist, TString dir = "");
+		void SetTGraphStyle(TGraph*& graph, Int_t color = kBlue, Int_t markStyle = 20);
+		void SetTGraphStyle(TGraphErrors*& graph, Int_t color = kBlue, Int_t markStyle = 20);
+		void SetTGraphStyle(TGraphAsymmErrors*& graph, Int_t color = kBlue, Int_t markStyle = 20);
+		void TH1General(TString nameOfHist,TH1*& hist, TString dir = "", TString addOn = "");
 		void SetHistStyle(TH1*& hist, Int_t color, Int_t markStyle);
-		void TH2General(TString nameOfHist , TH2*& hist, TString dir = "");
+		void TH2General(TString nameOfHist , TH2*& hist, TString dir = "", TString addOn = "");
 		void SetTH2Style(TH2*& hist);
 		
-		protected:
-		
-		unique_ptr<TFile> outFile, histFile;
 		TTree *tree, *bcgTree;
+	protected:
+
+		shared_ptr<TFile> outFile;  // Shared pointer
+		shared_ptr<TFile> histFile;  // This one can stay shared_ptr if Plot owns it
 		const char* outputPosition;
 		string inputPosition;
 		
@@ -57,7 +62,7 @@ class Plot{
 
 
 		// methods to handle TH1 and TH2 histograms
-		bool handleHistograms(TString dir = "");
+		bool handleHistograms(TString dir = "", TString addOn = "");
 		vector<pair<TH1*, TString>> GetAllTH1(TString dir = "");
 		vector<pair<TH2*, TString>> GetAllTH2(TString dir = "");
 		

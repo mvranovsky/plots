@@ -25,12 +25,16 @@ PlotAnaJPsi.h
 ../include/PlotAnaJPsi.h
 PlotGoodRun.h
 ../include/PlotGoodRun.h
+PlotZeroBias.h
+../include/PlotZeroBias.h
 
 ../include/FitJPsi.h
 Libraries.h
 ../include/Libraries.h
 memory
 -
+RooGenericPdf.h
+../include/RooGenericPdf.h
 
 ../include/Libraries.h
 iostream
@@ -188,6 +192,16 @@ Plot.h
 FitJPsi.h
 ../include/FitJPsi.h
 
+../include/PlotBemcEfficiency.h
+Plot.h
+../include/Plot.h
+RunDef.h
+../include/RunDef.h
+Libraries.h
+../include/Libraries.h
+Util.h
+../include/Util.h
+
 ../include/PlotEmbeddingJPsi.h
 Util.h
 ../include/Util.h
@@ -209,6 +223,20 @@ Util.h
 ../include/Util.h
 ProbRetainEvent.h
 ../include/ProbRetainEvent.h
+
+../include/PlotZeroBias.h
+Plot.h
+../include/Plot.h
+RunDef.h
+../include/RunDef.h
+Libraries.h
+../include/Libraries.h
+Util.h
+../include/Util.h
+ProbRetainEvent.h
+../include/ProbRetainEvent.h
+FitJPsi.h
+../include/FitJPsi.h
 
 ../include/ProbRetainEvent.h
 Libraries.h
@@ -424,6 +452,10 @@ PlotAnaJPsi.h
 ../include/PlotAnaV0Mult.h
 /star/u/mvranovsk/plots/include/PlotAnaV0Mult.h
 
+/star/u/mvranovsk/plots/src/PlotBemcEfficiency.cxx
+PlotBemcEfficiency.h
+/star/u/mvranovsk/plots/src/PlotBemcEfficiency.h
+
 /star/u/mvranovsk/plots/src/PlotEmbeddingJPsi.cxx
 PlotEmbeddingJPsi.h
 /star/u/mvranovsk/plots/src/PlotEmbeddingJPsi.h
@@ -439,6 +471,10 @@ PlotGoodRun.h
 /star/u/mvranovsk/plots/src/PlotTofEffMult.cxx
 ../include/PlotTofEffMult.h
 /star/u/mvranovsk/plots/include/PlotTofEffMult.h
+
+/star/u/mvranovsk/plots/src/PlotZeroBias.cxx
+PlotZeroBias.h
+/star/u/mvranovsk/plots/src/PlotZeroBias.h
 
 /star/u/mvranovsk/plots/src/ProbRetainEvent.cxx
 ProbRetainEvent.h

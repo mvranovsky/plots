@@ -16,6 +16,8 @@ set (SRCS
   src/ProbRetainEvent.cxx
   src/FitJPsi.cxx
   src/CrossSectionMaker.cxx
+  src/PlotZeroBias.cxx
+  src/PlotBemcEfficiency.cxx
   )
 
 #name of LIB_READER

@@ -17,12 +17,13 @@ class PlotGoodRun : public Plot {
 	public:
 		//accessible from outside the class
 		PlotGoodRun(const string mInputList, const char* filePath);
-		PlotGoodRun(const string mInputList, unique_ptr<TFile> &file);
+		PlotGoodRun(const string mInputList, shared_ptr<TFile> file);
       	~PlotGoodRun(){};
       
       	//overrides the original Make() from class Plot
       	void Make() override;
       	void Init() override;
+		void Finish() override;
 
 		double getTriggerEfficiency() const { return triggerEfficiency; }
 		double getTriggerEfficiencyBeforeCuts() const { return triggerEfficiencyBeforeCuts; }
@@ -30,7 +31,7 @@ class PlotGoodRun : public Plot {
 		vector<int> getRpGoodRunList() const { return rpGoodRunList; }
 		
 
-
+		ProbRetainEvent* mProbRetainEvent;
     private:
     	//store variables, which can be accessed only from within this class
 		pair<double,double> FitEtaDistributions(TH1D* hist, int SWITCH);

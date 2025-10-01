@@ -298,6 +298,33 @@ src/PlotAnaV0Mult.cxx.s:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.s
 .PHONY : src/PlotAnaV0Mult.cxx.s
 
+src/PlotBemcEfficiency.o: src/PlotBemcEfficiency.cxx.o
+
+.PHONY : src/PlotBemcEfficiency.o
+
+# target to build an object file
+src/PlotBemcEfficiency.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o
+.PHONY : src/PlotBemcEfficiency.cxx.o
+
+src/PlotBemcEfficiency.i: src/PlotBemcEfficiency.cxx.i
+
+.PHONY : src/PlotBemcEfficiency.i
+
+# target to preprocess a source file
+src/PlotBemcEfficiency.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.i
+.PHONY : src/PlotBemcEfficiency.cxx.i
+
+src/PlotBemcEfficiency.s: src/PlotBemcEfficiency.cxx.s
+
+.PHONY : src/PlotBemcEfficiency.s
+
+# target to generate assembly for a file
+src/PlotBemcEfficiency.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.s
+.PHONY : src/PlotBemcEfficiency.cxx.s
+
 src/PlotEmbeddingJPsi.o: src/PlotEmbeddingJPsi.cxx.o
 
 .PHONY : src/PlotEmbeddingJPsi.o
@@ -405,6 +432,33 @@ src/PlotTofEffMult.s: src/PlotTofEffMult.cxx.s
 src/PlotTofEffMult.cxx.s:
 	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.s
 .PHONY : src/PlotTofEffMult.cxx.s
+
+src/PlotZeroBias.o: src/PlotZeroBias.cxx.o
+
+.PHONY : src/PlotZeroBias.o
+
+# target to build an object file
+src/PlotZeroBias.cxx.o:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o
+.PHONY : src/PlotZeroBias.cxx.o
+
+src/PlotZeroBias.i: src/PlotZeroBias.cxx.i
+
+.PHONY : src/PlotZeroBias.i
+
+# target to preprocess a source file
+src/PlotZeroBias.cxx.i:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.i
+.PHONY : src/PlotZeroBias.cxx.i
+
+src/PlotZeroBias.s: src/PlotZeroBias.cxx.s
+
+.PHONY : src/PlotZeroBias.s
+
+# target to generate assembly for a file
+src/PlotZeroBias.cxx.s:
+	$(MAKE) -f CMakeFiles/upc-reader.dir/build.make CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.s
+.PHONY : src/PlotZeroBias.cxx.s
 
 src/PlotsManager.o: src/PlotsManager.cxx.o
 
@@ -515,6 +569,9 @@ help:
 	@echo "... src/PlotAnaV0Mult.o"
 	@echo "... src/PlotAnaV0Mult.i"
 	@echo "... src/PlotAnaV0Mult.s"
+	@echo "... src/PlotBemcEfficiency.o"
+	@echo "... src/PlotBemcEfficiency.i"
+	@echo "... src/PlotBemcEfficiency.s"
 	@echo "... src/PlotEmbeddingJPsi.o"
 	@echo "... src/PlotEmbeddingJPsi.i"
 	@echo "... src/PlotEmbeddingJPsi.s"
@@ -527,6 +584,9 @@ help:
 	@echo "... src/PlotTofEffMult.o"
 	@echo "... src/PlotTofEffMult.i"
 	@echo "... src/PlotTofEffMult.s"
+	@echo "... src/PlotZeroBias.o"
+	@echo "... src/PlotZeroBias.i"
+	@echo "... src/PlotZeroBias.s"
 	@echo "... src/PlotsManager.o"
 	@echo "... src/PlotsManager.i"
 	@echo "... src/PlotsManager.s"

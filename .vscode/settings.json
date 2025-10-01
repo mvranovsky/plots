@@ -9,6 +9,7 @@
         "fstream": "cpp",
         "bichselG10.C": "cpp",
         "random": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "vector": "cpp"
     }
 }

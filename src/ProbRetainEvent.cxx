@@ -1,9 +1,7 @@
 #include "ProbRetainEvent.h"
 
-
-
-ProbRetainEvent::ProbRetainEvent(const std::unique_ptr<TFile>& outFile, TTree* tree)
-    : outFile(outFile.get()), tree(tree) {}
+ProbRetainEvent::ProbRetainEvent(const std::shared_ptr<TFile>& outFile, TTree* tree)
+    : outFile(outFile), tree(tree) {}
 
 
 ProbRetainEvent::~ProbRetainEvent() {
@@ -53,33 +51,33 @@ void ProbRetainEvent::Make( ) {  // argument is the name of the output file
 
     // define an exponential function to fit the data
     TF1 *fit = new TF1("fit", "[0]*exp([1]*x)", 60, 160);
-    fit->SetParameters(1, -0.01);
+    fit->SetParameter(0, 1.0);
+    fit->SetParameter(1, -0.01);
     fit->SetParNames("A", "B");
     fit->SetLineColor(kRed);
     fit->SetLineWidth(2);
     //fit->SetLineStyle(2);
-    graph->Fit(fit, "R");
+    // set fit limits
+    TFitResultPtr fitResult = graph->Fit(fit, "RS+", "", 60, 160);
     graph->GetYaxis()->SetRangeUser(0, 1);
-
+    graph->GetXaxis()->SetLimits(60, 160);  // Set x-axis limits
     graph->Draw("AEP");
     fit->Draw("same");
 
+    if (fitResult.Get()) {
+        int status = fitResult->Status();
+        if (status != 0) {
+            cout << "Fit failed with status: " << status << endl;
+            // Try with different initial parameters or fit range
+        }
+    }
     a = fit->GetParameter(0);
     b = fit->GetParameter(1);
     aErr = fit->GetParError(0);
     bErr = fit->GetParError(1);
 
-    
-    TPaveText *textpp510 = new TPaveText(0.77, 0.77, 0.94, 0.96,"brNDC");
-    textpp510 -> SetTextSize(0.04);
-    textpp510 -> SetTextAlign(33);
-    textpp510 -> SetFillStyle(4000);
-    textpp510 -> SetFillColorAlpha(kWhite, 0.0);  // Blue background with 30% opacity
-    textpp510 -> SetTextFont(62);
-    textpp510->AddText("p+p #rightarrow p #oplus J/#psi #oplus p");
-    textpp510->AddText( "#sqrt{s} = 510 GeV");
-    textpp510 -> Draw("same");
-    
+    DrawSTARInternal();
+
     TPaveText *text = new TPaveText(0.77, 0.6, 0.94, 0.75,"brNDC");
     text -> SetTextSize(0.04);
     text -> SetTextAlign(33);
@@ -90,6 +88,10 @@ void ProbRetainEvent::Make( ) {  // argument is the name of the output file
     // print chi square and NDF
     double chi2 = fit->GetChisquare();
     double ndf = fit->GetNDF();
+    cout << "A = " << a << " +/- " << aErr << endl;
+    cout << "B = " << b << " +/- " << bErr << endl;
+    cout << "Chi square/NDF = " << chi2 << "/" << ndf << endl;
+
     text -> AddText(Form("#chi^{2}/ndf = %.2f/%.0f", chi2, ndf));
     text -> AddText("f(L) = A*exp(B*L)");
     text -> AddText(Form("A = %.2f #pm %.2f", a, aErr));
@@ -113,8 +115,10 @@ void ProbRetainEvent::Make( ) {  // argument is the name of the output file
         return;
     }
     
-    goodRuns = filterProbRetainEvent(data, fitPars[0], fitPars[1], fit->GetParameter(0), fit->GetParameter(1));
-        
+    goodRuns = filterProbRetainEvent(data, fitPars[0], fitPars[1], a, b);
+
+    cout << "Good runs after probRetainEvent: " << goodRuns.size() << endl;
+
     // draw lines with TF1 at +- 9 sigma
     c->cd();
     TF1 *linePlus = new TF1("linePlusP", "[0]*exp([1]*x) + [2]", 60,160);
@@ -132,7 +136,7 @@ void ProbRetainEvent::Make( ) {  // argument is the name of the output file
     lineMinus->Draw("same");
     
     TLegend *legend = new TLegend(0.12, 0.7, 0.3, 0.88);
-    legend->AddEntry(graph, "Data", "lp");
+    legend->AddEntry(graph, "Data", "p");
     legend->AddEntry(fit, "Exponential fit", "lp");
     legend->AddEntry(linePlus, "Fit #pm 9#sigma", "l");
     legend->SetBorderSize(0);
@@ -140,14 +144,35 @@ void ProbRetainEvent::Make( ) {  // argument is the name of the output file
     legend->SetTextSize(0.04);
     legend->Draw("same");
 
+
+
     c->Modified();
     c->Update();
-
-
     outFile->cd();
     outFile->cd(dir);
     c->Write("ProbRetainEvent");
 
+}
+
+void ProbRetainEvent::DrawSTARInternal(double xl, double yl, double xr, double yr)
+{
+   TPaveText *textSTAR;
+   textSTAR = new TPaveText(xl, yl, xr, yr,"brNDC");
+   textSTAR -> SetTextSize(0.04);
+   textSTAR -> SetFillColorAlpha(0,0);
+   textSTAR -> SetTextFont(72);
+   textSTAR -> SetTextAlign(33);
+   textSTAR->AddText("STAR Internal");
+   textSTAR -> Draw("same");
+
+   TPaveText *textpp510;
+   textpp510 = new TPaveText(xl, yl - 0.05, xr, yr - 0.05,"brNDC");
+   textpp510 -> SetTextSize(0.03);
+   textpp510 -> SetTextAlign(33);
+   textpp510 -> SetFillColor(0);
+   textpp510 -> SetTextFont(62);
+   textpp510->AddText("p+p #sqrt{s} = 510 GeV");
+   textpp510 -> Draw("same");
 }
 
 vector<double> ProbRetainEvent::fitGaussian(TH1D *h, vector<runInfo> data) {
@@ -213,15 +238,7 @@ vector<double> ProbRetainEvent::fitGaussian(TH1D *h, vector<runInfo> data) {
     legend->SetTextSize(0.04);
     legend->Draw("same");
 
-    TPaveText *textpp510 = new TPaveText(0.77, 0.77, 0.94, 0.96,"brNDC");
-    textpp510 -> SetTextSize(0.04);
-    textpp510 -> SetTextAlign(33);
-    textpp510 -> SetFillStyle(4000);
-    textpp510 -> SetFillColorAlpha(kWhite, 0.0);  // Blue background with 30% opacity
-    textpp510 -> SetTextFont(62);
-    textpp510->AddText("p+p #rightarrow p #oplus J/#psi #oplus p");
-    textpp510->AddText( "#sqrt{s} = 510 GeV");
-    textpp510 -> Draw("same");
+    DrawSTARInternal();
 
     TPaveText *text = new TPaveText(0.77, 0.6, 0.94, 0.75,"brNDC");
     text -> SetTextSize(0.04);
@@ -258,6 +275,8 @@ vector<int> ProbRetainEvent::filterProbRetainEvent(const vector<runInfo>& data, 
     for (const auto& entry : data) {
         
         double diff = entry.probRetainEvent - exponential(entry.instLumi, A, B);
+
+        if(entry.filled ==0) continue;
 
         if(diff > mean + 9 * sigma || diff < mean - 9 * sigma){
             //cout << "Error: probRetainEvent out of range in file: " << filename << endl;
@@ -315,6 +334,7 @@ vector<runInfo> ProbRetainEvent::getData(){
         entry.nEventsZBVetoPassed = nEventsZBVetoPassed;
         entry.TEAll = nEventsTEAll;
         entry.TEPassed = nEventsTEPassed;
+        entry.filled = 0;
         
         data.push_back(entry);
         RunNumToLumi[mRunNumber] = luminosity;
@@ -326,7 +346,7 @@ vector<runInfo> ProbRetainEvent::getData(){
 
 }
 
-TGraph* ProbRetainEvent::fillGraph(vector<runInfo> data){
+TGraph* ProbRetainEvent::fillGraph(vector<runInfo> &data){
     
     
     TGraph *graph = new TGraph();
@@ -335,16 +355,30 @@ TGraph* ProbRetainEvent::fillGraph(vector<runInfo> data){
     graph->GetXaxis()->SetTitle("Luminosity [pb^{-1}]");
     graph->GetYaxis()->SetTitle("Probability of Retaining Event");
 
-
+    int i = 0;
     for (const auto& entry : data) {
         //int runNumber = entry.runNumber;
         double luminosity = entry.instLumi;
         double probRetainEvent = entry.probRetainEvent;
+        int ZBAll = entry.nEventsZBVetoAll;
         //cout << "luminosity: " << luminosity << ". ProbRetainEvent: " << probRetainEvent << endl;
-        if(luminosity <= 0 || probRetainEvent <= 0){
+        if(luminosity <= 60 || luminosity > 160){
+            i++;
             continue;
         }
+        if(probRetainEvent < 0 || probRetainEvent > 1) {
+            i++;
+            continue;
+        }
+        if(ZBAll ==0){
+            i++;
+            continue;
+        }
+
         graph->SetPoint(graph->GetN(), luminosity, probRetainEvent);
+        data[i].filled = 1;
+        i++;
+        //cout << "Set point: " << luminosity << ", " << probRetainEvent << endl;
     }
     return graph;
 }
@@ -436,7 +470,8 @@ double ProbRetainEvent::getLuminosity(const vector<int> &runs, double A, double 
 
     double luminosity = 0;
     for(const auto& run : runs) {
-        luminosity += RunNumToLumi[run]*exponential(RunNumToLumi[run], A, B);
+        luminosity += RunNumToLumi[run]*exponential(RunNumToInstLumi[run], A, B);
+        //cout << "Run: " << run << ", InstLumi: " << RunNumToInstLumi[run] << ", Luminosity (not corrected): " << RunNumToLumi[run] << ", luminosity (corrected): " << exponential(RunNumToLumi[run], A, B) << endl;
     }
     return luminosity;
 }

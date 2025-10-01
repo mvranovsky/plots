@@ -8,6 +8,7 @@ CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../include/Plot.h
 CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../include/PlotAnaJPsi.h
 CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../include/PlotEmbeddingJPsi.h
 CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../include/PlotGoodRun.h
+CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../include/PlotZeroBias.h
 CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../include/ProbRetainEvent.h
 CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../include/Util.h
 CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o: ../src/CrossSectionMaker.cxx
@@ -43,6 +44,13 @@ CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: ../include/Util.h
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: ../src/PlotAnaV0Mult.cxx
 CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
+CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o: ../include/Libraries.h
+CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o: ../include/Plot.h
+CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o: ../include/PlotBemcEfficiency.h
+CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o: ../include/Util.h
+CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o: ../src/PlotBemcEfficiency.cxx
+CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+
 CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../include/FitJPsi.h
 CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../include/Libraries.h
 CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o: ../include/Plot.h
@@ -72,6 +80,15 @@ CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../include/PlotTofEffMult.h
 CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../include/Util.h
 CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: ../src/PlotTofEffMult.cxx
 CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o: ../include/FitJPsi.h
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o: ../include/Libraries.h
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o: ../include/Plot.h
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o: ../include/PlotZeroBias.h
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o: ../include/ProbRetainEvent.h
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o: ../include/Util.h
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o: ../src/PlotZeroBias.cxx
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o: /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
 CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o: ../include/Libraries.h
 CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o: ../include/ProbRetainEvent.h

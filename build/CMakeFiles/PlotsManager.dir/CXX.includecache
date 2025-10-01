@@ -25,12 +25,16 @@ PlotAnaJPsi.h
 /star/u/mvranovsk/plots/include/PlotAnaJPsi.h
 PlotGoodRun.h
 /star/u/mvranovsk/plots/include/PlotGoodRun.h
+PlotZeroBias.h
+/star/u/mvranovsk/plots/include/PlotZeroBias.h
 
 /star/u/mvranovsk/plots/include/FitJPsi.h
 Libraries.h
 /star/u/mvranovsk/plots/include/Libraries.h
 memory
 -
+RooGenericPdf.h
+/star/u/mvranovsk/plots/include/RooGenericPdf.h
 
 /star/u/mvranovsk/plots/include/Libraries.h
 iostream
@@ -204,6 +208,16 @@ Plot.h
 ../../star-upcDst/work/include/RunDef.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
+/star/u/mvranovsk/plots/include/PlotBemcEfficiency.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+RunDef.h
+/star/u/mvranovsk/plots/include/RunDef.h
+Libraries.h
+/star/u/mvranovsk/plots/include/Libraries.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+
 /star/u/mvranovsk/plots/include/PlotEmbeddingJPsi.h
 Util.h
 /star/u/mvranovsk/plots/include/Util.h
@@ -242,6 +256,20 @@ Plot.h
 ../../star-upcDst/work/include/RunDef.h
 /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 
+/star/u/mvranovsk/plots/include/PlotZeroBias.h
+Plot.h
+/star/u/mvranovsk/plots/include/Plot.h
+RunDef.h
+/star/u/mvranovsk/plots/include/RunDef.h
+Libraries.h
+/star/u/mvranovsk/plots/include/Libraries.h
+Util.h
+/star/u/mvranovsk/plots/include/Util.h
+ProbRetainEvent.h
+/star/u/mvranovsk/plots/include/ProbRetainEvent.h
+FitJPsi.h
+/star/u/mvranovsk/plots/include/FitJPsi.h
+
 /star/u/mvranovsk/plots/include/PlotsManager.h
 PlotAnaV0.h
 /star/u/mvranovsk/plots/include/PlotAnaV0.h
@@ -259,6 +287,12 @@ PlotEmbeddingJPsi.h
 /star/u/mvranovsk/plots/include/PlotEmbeddingJPsi.h
 CrossSectionMaker.h
 /star/u/mvranovsk/plots/include/CrossSectionMaker.h
+PlotZeroBias.h
+/star/u/mvranovsk/plots/include/PlotZeroBias.h
+Libraries.h
+/star/u/mvranovsk/plots/include/Libraries.h
+PlotBemcEfficiency.h
+/star/u/mvranovsk/plots/include/PlotBemcEfficiency.h
 TFile.h
 -
 TKey.h

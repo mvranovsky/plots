@@ -9,6 +9,7 @@ CMakeFiles/upc-reader.dir/src/CrossSectionMaker.cxx.o
  ../include/PlotAnaJPsi.h
  ../include/PlotEmbeddingJPsi.h
  ../include/PlotGoodRun.h
+ ../include/PlotZeroBias.h
  ../include/ProbRetainEvent.h
  ../include/Util.h
  /star/u/mvranovsk/plots/src/CrossSectionMaker.cxx
@@ -43,6 +44,13 @@ CMakeFiles/upc-reader.dir/src/PlotAnaV0Mult.cxx.o
  /star/u/mvranovsk/plots/include/Util.h
  /star/u/mvranovsk/plots/src/PlotAnaV0Mult.cxx
  /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+CMakeFiles/upc-reader.dir/src/PlotBemcEfficiency.cxx.o
+ ../include/Libraries.h
+ ../include/Plot.h
+ ../include/PlotBemcEfficiency.h
+ ../include/Util.h
+ /star/u/mvranovsk/plots/src/PlotBemcEfficiency.cxx
+ /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 CMakeFiles/upc-reader.dir/src/PlotEmbeddingJPsi.cxx.o
  ../include/FitJPsi.h
  ../include/Libraries.h
@@ -72,6 +80,15 @@ CMakeFiles/upc-reader.dir/src/PlotTofEffMult.cxx.o
  /star/u/mvranovsk/plots/include/PlotTofEffMult.h
  /star/u/mvranovsk/plots/include/Util.h
  /star/u/mvranovsk/plots/src/PlotTofEffMult.cxx
+ /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
+CMakeFiles/upc-reader.dir/src/PlotZeroBias.cxx.o
+ ../include/FitJPsi.h
+ ../include/Libraries.h
+ ../include/Plot.h
+ ../include/PlotZeroBias.h
+ ../include/ProbRetainEvent.h
+ ../include/Util.h
+ /star/u/mvranovsk/plots/src/PlotZeroBias.cxx
  /star/u/mvranovsk/star-upcDst/work/include/RunDef.h
 CMakeFiles/upc-reader.dir/src/ProbRetainEvent.cxx.o
  ../include/Libraries.h

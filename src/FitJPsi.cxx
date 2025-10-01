@@ -67,8 +67,18 @@ void FitJPsi::fitPeak() {
    // Define signal model (Crystal Ball)
    cbmean   = new RooRealVar("mean", "mean", 3.0908, 2.8, 3.2);
    cbsigma  = new RooRealVar("sigma", "sigma", 0.0543, 0.0, 0.065);
-   cbalpha  = new RooRealVar("cb_alpha", "cb_alpha", 1.41, 1.410, 1.411); // fixed
-   cbn      = new RooRealVar("cb_n", "cb_n", 1.93, 1.930, 1.931);         // fixed
+
+   if(mAlphaLoose){
+      cbalpha  = new RooRealVar("cb_alpha", "cb_alpha", 1.41, 0.5, 5.0); // loose
+   }else{
+      cbalpha  = new RooRealVar("cb_alpha", "cb_alpha", 1.41, 1.410, 1.411); // fixed
+   }
+
+   if(mNLoose){
+      cbn      = new RooRealVar("cb_n", "cb_n", 1.93, 0.5, 5.0);         // loose
+   }else{
+      cbn      = new RooRealVar("cb_n", "cb_n", 1.93, 1.930, 1.931);         // fixed
+   }
 
    cb = new RooCBShape("cb", "cb", *x, *cbmean, *cbsigma, *cbalpha, *cbn);
 
@@ -86,7 +96,7 @@ void FitJPsi::fitPeak() {
 
    // Check if model was created successfully before fitting
    if (!model) {
-      std::cerr << "Error: Model was not initialized. Check background string: " << bcg << std::endl;
+      std::cerr << "ERROR: Model was not initialized. Check background string: " << bcg << std::endl;
       return;
    }
 
@@ -94,12 +104,15 @@ void FitJPsi::fitPeak() {
    fitResult = model->fitTo(*dh, RooFit::Save(), RooFit::PrintLevel(-1));
 
    if (!fitResult) {
-      std::cerr << "Error: Fit result is null. Check if the model was created successfully." << std::endl;
+      std::cerr << "ERROR: Fit result is null. Check if the model was created successfully." << std::endl;
       return;
    }
 
    // Calculate degrees of freedom
-   NDF = hist->GetNbinsX() - (fitResult->floatParsFinal().getSize() - 2);
+   NDF = hist->GetNbinsX() - (fitResult->floatParsFinal().getSize());
+   mNLoose ? NDF += 0 : NDF += 1;
+   mAlphaLoose ? NDF += 0 : NDF += 1;
+
    //plotting
    model->plotOn(frame, Name("model"));
    if(fitBcg){
@@ -120,7 +133,9 @@ void FitJPsi::fitPeak() {
 
    TPaveText *text = new TPaveText(0.7,0.52,0.85,0.78, "NDC"); //in plot text (x_beggining, y_beggining, x_end, y_end) .
    text->SetTextSize(0.03);
-   text->SetFillColor(0);
+   text->SetFillStyle(0);
+   text->SetBorderSize(0);
+   text->SetFillColorAlpha(0, 0);
    text->SetTextFont(42);
    text->SetTextAlign(12);
    text->AddText("");
@@ -142,13 +157,12 @@ void FitJPsi::fitPeak() {
    if(!fitBcg){
       leg1->AddEntry("model", "Crystal Ball", "LP");
    }else{
-      leg1->AddEntry("model","Crystal Ball + Poly1","LP");
+      leg1->AddEntry("model",TString("Crystal Ball + ")+ bcg,"LP");
       leg1->AddEntry("background",bcg, "LP");
    }
    leg1->Draw("same hist E");
    c->Update();
 }
-
 
 FitJPsi::~FitJPsi(){
    if(c) {
@@ -159,6 +173,151 @@ FitJPsi::~FitJPsi(){
    if(model) delete model;
    if(frame) delete frame;
    if(hSignal) delete hSignal;
+}
+
+void FitJPsi::fitContinuum(){
+
+   bool fitGaussPeak = false;
+   if(bcg.Contains("gauss") || bcg.Contains("gaus") || bcg.Contains("Gauss") || bcg.Contains("GAUSS")){
+      fitGaussPeak = true;
+   }
+   
+   gStyle->SetOptTitle(0);
+   gStyle->SetOptStat(0);
+
+   // create a canvas that will hold both fits
+   c = new TCanvas("peakFit", "Fit Result", 1200, 800); 
+
+   gPad->SetLeftMargin(0.12);
+   gPad->SetRightMargin(0.03);
+   gPad->SetTopMargin(0.03);
+   gPad->SetBottomMargin(0.11);
+   gPad->SetTickx();
+   gPad->SetTicky(); 
+
+   gStyle->SetOptStat(0);   
+
+   if(!hist || hist->GetEntries() == 0){
+      cout << "Empty or no hist when trying to fit. Leaving." << endl;
+      return;
+   }
+
+   // Set axis title
+   hist->GetXaxis()->SetTitle("m_{ee} [GeV/c^{2}]");
+   hist->SetTitle("");
+
+   TString func = "(x - [0])*exp([1]*(x-[0])**2 + [2]*x**3)";
+   if(fitGaussPeak){
+      func += " + gaus(3)";
+   }
+
+   TF1 *f = new TF1("f", func, hist->GetXaxis()->GetXmin(), hist->GetXaxis()->GetXmax());
+   f->SetParameter(0, 2.5);
+   f->SetParameter(1, 1.0);
+   f->SetParameter(2, 0.3);
+   if(fitGaussPeak){
+      f->SetParameter(3, 500);
+      f->SetParameter(4, 3.1);
+      f->SetParameter(5, 0.001);
+   }
+   f->SetLineColor(kRed);
+   f->SetLineWidth(2);
+   f->SetLineStyle(1);
+   hist->Fit(f, "R");
+   
+
+   TPaveText *text = new TPaveText(0.6,0.52,0.85,0.78, "NDC"); //in plot text (x_beggining, y_beggining, x_end, y_end) .
+   text->SetTextSize(0.03);
+   text->SetFillStyle(0);
+   text->SetBorderSize(0);
+   text->SetFillColorAlpha(0, 0);
+   text->SetTextFont(42);
+   text->SetTextAlign(12);
+   text->AddText("f(x) = (x - c_{1})exp( #lambda(x- c_{1})^{2} + c_{2}x^{3}) + Aexp#left( -#frac{(x - #mu)^{2}}{2#sigma^{2} } #right)");
+   text->AddText(Form("    #lambda = %.2f #pm %.2f",f->GetParameter(1),f->GetParError(1)));
+   text->AddText(Form("    c_{1} = %.1f #pm %.1f",f->GetParameter(0),f->GetParError(0)));
+   text->AddText(Form("    c_{2} = %.1f #pm %.1f", f->GetParameter(2),f->GetParError(2)));
+   if(fitGaussPeak){
+      text->AddText(Form("    A = %.1f #pm %.1f", f->GetParameter(3), f->GetParError(3)));
+      text->AddText(Form("    #mu = %.1f #pm %.1f", f->GetParameter(4), f->GetParError(4)));
+      text->AddText(Form("    #sigma = %.1f #pm %.1f", f->GetParameter(5), f->GetParError(5)));
+   }
+   text->AddText(Form("chi^{2}/NDF = %.2f/%d #approx %.1f", f->GetChisquare(), f->GetNDF() ,  f->GetChisquare()/f->GetNDF() ) ); 
+   text->Draw("same hist E");
+
+   TLegend *leg1 = new TLegend(0.25,0.58,0.4,0.8);
+   leg1->SetTextSize(0.03);
+   leg1->SetFillStyle(0);
+   leg1->SetBorderSize(0);
+   leg1->AddEntry(hist,"Data", "LEP");
+   leg1->AddEntry(f, "Fit function", "LP");
+
+   leg1->Draw("same hist E");
+   c->Update();
+
+
+}
+
+
+
+double FitJPsi::getCorrectedYield(TH1D *spectrum, TGraphAsymmErrors* graph, double averageCorrection) { //spectrum should be background subtracted, because so is inv mass
+
+
+   if(netYield <= 0 || errNetYield <= 0) {
+      cerr << "Error: The fit has not been run or failed. Before getting corrected yield, please run the fit to get the raw yield." << endl;
+      return -1;
+   }
+
+
+   double frac = sOverB <= 0 ? 1 : yieldSignal/(yieldSignal + yieldBackground);
+
+
+   correctedYield = 0;
+   correctedYieldErrTop = 0;
+   correctedYieldErrLow = 0;
+   for(int i = 1; i <= spectrum->GetNbinsX() + 1 ; ++i){
+      
+      if(i == (spectrum->GetNbinsX() + 1)){  //embedding does not reach beyond 1.5 GeV and neither does spectrum, but there are overflow bins, just use the last value
+         //cout << "Bin " << i << ": spectrum content = " << spectrum->GetBinContent(i) << ", graph y = " << graph->GetY()[graph->GetN()-1] << ", frac = " << frac << endl;
+         correctedYield += spectrum->GetBinContent(i)*frac/graph->GetY()[graph->GetN()-1];
+         correctedYieldErrTop += pow(spectrum->GetBinError(i)/spectrum->GetBinContent(i), 2) + pow(graph->GetEYhigh()[graph->GetN()-1]/graph->GetY()[graph->GetN()-1], 2);
+         correctedYieldErrLow += pow(spectrum->GetBinError(i)/spectrum->GetBinContent(i), 2) + pow(graph->GetEYlow()[graph->GetN()-1]/graph->GetY()[graph->GetN()-1], 2);
+         break;
+      }
+
+      double binCenter = spectrum->GetBinCenter(i);
+      for(int j = 0; j < graph->GetN(); j++){
+
+
+         if(binCenter > (graph->GetX()[j]- graph->GetEXlow()[j]) && binCenter < (graph->GetX()[j]+ graph->GetEXhigh()[j])){
+            //cout << "Bin " << i << ": spectrum content = " << spectrum->GetBinContent(i) << ", graph y = " << graph->GetY()[j] << ", frac = " << frac << endl;
+            correctedYield += spectrum->GetBinContent(i)*frac/graph->GetY()[j];
+            correctedYieldErrTop += pow(spectrum->GetBinError(i)/spectrum->GetBinContent(i), 2) + pow(graph->GetEYhigh()[j]/graph->GetY()[j], 2);
+            correctedYieldErrLow += pow(spectrum->GetBinError(i)/spectrum->GetBinContent(i), 2) + pow(graph->GetEYlow()[j]/graph->GetY()[j], 2);
+            break;
+         }
+      }
+   }
+   correctedYield = round(correctedYield);
+   correctedYieldErrTop = sqrt(correctedYieldErrTop);
+   correctedYieldErrLow = sqrt(correctedYieldErrLow);
+
+   /*
+   cout << "The raw yield from fitting: " << yieldSignal << endl;
+   cout << "The corrected yield has been computed. Result is " << correctedYield << endl;
+   cout << "The corrected yield globally: " << yieldSignal << "/" << averageCorrection << " = " << yieldSignal/averageCorrection << endl;
+   */
+   
+   TPaveText *text = new TPaveText(0.7,0.52,0.85,0.49, "NDC"); //in plot text (x_beggining, y_beggining, x_end, y_end) .
+   text->SetTextSize(0.03);
+   text->SetFillColor(0);
+   text->SetTextFont(42);
+   text->SetTextAlign(12);
+   text->AddText(Form("Corrected yield = %.0f^{+%.0f}_{-%.0f}", correctedYield, correctedYieldErrTop, correctedYieldErrLow));
+   text->Draw("same");
+
+
+   return correctedYield;
 }
 
 
@@ -195,13 +354,12 @@ void FitJPsi::integrate(TString bcg){
    errSignal = sigYieldFormula.getPropagatedError(*fitResult);
    
    // 5) Calculate net yield and its error
-   netYield = yieldSignal - yieldBackground;
-   errNetYield = std::sqrt(errSignal*errSignal + errBackground*errBackground);
+   netYield = yieldSignal;
+   errNetYield = errSignal;
 
    // 6) Calculate signal-to-background ratio and its error
    sOverB = (yieldBackground > 0) ? yieldSignal / yieldBackground : 0;
 
-   
    errSOverB = 0;
    if (yieldBackground > 0 && yieldSignal > 0) {
       errSOverB = sOverB * sqrt(
@@ -224,7 +382,8 @@ void FitJPsi::saveCanvas(TFile *&file, TString name ,TString dir){
    if(name !=  ""){
       c->SetName(name);
    }
-   
+
+
    file->cd();
    if(dir == ""){
        c->Write();
@@ -235,7 +394,7 @@ void FitJPsi::saveCanvas(TFile *&file, TString name ,TString dir){
 
 }
 
-void FitJPsi::saveCanvas(unique_ptr<TFile> &file, TString name ,TString dir){
+void FitJPsi::saveCanvas(shared_ptr<TFile> &file, TString name ,TString dir){
    if(!file || file->IsZombie()){
       cerr << "File is not open or is a zombie. Cannot save canvas." << endl;
       return;
@@ -245,7 +404,7 @@ void FitJPsi::saveCanvas(unique_ptr<TFile> &file, TString name ,TString dir){
       c->SetName(name);
    }
    
-   
+
    file->cd();
    if(dir == ""){
        c->Write();

@@ -11,6 +11,9 @@
 #include "PlotGoodRun.h"
 #include "PlotEmbeddingJPsi.h"
 #include "CrossSectionMaker.h"
+#include "PlotZeroBias.h"
+#include "Libraries.h"
+#include "PlotBemcEfficiency.h"
 #include <TFile.h>
 #include <TKey.h>
 #include <TClass.h>
@@ -41,19 +44,6 @@ vector<TH1D*> histograms;
 Plot* mPlot;
 
 
-void runCrossSection(const char* outputFile) {
-   cout << "Running CrossSectionMaker..." << endl;
-
-   TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_withRP_6.8.25/merged/StRP_production.list";
-   TString embedDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/EmbeddingJPsi/merged/StRP_production.list";
-   TString goodRunDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaGoodRun_4.8.25/merged/StRP_production.list";
-
-   CrossSectionMaker *crossSectionMaker = new CrossSectionMaker(anaDir, embedDir, goodRunDir, TString(outputFile));
-   crossSectionMaker->Make();
-   delete crossSectionMaker;
-}
-
-
 vector<string> getFilenames(const string& input){
 
    vector<string> filenames;
@@ -71,7 +61,7 @@ vector<string> getFilenames(const string& input){
       while(getline(instr, line)) {
          if(line.empty())
             continue;
-         unique_ptr<TFile> inputFile(new TFile(line.c_str(), "read"));
+         shared_ptr<TFile> inputFile(new TFile(line.c_str(), "read"));
          if(!inputFile || inputFile->IsZombie()){
             cout << "Couldn't open: " << line.c_str() << endl;
             return {};
@@ -83,7 +73,7 @@ vector<string> getFilenames(const string& input){
    return filenames;
 }
 
-vector<TDirectory*> getDirectories(unique_ptr<TFile>& file) {
+vector<TDirectory*> getDirectories(shared_ptr<TFile>& file) {
    vector<TDirectory*> directories;
    if (!file || file->IsZombie()) {
       cerr << "Error: File is not open or is a zombie." << endl;
@@ -116,7 +106,7 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
    }
 
    for (const auto& filename : filenames) {
-      std::unique_ptr<TFile> file( new TFile(filename.c_str(), "READ") );
+      std::shared_ptr<TFile> file( new TFile(filename.c_str(), "READ") );
       if (!file || file->IsZombie()) {
          std::cerr << "Error opening file: " << filename << std::endl;
          continue;
@@ -176,7 +166,7 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
    }
 
       // Save merged histograms to new ROOT file
-      std::unique_ptr<TFile> histFile(new TFile(outputFilename, "RECREATE"));
+      std::shared_ptr<TFile> histFile(new TFile(outputFilename, "RECREATE"));
       if (!histFile || histFile->IsZombie()) {
          std::cerr << "Error creating output file: " << outputFilename << std::endl;
          return false;
@@ -230,6 +220,26 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
    return true;
 }
 
+void runCrossSection(const char* outputFile) {
+   cout << "Running CrossSectionMaker..." << endl;
+
+   TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_noRP_27.8.25/merged/StRP_production.list";
+   TString embedDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/EmbeddingJPsi/merged/StRP_production.list";
+   TString goodRunDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaGoodRun_4.8.25/merged/StRP_production.list";
+   TString zeroBiasDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaZeroBias_26.8.25/merged/StRP_production.list";
+
+   if(!connectHists(anaDir, "histFile.root"))  return;
+
+   if(!connectHists(embedDir, "histFile.root"))  return;
+
+   if(!connectHists(goodRunDir, "histFile.root"))  return;
+
+   if(!connectHists(zeroBiasDir, "histFile.root"))  return;
+
+   CrossSectionMaker *crossSectionMaker = new CrossSectionMaker(anaDir, embedDir, goodRunDir, zeroBiasDir, TString(outputFile));
+   crossSectionMaker->Make();
+   delete crossSectionMaker;
+}
 
 
 #endif

@@ -17,13 +17,14 @@ struct runInfo {
     int nEventsZBVetoPassed;
     int TEAll;
     int TEPassed;
+    int filled;
 };
 
 
 class ProbRetainEvent {
     
     public:
-        ProbRetainEvent(const std::unique_ptr<TFile>& outFile, TTree* tree);
+        ProbRetainEvent(const std::shared_ptr<TFile>& outFile, TTree* tree);
         ~ProbRetainEvent();
 
         void Make();  
@@ -33,6 +34,7 @@ class ProbRetainEvent {
         double getLuminosity(const vector<int>& runs, double A, double B);
         vector<int> filterProbRetainEvent(const vector<runInfo>& data, double mean, double sigma, double A, double B);
         vector<int> getGoodRunList() const { return goodRuns; }
+		void DrawSTARInternal(double xl = 0.8, double yl = 0.89, double xr = 0.93, double yr = 0.93);
 
         double getA() const { return a; }
         double getB() const { return b; }
@@ -45,13 +47,13 @@ class ProbRetainEvent {
 
         TString dir;
    		void saveTopologyEfficiency(vector<runInfo> &dat);
-        TGraph* fillGraph(vector<runInfo> data);
+        TGraph* fillGraph(vector<runInfo> &data);
         vector<double> fitGaussian(TH1D *h, vector<runInfo> data);
         double exponential(double x, double A, double B);  // function to calculate the exponential
         map<int, double> RunNumToLumi;  // map to store run number and luminosity
         map<int, double> RunNumToInstLumi;  // map to store run number and instantaneous luminosity
         vector<runInfo> data;  // vector to store run information
-        TFile* outFile;
+        shared_ptr<TFile> outFile;
         TTree* tree;    
         vector<int> goodRuns;  // vector to store good runs
 

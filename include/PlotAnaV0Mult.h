@@ -17,8 +17,9 @@ class PlotAnaV0Mult : public Plot {
       	~PlotAnaV0Mult(){};
       
       	//overrides the original Make() from class Plot
-      	void Make() override;
-      	void Init() override;
+		void Make() override;
+		void Init() override;
+		void Finish() override;
 
 
     private:

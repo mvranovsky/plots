@@ -16,6 +16,7 @@ int main(int argc, char *argv[]){
 
     if(strstr(argv[1], "-runCS")){
         runCrossSection(outputPosition);
+        return 0;
     }
     
     
@@ -40,6 +41,12 @@ int main(int argc, char *argv[]){
     }else if( strstr(inputPosition, "AnaGoodRun") ){
         cout << "Creating plots from AnaGoodRun" << endl;
         mPlot = new PlotGoodRun(inputPosition, outputPosition);
+    }else if( strstr(inputPosition, "AnaZeroBias") ){
+        cout << "Creating plots from AnaZeroBias..." << endl;
+        mPlot = new PlotZeroBias(inputPosition, outputPosition);
+    }else if( strstr(inputPosition, "BemcEfficiency") ){
+        cout << "Creating plots from BemcEfficiency..." << endl;
+        mPlot = new PlotBemcEfficiency(inputPosition, outputPosition);
     }else{
     	cout << "No plots to run. Leaving..." << endl;
     	return 1;
@@ -54,6 +61,7 @@ int main(int argc, char *argv[]){
     
     mPlot->Init();
     mPlot->Make();
+    mPlot->Finish();
 
     cout << "Ending analysis. All plots created. Goodbye..." << endl;
 

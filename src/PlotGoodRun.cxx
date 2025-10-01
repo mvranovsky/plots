@@ -3,20 +3,22 @@
 
 PlotGoodRun::PlotGoodRun(const string mInputList, const char* filePath): Plot(mInputList, filePath){}
 
-PlotGoodRun::PlotGoodRun(const string mInputList, unique_ptr<TFile> &file): Plot(mInputList, file) {}
+PlotGoodRun::PlotGoodRun(const string mInputList, shared_ptr<TFile> file): Plot(mInputList, file) {}
 
 void PlotGoodRun::Make() {
 
     createAverageTracksPlots();
 
     vector<int> probRetainEventList = getPREList();
+    //cout << "Size of Prob Retain event list in PlotGoodRun: " << probRetainEventList.size() << endl;
+
 
     vector<int> badEtaPhi = loadBadEtaPhiRuns("badEtaPhiFile.txt");
 
     goodRunList.clear();
     rpGoodRunList.clear();
 
-    cout << "Starting with run loop " << endl;
+    cout << "Starting with run loop in PlotGoodRun" << endl;
     setBranchAddresses();
     for(int i = 0; i < tree->GetEntries(); i++){
 
@@ -74,19 +76,26 @@ void PlotGoodRun::Make() {
     createGoodRunList(rpGoodRunList, "goodRunWithRP.list");
 
 
+
+    cout << "Corrected luminosity for analysis with RP: " << mProbRetainEvent->getLuminosity(rpGoodRunList, mProbRetainEvent->getA(), mProbRetainEvent->getB()) << " pb^-1" << endl;
+    cout << "Corrected luminosity for analysis without RP: " << mProbRetainEvent->getLuminosity(goodRunList, mProbRetainEvent->getA(), mProbRetainEvent->getB()) << " pb^-1" << endl;
+
+
     outFile->cd();
 
-    handleHistograms(nameOfAnaGoodRunDir);
+    handleHistograms(nameOfAnaGoodRunDir, "GoodRunData");
 
     //hGoodRunListFlow->Write("hGoodRunListFlow");
     TH1General("hGoodRunListFlow", hGoodRunListFlow);
-    outFile->Close();
-    histFile->Close();
+}
+
+void PlotGoodRun::Finish(){
+
+    if(outFile) outFile->Close();
+    if(histFile) histFile->Close();
 
     cout << "All histograms successfully saved to canvases..." << endl;
     cout << "The output file is saved: " << outputPosition << endl;
-    cout << "All good runs saved to goodRuns.list file..." << endl;
-    
 }
 
 void PlotGoodRun::Init(){
@@ -103,7 +112,7 @@ void PlotGoodRun::Init(){
     outFile->mkdir(nameOfAnaGoodRunDir);
     outFile->cd();
     
-    histFile = unique_ptr<TFile>( new TFile("histFile.root", "read") );
+    histFile = shared_ptr<TFile>( new TFile("histFile.root", "read") );
     
     if(!histFile || histFile->IsZombie() || !histFile->IsOpen()){
         cerr << "Could not get file with histograms. Leaving..." << endl;
@@ -113,7 +122,7 @@ void PlotGoodRun::Init(){
 	//load the tree chain from the input file
 	ConnectInputTree(inputPosition, nameOfAnaGoodRunTree, tree, bcgTree);
 
-    ConnectInputTree(inputPosition,nameOfZBTree, ZBTree, bcgTree);
+    //ConnectInputTree(inputPosition,nameOfZBTree, ZBTree, bcgTree);
 
     hGoodRunListFlow = new TH1D("hGoodRunListFlow", "Good run list flow", 6, 1, 7);
     hGoodRunListFlow->GetXaxis()->SetBinLabel(1, "All");
@@ -156,7 +165,7 @@ void PlotGoodRun::setBranchAddresses(){
 
 vector<int> PlotGoodRun::getPREList(){ // this function has to exist because i need class ProbRetainEvent closed, so getting entries from tree works as i want it to
     // run over all runs and check if the probability of retaining event is in range
-    ProbRetainEvent* mProbRetainEvent = new ProbRetainEvent(outFile, tree);
+    mProbRetainEvent = new ProbRetainEvent(outFile, tree);
 
     cout << "Running ProbRetainEvent" << endl;
     mProbRetainEvent->Make();
@@ -166,7 +175,6 @@ vector<int> PlotGoodRun::getPREList(){ // this function has to exist because i n
         cout << "No good runs found. Exiting..." << endl;
         return {};
     }
-    delete mProbRetainEvent;
     return probRetainEventList;
     
 }
@@ -345,7 +353,7 @@ pair<double, double> PlotGoodRun::FitEtaDistributions(TH1D* hist, int SWITCH){
     text->Draw("SAME");
     
     gStyle->SetOptFit(0);
-    DrawSTARpp510JPsi(0.65,0.87,0.95,0.95, 0.01);
+    DrawSTARInternal(0.65,0.87,0.95,0.95);
     
     // draw lines at values +- 9 sigma of the fit
     TLine* line1 = new TLine(gaus->GetParameter(1) - 9*gaus->GetParameter(2), 0, gaus->GetParameter(1) - 9*gaus->GetParameter(2), topLine[SWITCH-1]);
