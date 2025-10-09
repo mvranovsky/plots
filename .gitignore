@@ -4,4 +4,4 @@
 *.png
 *.out
 *.tx
-*.txt
+build/
