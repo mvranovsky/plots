@@ -786,11 +786,12 @@ TString Plot::getCondition(TString var, int j ){
       c += Form("chiSquareelectron < %.d && ", chiSquareE[0]);
    }
 
-   c += Form("chiSquarepion > %.d && chiSquareproton > %.d && chiSquarekaon > %.d && ", chiSquarePi[0], chiSquareP[0], chiSquareK[0]);
-
-
+   
+   
    if( !(var.Contains("embedding") || var.Contains("Embedding") || var.Contains("EMBEDDING")) ){  //embedding is not able to reconstruct vertex 
-
+      
+      c += Form("chiSquarepion > %.d && chiSquareproton > %.d && chiSquarekaon > %.d && ", chiSquarePi[0], chiSquareP[0], chiSquareK[0]);
+      
       if(var.Contains("dcaZInCm") || var.Contains("dcazincm") || var.Contains("DCAZINCM")){
          c += Form("abs(dcaZInCm0) < %.1f && abs(dcaZInCm1) < %.1f && ", dcaZInCm[j], dcaZInCm[j]);
       }else{

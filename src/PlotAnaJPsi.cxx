@@ -59,7 +59,7 @@ void PlotAnaJPsi::Make(){
     handleHistograms(nameOfAnaJPsiDir, "JPsiData");
     
 
-    plotContinuum(90, 0.5, 5);
+    plotContinuum(60, 1.0, 4.0);
 
     if(noRomanPots){
         plotRapidityDependence(4);
@@ -725,14 +725,14 @@ void PlotAnaJPsi::drawAndFitHist(TH1D *h, TString outName, double min, double ma
 
 void PlotAnaJPsi::plotContinuum(int nBins, double low, double top){
 
-    TH1D* h = loadInvMassHist(nBins, low, top, getCondition());
+    TH1D* h = loadInvMassHist(nBins, low, top, getCondition(), false);
 
     if(!h || h->GetEntries() == 0){
         cerr << "ERROR: Could not load histogram for continuum fit." << endl;
         return;
     }
 
-    FitJPsi* fit = new FitJPsi(h, "gauss");
+    FitJPsi* fit = new FitJPsi(h, "");
     fit->fitContinuum();
 
     TCanvas *c = fit->getCanvas();

@@ -32,7 +32,7 @@ class PlotEmbeddingJPsi : public Plot {
 		bool runStudy(int VAR, TString condition);
 		void runSysStudy();
 		void peakFittingStudy(); // function where i will be changing binning of the invMass histogram and see how it affects the fit results
-
+		void plotContinuum(int nBins, double low, double top);
 
 		double getEfficiency(int VARIABLE, int VARIATION) const {
 			return (yieldResults.at(mUtil->nameOfVariable(VARIABLE))[VARIATION]/starlightTree->GetEntries());
@@ -41,9 +41,8 @@ class PlotEmbeddingJPsi : public Plot {
 		double getEfficiencyFinal(){ return mEfficiencyFinal; }
 		double getEfficiencyErrFinal() { return mEfficiencyErrFinal; }
 		TGraphAsymmErrors* reconstructionEfficiency(int SWITCH, TString nameOfOutput = "", bool sumLastBins = false);  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
-		TGraphAsymmErrors* bemcEfficiency(int SWITCH, TString nameOfOutput, TString dir = "BemcEfficiency");// 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
 
-		TGraphAsymmErrors* plotEfficiency(TH1 *h1, TH1 *h2, TString nameOfOutput, vector<double> range , TString xAxisDescription,TString yAxisDescription = "reconstruction efficiency", TString dir = "recoEffPlots" , bool sumLastBins = false); // plots efficiency graph from two histograms{
+		TGraphAsymmErrors* plotEfficiency(vector<TH1*> h1,vector<TH1*> h2, TString nameOfOutput, vector<double> range , TString xAxisDescription,TString yAxisDescription = "reconstruction efficiency", TString dir = "recoEffPlots" , bool sumLastBins = false); // plots efficiency graph from two histograms{
 
 		void changeBinning(int SWITCH, int nBins, double low, double top);
 

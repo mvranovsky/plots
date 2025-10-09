@@ -177,10 +177,6 @@ FitJPsi::~FitJPsi(){
 
 void FitJPsi::fitContinuum(){
 
-   bool fitGaussPeak = false;
-   if(bcg.Contains("gauss") || bcg.Contains("gaus") || bcg.Contains("Gauss") || bcg.Contains("GAUSS")){
-      fitGaussPeak = true;
-   }
    
    gStyle->SetOptTitle(0);
    gStyle->SetOptStat(0);
@@ -205,54 +201,37 @@ void FitJPsi::fitContinuum(){
    // Set axis title
    hist->GetXaxis()->SetTitle("m_{ee} [GeV/c^{2}]");
    hist->SetTitle("");
+   hist->Draw("EP");
 
-   TString func = "(x - [0])*exp([1]*(x-[0])**2 + [2]*x**3)";
-   if(fitGaussPeak){
-      func += " + gaus(3)";
-   }
-
-   TF1 *f = new TF1("f", func, hist->GetXaxis()->GetXmin(), hist->GetXaxis()->GetXmax());
-   f->SetParameter(0, 2.5);
-   f->SetParameter(1, 1.0);
-   f->SetParameter(2, 0.3);
-   if(fitGaussPeak){
-      f->SetParameter(3, 500);
-      f->SetParameter(4, 3.1);
-      f->SetParameter(5, 0.001);
-   }
+   TF1 *f = new TF1("f", "[0] * exp( [1]*x )", minimumContinuum, maximumContinuum);
+   f->SetParameter(0, 300);
+   f->SetParameter(1, -0.3);
    f->SetLineColor(kRed);
    f->SetLineWidth(2);
    f->SetLineStyle(1);
    hist->Fit(f, "R");
    
 
-   TPaveText *text = new TPaveText(0.6,0.52,0.85,0.78, "NDC"); //in plot text (x_beggining, y_beggining, x_end, y_end) .
+   TPaveText *text = new TPaveText(0.72,0.52,0.92,0.78, "NDC"); //in plot text (x_beggining, y_beggining, x_end, y_end) .
    text->SetTextSize(0.03);
    text->SetFillStyle(0);
    text->SetBorderSize(0);
    text->SetFillColorAlpha(0, 0);
    text->SetTextFont(42);
    text->SetTextAlign(12);
-   text->AddText("f(x) = (x - c_{1})exp( #lambda(x- c_{1})^{2} + c_{2}x^{3}) + Aexp#left( -#frac{(x - #mu)^{2}}{2#sigma^{2} } #right)");
+   text->AddText("f(x) = A #times exp( #lambda x )");
+   text->AddText(Form("    A = %.0f #pm %.0f",f->GetParameter(0),f->GetParError(0)));
    text->AddText(Form("    #lambda = %.2f #pm %.2f",f->GetParameter(1),f->GetParError(1)));
-   text->AddText(Form("    c_{1} = %.1f #pm %.1f",f->GetParameter(0),f->GetParError(0)));
-   text->AddText(Form("    c_{2} = %.1f #pm %.1f", f->GetParameter(2),f->GetParError(2)));
-   if(fitGaussPeak){
-      text->AddText(Form("    A = %.1f #pm %.1f", f->GetParameter(3), f->GetParError(3)));
-      text->AddText(Form("    #mu = %.1f #pm %.1f", f->GetParameter(4), f->GetParError(4)));
-      text->AddText(Form("    #sigma = %.1f #pm %.1f", f->GetParameter(5), f->GetParError(5)));
-   }
    text->AddText(Form("chi^{2}/NDF = %.2f/%d #approx %.1f", f->GetChisquare(), f->GetNDF() ,  f->GetChisquare()/f->GetNDF() ) ); 
-   text->Draw("same hist E");
+   text->Draw("same");
 
-   TLegend *leg1 = new TLegend(0.25,0.58,0.4,0.8);
+   TLegend *leg1 = new TLegend(0.35,0.75,0.5,0.85);
    leg1->SetTextSize(0.03);
    leg1->SetFillStyle(0);
    leg1->SetBorderSize(0);
    leg1->AddEntry(hist,"Data", "LEP");
-   leg1->AddEntry(f, "Fit function", "LP");
-
-   leg1->Draw("same hist E");
+   leg1->AddEntry(f, "Exponential Fit", "LP");
+   leg1->Draw("same");
    c->Update();
 
 

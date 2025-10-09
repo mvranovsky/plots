@@ -104,7 +104,7 @@ void CrossSectionMaker::Make(){
 
     if(!isRomanPots){
         cout << "Running rapidity dependence plot..." << endl;
-        rapidityDependencePlot(40, 2.5,3.5, {-1, -0.3, 0.3, 1.0} );
+        rapidityDependencePlot(40, 2.5,3.5, {-1,-0.7, -0.4, -0.2, 0.0,0.2, 0.4,0.7, 1.0} );
     }
 
     cout << "Finished CrossSectionMaker::Make()" << endl;
@@ -366,7 +366,6 @@ void CrossSectionMaker::saveYieldCorrection(TString dir){
         return;
     }
 
-    mOutFile->cd();
     mOutFile->mkdir(dir);
     mOutFile->cd(dir);
     yieldCorrectionCanvas->SetName("YieldCorrectionCanvas");
@@ -375,7 +374,7 @@ void CrossSectionMaker::saveYieldCorrection(TString dir){
     yieldCorrectionCanvas->Write();
     hYieldCorrection->Write();
     gYieldCorrection->Write();
-    mOutFile->cd();
+    gDirectory->GetMotherDir()->cd();
 
 }
 
@@ -638,6 +637,7 @@ pair<double,double> CrossSectionMaker::CalculateTriggerTopologySysError(){
 void CrossSectionMaker::rapidityDependencePlot(int nBins, double low, double top,vector<double> plotEdges){
     
     mOutFile->mkdir("RapidityDependence");
+    mOutFile->cd("RapidityDependence");
 
 
     TGraphAsymmErrors *gRap = new TGraphAsymmErrors();
@@ -649,8 +649,8 @@ void CrossSectionMaker::rapidityDependencePlot(int nBins, double low, double top
         
 
         double correctedYield = getYieldCorrection(30, 0, 1.5, condition );
-        cout << "Rapidity bin: " << i << ", Yield Correction: " << correctedYield << ", condition: " << condition << endl;
-        cout << "Yield err top: " << mCorrYieldErrTop << ", yield err low: " << mCorrYieldErrLow << endl;
+        //cout << "Rapidity bin: " << i << ", Yield Correction: " << correctedYield << ", condition: " << condition << endl;
+        //cout << "Yield err top: " << mCorrYieldErrTop << ", yield err low: " << mCorrYieldErrLow << endl;
         
         mAna->DrawSTARInternal();
         mAna->CreateText(Form("%.1f < y < %.1f", plotEdges[i], plotEdges[i+1]), 62,0.7,0.75,0.85,0.77);
@@ -670,7 +670,7 @@ void CrossSectionMaker::rapidityDependencePlot(int nBins, double low, double top
     TCanvas *canvas = nullptr;
     mAna->CreateCanvas(&canvas, "RapidityDependence", 800, 600);
 
-    TGraph* gMc = getMcNormalizedPlot(100, -1, 1);
+    TGraph* gMc = getMcNormalizedPlot(50, -1, 1);
     canvas->Clear();
     
     mAna->SetTGraphStyle(gRap, kBlue, 20);
@@ -680,15 +680,17 @@ void CrossSectionMaker::rapidityDependencePlot(int nBins, double low, double top
     gRap->SetLineWidth(2);
     gRap->SetLineColor(kBlue);
     gRap->GetYaxis()->SetRangeUser(0, 800);
+    gRap->GetXaxis()->SetTitle("y [-]");
+    gRap->GetYaxis()->SetTitle("#frac{d#sigma}{dy} [pb]");
     gRap->Draw("AEP");
 
     gMc->Draw("L");
 
-    mAna->DrawSTARpp510JPsi(0.2, 0.82,0.4,0.9);
+    mAna->DrawSTARpp510JPsi();
 
        
     TLegend *l;
-    mAna->CreateLegend(&l, 0.6,0.6,0.89,0.89);
+    mAna->CreateLegend(&l, 0.2,0.8,0.4,0.9);
     l->AddEntry(gRap, "Data", "EP");
     l->AddEntry(gMc, "STARlight MC", "LP");
     l->Draw("same");
@@ -731,7 +733,7 @@ TGraph* CrossSectionMaker::getMcNormalizedPlot(int nBins, double low, double top
         double newContent = content * crossSectionMC / (nEntries * binWidth);
 
         gMc->SetPoint(i-1, binCenter, newContent);
-        cout << "Bin " << i << ": center = " << binCenter << ", content = " << content << ", new content = " << newContent << endl;
+        //cout << "Bin " << i << ": center = " << binCenter << ", content = " << content << ", new content = " << newContent << endl;
 
     }
 

@@ -55,6 +55,11 @@ class FitJPsi {
         double getSOverB() const { return sOverB; }
         double getErrSOverB() const { return errSOverB; }
 
+
+        void setContinuumMaximum(double max) { maximumContinuum = max; }
+        void setContinuumMinimum(double min) { minimumContinuum = min; }
+        double getContinuumMaximum() const { return maximumContinuum; }
+        double getContinuumMinimum() const { return minimumContinuum; }
     private:
 
         void integrate(TString bcg);
@@ -93,6 +98,9 @@ class FitJPsi {
         double correctedYield = 0;
         double correctedYieldErrTop = 0;
         double correctedYieldErrLow = 0;
+
+        double minimumContinuum = 1.5;
+        double maximumContinuum = 2.5;
 
 };
 

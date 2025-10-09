@@ -99,13 +99,15 @@ TGraphAsymmErrors* PlotBemcEfficiency::bemcEfficiencyPt(int nBins, double low, d
     
     
     //fit error function to data
-    TF1 *f = new TF1("f","[0] + [1]*(1 + TMath::Erf((x-[2])/(sqrt(2.)*[3])))",low, top);
+    TF1 *f = new TF1("f","[0] + [1]*(1 + TMath::Erf( (x-[2])/(sqrt(2.)*[3]) ) )",0.5, 2.5);
     
     // Set initial parameters (important for convergence!)
-    f->SetParameters(0.1, 0.5, 2.0, 1.0);
-    f->SetParNames("p1","p2","p3","p4");
+    f->SetParameters(-0.01, 0.4, 0.8, 0.2);
+    f->SetParNames("eps0","n","pT^{thr}","sigma");
+    f->SetParLimits(0, 0, 1); // epsilon0
     
-    g->Fit(f, "R");
+    TFitResultPtr r = g->Fit(f, "S R M");
+    r->Print("V");
     CreateLegend(&legend, 0.2, 0.81, 0.45, 0.9);
     legend->AddEntry(g, "BEMC Efficiency", "lep");
     legend->AddEntry(f,"Fit Function", "l");
@@ -143,6 +145,8 @@ TGraphAsymmErrors* PlotBemcEfficiency::bemcEfficiencyPt(int nBins, double low, d
     outFile->cd();
     outFile->cd(nameOfBemcEfficiencyDir);
     canvas->Write();
+    h1->Write("hBemcEfficiencyAll");
+    h2->Write("hBemcEfficiencyWithHit");
     canvas->Close();
 
     return g;
