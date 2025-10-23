@@ -129,7 +129,7 @@ class Plot{
 		Double_t etaHadron[3] = {0.9, 0.8, 1.0};
 		TString etaHadronDescription[3] = {Form("Nominal (|#eta_{e}| < %.1f)", etaHadron[0]), Form("Tight (|#eta_{e}| < %.1f)", etaHadron[1]), Form("Loose (|#eta_{e}| < %.1f)", etaHadron[2])};
 		
-
+		double nSigmaH = 1.3; //used for protons and kaons in addition to electrons
 
 
 };

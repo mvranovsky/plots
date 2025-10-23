@@ -32,10 +32,10 @@ int main(int argc, char *argv[]){
     } else if( strstr(inputPosition, "TofEff") ){
         cout << "Creating plots from TofEff..." << endl;
     	mPlot = new PlotTofEff(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "AnaJPsi") || strstr(inputPosition, "SysStudy") ){
+    } else if( strstr(inputPosition, "AnaJPsi") ){
         cout << "Creating plots from AnaJPsi..." << endl;
         mPlot = new PlotAnaJPsi(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "EmbeddingJPsi") || strstr(inputPosition, "SysStudyEmbedding") ){
+    } else if( strstr(inputPosition, "EmbeddingJPsi") ){
         cout << "Creating plots from EmbeddingJPsi..." << endl;
         mPlot = new PlotEmbeddingJPsi(inputPosition, outputPosition);
     }else if( strstr(inputPosition, "AnaGoodRun") ){

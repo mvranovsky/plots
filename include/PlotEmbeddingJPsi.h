@@ -40,11 +40,14 @@ class PlotEmbeddingJPsi : public Plot {
 
 		double getEfficiencyFinal(){ return mEfficiencyFinal; }
 		double getEfficiencyErrFinal() { return mEfficiencyErrFinal; }
-		TGraphAsymmErrors* reconstructionEfficiency(int SWITCH, TString nameOfOutput = "", bool sumLastBins = false);  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
+		TGraphAsymmErrors* reconstructionEfficiency(int SWITCH, TString nameOfOutput = "", bool plotFitFunc = false, bool sumLastBins = false);  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
 
-		TGraphAsymmErrors* plotEfficiency(vector<TH1*> h1,vector<TH1*> h2, TString nameOfOutput, vector<double> range , TString xAxisDescription,TString yAxisDescription = "reconstruction efficiency", TString dir = "recoEffPlots" , bool sumLastBins = false); // plots efficiency graph from two histograms{
+		TGraphAsymmErrors* plotEfficiency(vector<TH1D*> h1,vector<TH1D*> h2, TString nameOfOutput, vector<double> range , TString xAxisDescription,TString yAxisDescription = "reconstruction efficiency", TString dir = "recoEffPlots" , bool plotFitFunc = false, bool sumLastBins = false); // plots efficiency graph from two histograms{
+		TH1D* scanDir(TDirectory *&dir, TString nameOfHist);
 
 		void changeBinning(int SWITCH, int nBins, double low, double top);
+		bool isJPsiEmbedding(TH1D* h);
+		bool isRunSysStudy();
 
 		TTree *starlightTree;
     private:
@@ -54,7 +57,9 @@ class PlotEmbeddingJPsi : public Plot {
 
 
 		void  saveSysStudyYieldsHists();
-		Double_t lowLimInvMass, topLimInvMass;
+		Double_t lowLimInvMass = 0.0, topLimInvMass = 7.0;
+
+		TString bemcEffDir = "BemcEffPlots";
 
 
 		shared_ptr<TFile> starlightFile;
@@ -84,6 +89,7 @@ class PlotEmbeddingJPsi : public Plot {
 			{30, 0, 1.5}, // pT of Jpsi
 			{40, 0.5, 2.5}  // pT of daughters
 		};
+
 };
 
 

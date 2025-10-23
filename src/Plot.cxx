@@ -67,6 +67,18 @@ void Plot::SetHistStyle(TH1*& hist, Int_t color, Int_t markStyle)
 
 void Plot::SetTH2Style(TH2*& hist)
 {
+
+// Define color gradient (blue → green → yellow)
+   const Int_t NRGBs = 3;
+   const Int_t NCont = 255;
+   Double_t stops[NRGBs]  = { 0.00, 0.50, 1.00 };
+   Double_t red[NRGBs]    = { 0.00, 0.00, 1.00 };
+   Double_t green[NRGBs]  = { 0.00, 1.00, 1.00 };
+   Double_t blue[NRGBs]   = { 1.00, 1.00, 0.00 };
+
+   TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
+   gStyle->SetNumberContours(NCont);
+
    hist->SetStats(false);
    hist->GetXaxis()->SetTitleFont(textFont);
    hist->GetYaxis()->SetTitleFont(textFont);
@@ -786,11 +798,19 @@ TString Plot::getCondition(TString var, int j ){
       c += Form("chiSquareelectron < %.d && ", chiSquareE[0]);
    }
 
+   if(var.Contains("nSigmaProton") || var.Contains("NSIGMAPROTON") || var.Contains("nsigmaproton")){
+      c+= Form("abs(nSigmaTPCprotonPlus) > %.1f && abs(nSigmaTPCprotonMinus) > %.1f && ", nSigmaH, nSigmaH);
+   }
+
+   if(var.Contains("nSigmaKaon") || var.Contains("NSIGMAKAON") || var.Contains("nsigmakaon")){
+      c+= Form("abs(nSigmaTPCkaonPlus) > %.1f && abs(nSigmaTPCkaonMinus) > %.1f && ", nSigmaH, nSigmaH);
+   }
+
    
    
    if( !(var.Contains("embedding") || var.Contains("Embedding") || var.Contains("EMBEDDING")) ){  //embedding is not able to reconstruct vertex 
       
-      c += Form("chiSquarepion > %.d && chiSquareproton > %.d && chiSquarekaon > %.d && ", chiSquarePi[0], chiSquareP[0], chiSquareK[0]);
+      //c += Form("chiSquarepion > %.d && chiSquareproton > %.d && chiSquarekaon > %.d && ", chiSquarePi[0], chiSquareP[0], chiSquareK[0]);
       
       if(var.Contains("dcaZInCm") || var.Contains("dcazincm") || var.Contains("DCAZINCM")){
          c += Form("abs(dcaZInCm0) < %.1f && abs(dcaZInCm1) < %.1f && ", dcaZInCm[j], dcaZInCm[j]);

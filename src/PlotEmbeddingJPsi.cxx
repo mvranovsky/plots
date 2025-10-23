@@ -8,73 +8,139 @@ PlotEmbeddingJPsi::PlotEmbeddingJPsi(const string mInputList, shared_ptr<TFile> 
 void PlotEmbeddingJPsi::Make(){
 
 
-
-    TH1D* invMass = loadInvMassHist(recoBins[0].nBins, recoBins[0].lowLim, recoBins[0].topLim, getCondition("embedding"));  // automatically subtracts background if bcg tree is loaded
+    TH1D* invMass = loadInvMassHist(recoBins[0].nBins, recoBins[0].lowLim, recoBins[0].topLim, getCondition("embedding"), false);  // automatically subtracts background if bcg tree is loaded
     if(!invMass){
         cout << "Could not load invariant mass histogram. Returning." << endl;
         return;
     }
+
+    cout << "InvMass number of entries: " << invMass->GetEntries() << endl;
+
+    //check if JPsi embedding or not    
+    if(isJPsiEmbedding(invMass)){ // only for JPsi embedding
+
+
+        FitJPsi* fit = new FitJPsi(invMass, "cb Poly1");
+        fit->fitPeak();
+
     
-    FitJPsi* fit = new FitJPsi(invMass, "Poly1");
-    fit->fitPeak();
-    TCanvas *fitCanvas = fit->getCanvas();
-    lowLimInvMass = fit->getLowLimitFit();
-    topLimInvMass = fit->getHighLimitFit();
+        TCanvas *fitCanvas = fit->getCanvas();
+        lowLimInvMass = fit->getLowLimitFit();
+        topLimInvMass = fit->getHighLimitFit();
+        
+        if(!fitCanvas){
+            cout << "Could not get fit canvas. Returning." << endl;
+            return;
+        }
     
-    if(!fitCanvas){
-        cout << "Could not get fit canvas. Returning." << endl;
-        return;
+        fitCanvas->SetName("fitJPsiCanvas");
+        fitCanvas->SetTitle("");
+        mEfficiencyFinal = fit->getYield()/starlightTree->GetEntries();
+        mEfficiencyErrFinal = fit->getErrYield()/starlightTree->GetEntries();
+
+
+        DrawEmbeddingpp510JPsi();
+        
+        outFile->cd();
+        outFile->cd(nameOfEmbeddingJPsiDir);
+        fitCanvas->Write();
+        fitCanvas->Close();
+        
+        cout << "Finished drawing J/psi peak for embedding." << endl;
+
+        cout << "Now plotting reconstruction efficiency..." << endl;
+        // plots for reconstruction efficiency
+        reconstructionEfficiency(1,"recoEff_pairRap");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
+        reconstructionEfficiency(2,"recoEff_eta");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
+        reconstructionEfficiency(3,"recoEff_phi");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
+        TGraphAsymmErrors *gPtJPsi = reconstructionEfficiency(4,"recoEff_pTJPsi");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
+        TGraphAsymmErrors *gPtElectrons = reconstructionEfficiency(5,"recoEff_pT");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
+
+        outFile->cd();
+        gPtElectrons->Write();
+        gPtJPsi->Write();
+        
+    }else{ // for gamma gamma -> e+ e- embedding
+        int nBins = 25;
+        double low = 0.0;
+        double top = 5.0;
+
+        invMass = loadInvMassHist(nBins, low, top, getCondition("embedding"), false);  // automatically subtracts background if bcg tree is loaded
+
+        if(!invMass || invMass->GetEntries() == 0){
+            cout << "Could not load invariant mass histogram for gamma gamma -> e+ e- embedding. Returning." << endl;
+            return;
+        }
+
+        FitJPsi* fit = new FitJPsi(invMass, "Continuum");
+        fit->setLegendPosition(0.61,0.6,0.8,0.8);
+
+        fit->setFitRangeLow(0.5);
+        fit->setFitRangeHigh(4.0);
+        fit->fitPeak();
+
+        fit->addContinuumFunction(0.3772, -0.5518, 0.0487);
+
+        TCanvas *c = fit->getCanvas();
+        DrawEmbeddingpp510JPsi();
+        fit->writeContinuumResult(0.65, 0.6, 0.8, 0.4);
+        fit->writeFitResult();
+
+        outFile->cd();
+        outFile->cd(nameOfEmbeddingJPsiDir);
+        c->SetName("ContinuumFit");
+        c->SetTitle("");
+        c->Write();
+
+        // create text of continuum
+
+        cout << "Finished drawing continuum for gamma gamma -> e+ e- embedding." << endl;
     }
 
-    fitCanvas->SetName("fitJPsiCanvas");
-    fitCanvas->SetTitle("");
-    mEfficiencyFinal = fit->getYield()/starlightTree->GetEntries();
-    mEfficiencyErrFinal = fit->getErrYield()/starlightTree->GetEntries();
-
-    DrawEmbeddingpp510JPsi();
-
-    outFile->cd();
-    outFile->cd(nameOfEmbeddingJPsiDir);
-    fitCanvas->Write();
-    fitCanvas->Close();
-
-    cout << "Finished drawing J/psi peak for embedding." << endl;
-
+    
     cout << "Now creating BEMC efficiency plots" << endl;
-
     // find plots in histFile
-    histFile->cd(nameOfEmbeddingJPsiDir);
+    histFile->cd();
+    TDirectory* dir = histFile->GetDirectory(nameOfEmbeddingJPsiDir);
 
-    vector<TH1*> embed, McSim;
+    vector<TH1D*> embed, McSim;
 
-    TH1* h = (TH1*)histFile->Get("hBemcPtAllEmbed");
-    h->SetTitle("Embedding Efficiency");
-    if(h) embed.push_back(h);
+    TH1D* h1 = scanDir(dir, "hBemcPtHitEmbed");
+    if(h1) {
+        h1->SetTitle("Embedding Efficiency");
+        embed.push_back(h1);
+    }
 
-    h = (TH1*)histFile->Get("hBemcPtHitEmbed");
-    if(h) embed.push_back(h);
+    TH1D* h2 = scanDir(dir, "hBemcPtAllEmbed");
+    if(h2) {
+        h2->SetTitle("Embedding Efficiency");
+        embed.push_back(h2);
+    }
 
-    h = (TH1*)histFile->Get("hBemcPtAllMc");
-    h->SetTitle("MC Simulation Efficiency");
-    if(h) McSim.push_back(h);
+    TH1D* h3 = scanDir(dir, "hBemcPtHitMc");
+    if(h3) {
+        McSim.push_back(h3);
+        h3->SetTitle("MC Simulation Efficiency");
+    }
+    TH1D* h4 = scanDir(dir, "hBemcPtAllMc");
+    if(h4) McSim.push_back(h4);
 
-    h = (TH1*)histFile->Get("hBemcPtAllMc");
-    if(h) McSim.push_back(h);
-
-    plotEfficiency(embed, McSim, "BemcEfficiency_pT", {0.4, 1.0}, "p_{T}^{e} [GeV/c]", "BEMC efficiency", "BemcEffPlots", false);
+    if(embed.size() == McSim.size() && embed.size() == 2 ){
+        plotEfficiency(embed, McSim, "BemcEfficiency_pT", {0.5, 1.0}, "p_{T}^{e} [GeV/c]", "BEMC efficiency", bemcEffDir, true);
+    }else{
+        cerr << "Could not get histograms for BEMC efficiency. Skipping" << endl;
+        cout << "embed size: " << embed.size() << ", McSim size: " << McSim.size() << endl;
+        return;
+    }
+    
 
     cerr << "Finished drawing BEMC efficiency plots." << endl;
     
-    // plots for reconstruction efficiency
-    reconstructionEfficiency(1,"recoEff_pairRap");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
-    reconstructionEfficiency(2,"recoEff_eta");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
-    reconstructionEfficiency(3,"recoEff_phi");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
-    reconstructionEfficiency(4,"recoEff_pTJPsi");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
-    reconstructionEfficiency(5,"recoEff_pT");  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
-    
-    cerr << "Finished drawing reconstruction efficiency plots." << endl;
 
-    runSysStudy(); // run systematic study of the embedding
+     // --- IGNORE ---
+     if(isRunSysStudy()){
+         runSysStudy(); // run systematic study of the embedding
+     }
 
     cerr << "Finished running systematic study of the embedding." << endl;
 
@@ -86,7 +152,6 @@ void PlotEmbeddingJPsi::Make(){
     // save all the histograms to canvases into outfile
     handleHistograms(nameOfEmbeddingJPsiDir, "EmbData");
     
-    plotContinuum(60, 1.0, 4.0);
     
 }
 
@@ -100,6 +165,37 @@ void PlotEmbeddingJPsi::Finish(){
     
 
 }
+
+
+// Recursive lambda to scan directories
+TH1D* PlotEmbeddingJPsi::scanDir(TDirectory *&dir, TString nameOfHist) {
+    TIter nextkey(dir->GetListOfKeys());
+    TKey *key;
+
+
+    while ((key = (TKey*)nextkey())) {
+        TObject *obj = key->ReadObj();
+
+        // If it's a subdirectory, scan it recursively
+        if (obj->InheritsFrom(TDirectory::Class())) {
+            TDirectory *subdir = (TDirectory*)obj;
+            TH1D* res = scanDir(subdir, nameOfHist);
+            if (res) return res;
+        }
+
+        // If it's a histogram (TH1 or derived) and name contains substring
+        else if (obj->InheritsFrom(TH1::Class())) {
+            TString name = obj->GetName();
+            if (name.Contains(nameOfHist)) {
+                std::cout << "Found histogram: " << name
+                            << " in " << dir->GetPath() << std::endl;
+                return (TH1D*)obj;
+            }
+        }
+    }
+
+    return nullptr;
+};
 
 void PlotEmbeddingJPsi::Init(){
 	//define the output file which will store all the canvases
@@ -118,7 +214,7 @@ void PlotEmbeddingJPsi::Init(){
     outFile->cd();
     outFile->mkdir("recoEffPlots");
     outFile->cd();
-    outFile->mkdir("bemcEffPlots");
+    outFile->mkdir(bemcEffDir);
     outFile->cd();
     outFile->mkdir("BemcEfficiency");
     outFile->cd();
@@ -334,80 +430,94 @@ bool PlotEmbeddingJPsi::plot2Dists(TH1 *hData, TH1* hEmb, TString outName){
 
 
 
-TGraphAsymmErrors* PlotEmbeddingJPsi::reconstructionEfficiency(int SWITCH, TString nameOfOutput, bool sumLastBins){  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
+TGraphAsymmErrors* PlotEmbeddingJPsi::reconstructionEfficiency(int SWITCH, TString nameOfOutput, bool plotFitFunc, bool sumLastBins){  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
 
-    TH1 *h1, *h2;
+    TH1D *h1 = new TH1D("hist1", "hist1", recoBins[SWITCH].nBins, recoBins[SWITCH].lowLim, recoBins[SWITCH].topLim);
+    TH1D *h2 = new TH1D("hist2", "hist2", recoBins[SWITCH].nBins, recoBins[SWITCH].lowLim, recoBins[SWITCH].topLim);
     TString xAxisDescription;
+
+    if(!gPad) cout << "Warning: gPad is null before TTree::Draw()" << endl;
     if(SWITCH == 1){ // pair rapidity
-        tree->Draw(Form("pairRapidity>>hist1(%d,%f,%f)",recoBins[SWITCH].nBins,recoBins[SWITCH].lowLim,recoBins[SWITCH].topLim), Form("isBemcHit0 == 1 && isBemcHit1 == 1 && invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
-        h1 = dynamic_cast<TH1*>(gPad->FindObject("hist1"));
-        
-        starlightTree->Draw(Form("rapVM>>hist2(%d,%f,%f)",recoBins[SWITCH].nBins,recoBins[SWITCH].lowLim,recoBins[SWITCH].topLim));
-        h2 = dynamic_cast<TH1*>(gPad->FindObject("hist2"));
+        tree->Draw("pairRapidity>>hist1", Form("invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
+
+        starlightTree->Draw("rapVM>>hist2");
         xAxisDescription = "y_{J/#psi} [-]";
     }else if(SWITCH == 2){ // eta of daughters
-        tree->Draw(Form("etaHadron0>>hist1(%d,%f,%f)",recoBins[SWITCH].nBins,recoBins[SWITCH].lowLim,recoBins[SWITCH].topLim), Form("isBemcHit0 == 1 && isBemcHit1 == 1 && invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
-        tree->Draw("etaHadron1>>+hist1", Form("isBemcHit0 == 1 && isBemcHit1 == 1 && invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
-        
-        h1 = dynamic_cast<TH1*>(gPad->FindObject("hist1"));
-        
-        starlightTree->Draw(Form("etad1>>hist2(%d,%f,%f)",recoBins[SWITCH].nBins,recoBins[SWITCH].lowLim,recoBins[SWITCH].topLim));
+        tree->Draw("etaHadron0>>hist1", Form("invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
+        tree->Draw("etaHadron1>>+hist1", Form("invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
+
+
+        starlightTree->Draw("etad1>>hist2");
         starlightTree->Draw("etad2>>+hist2");
-        h2 = dynamic_cast<TH1*>(gPad->FindObject("hist2"));
         xAxisDescription = "#eta_{e} [-]";
     }else if(SWITCH == 3){ // phi of daughters
-        tree->Draw(Form("phiHadron0>>hist1(%d,%f,%f)",recoBins[SWITCH].nBins,recoBins[SWITCH].lowLim,recoBins[SWITCH].topLim), Form("isBemcHit0 == 1 && isBemcHit1 == 1 && invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
-        tree->Draw("phiHadron1>>+hist1", Form("isBemcHit0 == 1 && isBemcHit1 == 1 && invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
-        
-        h1 = dynamic_cast<TH1*>(gPad->FindObject("hist1"));
-        
-        starlightTree->Draw(Form("(phiatemchd1 - 3.14)>>hist2(%d,%f,%f)",recoBins[SWITCH].nBins,recoBins[SWITCH].lowLim,recoBins[SWITCH].topLim));
+        tree->Draw("phiHadron0>>hist1", Form("invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
+        tree->Draw("phiHadron1>>+hist1", Form("invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
+
+
+        starlightTree->Draw("(phiatemchd1 - 3.14)>>hist2");
         starlightTree->Draw("(phiatemchd2 - 3.14)>>+hist2");
-        h2 = dynamic_cast<TH1*>(gPad->FindObject("hist2"));
         xAxisDescription = "#phi [rad]";
         
     }else if(SWITCH == 4){ // pT of pair
-        tree->Draw(Form("pt>>hist1(%d,%f,%f)",recoBins[SWITCH].nBins,recoBins[SWITCH].lowLim,recoBins[SWITCH].topLim), Form("isBemcHit0 == 1 && isBemcHit1 == 1 && invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
-        h1 = dynamic_cast<TH1*>(gPad->FindObject("hist1"));
-        starlightTree->Draw(Form("ptVM>>hist2(%d,%f,%f)",recoBins[SWITCH].nBins,recoBins[SWITCH].lowLim,recoBins[SWITCH].topLim));
-        h2 = dynamic_cast<TH1*>(gPad->FindObject("hist2"));
-        
+        tree->Draw("pt>>hist1", Form("invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
+        starlightTree->Draw("ptVM>>hist2");
+
         xAxisDescription = "p_{T}^{J/#psi} [GeV/c]";
-        
+            
     }else if(SWITCH == 5){ // pT of daughters
-        tree->Draw("pTInGev0>>hist1(40,0.5,2.5)", Form("isBemcHit0 == 1 && isBemcHit1 == 1 && invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
-        tree->Draw("pTInGev1>>+hist1", Form("isBemcHit0 == 1 && isBemcHit1 == 1 && invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
-        h1 = dynamic_cast<TH1*>(gPad->FindObject("hist1"));
+        tree->Draw("pTInGev0>>hist1", Form("invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
+        tree->Draw("pTInGev1>>+hist1", Form("invMass > %f && invMass < %f",lowLimInvMass, topLimInvMass ) );
+        
         starlightTree->Draw("ptd1>>hist2(40,0.5,2.5)");
         starlightTree->Draw("ptd2>>+hist2");
-        h2 = dynamic_cast<TH1*>(gPad->FindObject("hist2"));
+
         xAxisDescription = "p_{T}^{e} [GeV/c]";
     }else{
         cout << "Unknown switch. Returning." << endl;
         return nullptr;
     }
     
+
     if( !(h1 && h2 && h1->GetEntries() > 0 && h2->GetEntries() > 0) ){
         cout << "Could not get histograms for efficiency plot " << nameOfOutput << endl;
         return nullptr;
     }
-    vector<TH1*> hists;
+
+    vector<TH1D*> hists;
     h1->SetTitle("Reconstruction Efficiency");
     h2->SetTitle("Reconstruction Efficiency");
     hists.push_back(h1);
     hists.push_back(h2);
 
-    TGraphAsymmErrors *g = plotEfficiency(hists,{nullptr, nullptr}, nameOfOutput, {0.0, 0.3}, xAxisDescription, "reconstruction efficiency", "recoEffPlots", sumLastBins);
+    cout << "Reconstruction efficiency histograms for " << nameOfOutput << " have been filled." << endl;
+
+    TGraphAsymmErrors *g = plotEfficiency(hists,{nullptr, nullptr}, nameOfOutput, {0.0, 0.3}, xAxisDescription, "Reconstruction Efficiency", "recoEffPlots", plotFitFunc, sumLastBins);
+
+    /*
+    // delete hist1, hist2
+    h1->Delete();
+    h2->Delete();
+    delete h1;
+    delete h2;
+    
+    */
 
     return g;
 
 }
 
-TGraphAsymmErrors* PlotEmbeddingJPsi::plotEfficiency(vector<TH1*> h1, vector<TH1*> h2, TString nameOfOutput, vector<double> range, TString xAxisDescription,TString yAxisDescription,  TString dir, bool sumLastBins){
+TGraphAsymmErrors* PlotEmbeddingJPsi::plotEfficiency(vector<TH1D*> h1, vector<TH1D*> h2, TString nameOfOutput, vector<double> range, TString xAxisDescription,TString yAxisDescription,  TString dir, bool plotFitFunc, bool sumLastBins){
 
 
     CreateCanvas(&canvas, nameOfOutput, 1200, 800);
     SetGPad();
+
+    
+    if(!h1[0] || !h1[1]){
+        cout << "Could not get histograms for efficiency plot " << nameOfOutput << endl;
+        return nullptr;
+    }
 
     bool plotSecondEff = false;
     if(h2[0] && h2[1]){
@@ -416,15 +526,17 @@ TGraphAsymmErrors* PlotEmbeddingJPsi::plotEfficiency(vector<TH1*> h1, vector<TH1
         h2[0]->SetBinContent(h2[0]->GetNbinsX()+1, 0);
         h2[1]->SetBinContent(0, 0);
         h2[1]->SetBinContent(h2[1]->GetNbinsX()+1, 0);
-    }
+        //cout << "Efficiency plot: " << h2[0]->GetEntries() << " / " << h2[1]->GetEntries() << endl;
 
-    //cout << "Efficiency for " << nameOfOutput << ": " << h1->GetEntries() << " / " << h2->GetEntries() << endl;
+    }
+    
+
     h1[0]->SetBinContent(0, 0);
     h1[0]->SetBinContent(h1[0]->GetNbinsX()+1, 0);
     h1[1]->SetBinContent(0, 0);
     h1[1]->SetBinContent(h1[1]->GetNbinsX()+1, 0);
 
-
+    
     TEfficiency *eff1 = new TEfficiency(*h1[0], *h1[1]);
     TGraphAsymmErrors* g1 = eff1->CreateGraph();
     g1->SetMarkerColor(kBlue);
@@ -435,12 +547,14 @@ TGraphAsymmErrors* PlotEmbeddingJPsi::plotEfficiency(vector<TH1*> h1, vector<TH1
     g1->SetMarkerStyle(20);
     g1->SetMarkerColor(kBlue);
     g1->SetLineColor(kBlue); 
-    g1->GetYaxis()->SetRangeUser(range[0], range[1]);
+    g1->SetMinimum(range[0]);
+    g1->SetMaximum(range[1]);
     g1->Draw("AEP");
 
-
+    
     TEfficiency *eff2;
     TGraphAsymmErrors* g2;
+
     if(plotSecondEff) {
         eff2 = new TEfficiency(*h2[0], *h2[1]);
         g2 = eff2->CreateGraph();
@@ -452,9 +566,12 @@ TGraphAsymmErrors* PlotEmbeddingJPsi::plotEfficiency(vector<TH1*> h1, vector<TH1
         g2->SetMarkerStyle(20);
         g2->SetMarkerColor(kRed);
         g2->SetLineColor(kRed); 
-        g2->GetYaxis()->SetRangeUser(range[0], range[1]);
-        g2->Draw("same AEP");
+        //g2->GetYaxis()->SetRangeUser(range[0], range[1]);
+        g2->SetMinimum(range[0]);
+        g2->SetMaximum(range[1]);
+        g2->Draw("same EP");
     }
+    cout << "Will plot second efficiency: " << plotSecondEff << endl;
 
     DrawEmbeddingpp510JPsi(0.7, 0.85, 0.89, 0.9);
 
@@ -465,31 +582,42 @@ TGraphAsymmErrors* PlotEmbeddingJPsi::plotEfficiency(vector<TH1*> h1, vector<TH1
     legend->SetBorderSize(0);
     legend->AddEntry(g1, h1[0]->GetTitle(), "LEP");
     if(plotSecondEff)   legend->AddEntry(g2, h2[0]->GetTitle(), "LEP");
-    legend->Draw("same");
+    
+    if(plotFitFunc){ // plot fit function for BEMC MC simulator
 
-
-    outFile->cd();
-    if(nameOfOutput != ""){
-        outFile->cd(dir);
-        canvas->Write(nameOfOutput);
-    }else{
-        outFile->cd();
-        canvas->Write();
-        g1->Write();
-        g2->Write();
+        TF1 *f = new TF1("f","[0] + [1]*(1 + TMath::Erf( (x-[2])/(sqrt(2.)*[3]) ) )",0.5, 2.5);
+        // variables for BEMC MC simulator
+        double eps0 = 0.00;
+        double n = 0.423;
+        double pTThr = 0.424;
+        double sigma = 0.39;
+        // Set initial parameters (important for convergence!)
+        f->SetParameters(eps0, n, pTThr, sigma);
+        f->SetParNames("eps0","n","pT^{thr}","sigma");
+        f->SetLineColor(kGreen);
+        f->Draw("same");
+        legend->AddEntry(f,"Fit to data","L");
     }
+    
+    legend->Draw("same");
+    
+    outFile->cd();
+    outFile->cd(dir);
+    canvas->Write(nameOfOutput);
 
-    return g1;
-    /*
+
+    
     if(sumLastBins){
         
-        TH1D *t1 = new TH1D("t1", "t1", 3, 0, 3);
+    TH1D *t1 = new TH1D("t1", "t1", 3, 0, 3);
         TH1D *t2 = new TH1D("t2", "t2", 3, 0, 3);
+
         for(int i = 0; i < 3; i++){
-            double t1val = (h1->GetBinContent(h1->GetNbinsX() - i*3) + h1->GetBinContent(h1->GetNbinsX() - (i*3 + 1)) + h1->GetBinContent(h1->GetNbinsX() - (i*3 + 2)));
-            double t1err = sqrt( pow(h1->GetBinError(h1->GetNbinsX() - i*3), 2) + pow(h1->GetBinError(h1->GetNbinsX() - (i*3 + 1)), 2) + pow(h1->GetBinError(h1->GetNbinsX() - (i*3 + 2)), 2) );
-            double t2val = ( h2->GetBinContent(h2->GetNbinsX() - i*3) + h2->GetBinContent(h2->GetNbinsX() - (i*3 + 1)) + h2->GetBinContent(h2->GetNbinsX() - (i*3 + 2)) );
-            double t2err = sqrt( pow(h2->GetBinError(h2->GetNbinsX() - i*3), 2) + pow(h2->GetBinError(h2->GetNbinsX() - (i*3 + 1)), 2) + pow(h2->GetBinError(h2->GetNbinsX() - (i*3 + 2)), 2) );
+            cout << "Now summing last 3 bins: " << i << endl;
+            double t1val = (h1[0]->GetBinContent(h1[0]->GetNbinsX() - i*3) + h1[0]->GetBinContent(h1[0]->GetNbinsX() - (i*3 + 1)) + h1[0]->GetBinContent(h1[0]->GetNbinsX() - (i*3 + 2)));
+            double t1err = sqrt( pow(h1[0]->GetBinError(h1[0]->GetNbinsX() - i*3), 2) + pow(h1[0]->GetBinError(h1[0]->GetNbinsX() - (i*3 + 1)), 2) + pow(h1[0]->GetBinError(h1[0]->GetNbinsX() - (i*3 + 2)), 2) );
+            double t2val = ( h1[1]->GetBinContent(h1[1]->GetNbinsX() - i*3) + h1[1]->GetBinContent(h1[1]->GetNbinsX() - (i*3 + 1)) + h1[1]->GetBinContent(h1[1]->GetNbinsX() - (i*3 + 2)) );
+            double t2err = sqrt( pow(h1[1]->GetBinError(h1[1]->GetNbinsX() - i*3), 2) + pow(h1[1]->GetBinError(h1[1]->GetNbinsX() - (i*3 + 1)), 2) + pow(h1[1]->GetBinError(h1[1]->GetNbinsX() - (i*3 + 2)), 2) );
             
             //cout << "Now filling histograms for recoEff: " << t1val << "/" << t2val << endl;
             //cout << "with errors: " << t1err << ", " << t2err << endl;
@@ -497,7 +625,6 @@ TGraphAsymmErrors* PlotEmbeddingJPsi::plotEfficiency(vector<TH1*> h1, vector<TH1
             t1->SetBinError(i+1, t1err);
             t2->SetBinContent(i+1, t2val);
             t2->SetBinError(i+1, t2err);
-            
         }
 
         
@@ -506,26 +633,28 @@ TGraphAsymmErrors* PlotEmbeddingJPsi::plotEfficiency(vector<TH1*> h1, vector<TH1
         
         // remove the last 3 points in g
         for(int i = 0 ; i < 9; i++){
-            g->RemovePoint(g->GetN() -1);
+            g1->RemovePoint(g1->GetN() -1);
         }
-        
-        
-        g->SetPoint(g->GetN(), 1.125, TG->GetY()[2]);
-        g->SetPointError(g->GetN()-1, 0.075, 0.075 ,TG->GetErrorYhigh(2), TG->GetErrorYlow(2));
+
+
+        g1->SetPoint(g1->GetN(), 1.125, TG->GetY()[2]);
+        g1->SetPointError(g1->GetN()-1, 0.075, 0.075 ,TG->GetErrorYhigh(2), TG->GetErrorYlow(2));
         //cout << "Just set point: " << TG->GetY()[2] << endl;
 
-        g->SetPoint(g->GetN(), 1.275, TG->GetY()[1]);
-        g->SetPointError(g->GetN()-1, 0.075, 0.075 ,TG->GetErrorYhigh(1), TG->GetErrorYlow(1));
+        g1->SetPoint(g1->GetN(), 1.275, TG->GetY()[1]);
+        g1->SetPointError(g1->GetN()-1, 0.075, 0.075 ,TG->GetErrorYhigh(1), TG->GetErrorYlow(1));
         //cout << "Just set point: " << TG->GetY()[1] << endl;
 
-        g->SetPoint(g->GetN(), 1.425, TG->GetY()[0]);
-        g->SetPointError(g->GetN()-1, 0.075, 0.075 ,TG->GetErrorYhigh(0), TG->GetErrorYlow(0));
+        g1->SetPoint(g1->GetN(), 1.425, TG->GetY()[0]);
+        g1->SetPointError(g1->GetN()-1, 0.075, 0.075 ,TG->GetErrorYhigh(0), TG->GetErrorYlow(0));
         //cout << "Just set point: " << TG->GetY()[2] << endl;
         
     }
-    */
 
+    
+    return g1;
 }
+
 void PlotEmbeddingJPsi::changeBinning(int SWITCH, int nBins, double low, double top){
     if(SWITCH <= 5 && SWITCH >= 0){
         recoBins[SWITCH].nBins = nBins;
@@ -652,26 +781,23 @@ void PlotEmbeddingJPsi::saveSysStudyYieldsHists(){
 
 
 
-void PlotEmbeddingJPsi::plotContinuum(int nBins, double low, double top){
 
-    TH1D* h = loadInvMassHist(nBins, low, top, getCondition("embedding"), false);
+bool PlotEmbeddingJPsi::isJPsiEmbedding(TH1D* h){
 
-    if(!h || h->GetEntries() == 0){
-        cerr << "ERROR: Could not load histogram for continuum fit." << endl;
-        return;
+    int bin = h->FindBin(3.097);
+    return (h->GetBinContent(bin) > 500 ? true : false);  //if JPsi bin has more than 500 counts, we assume it's JPsi embedding
+}
+
+bool PlotEmbeddingJPsi::isRunSysStudy(){
+    TH1D *h1 = loadInvMassHist(100, 2.0, 4.0, getCondition("embedding"), false);
+    TH1D* h2 = loadInvMassHist(100, 2.0, 4.0, getCondition("embedding nhitsfit loose"), false);
+
+    if(!h1 || !h2 || h1->GetEntries() == 0 || h2->GetEntries() == 0){
+        cerr << "Could not load histograms to decide whether to run systematic study. Returning false." << endl;
+        return false;
     }
+    cout << "Entries in nominal embedding: " << h1->GetEntries() << ", entries in loose nhitsfit embedding: " << h2->GetEntries() << endl;
 
-    FitJPsi* fit = new FitJPsi(h, "");
-    fit->fitContinuum();
+    return (h1->GetEntries() == h2->GetEntries() ? false : true);
 
-    TCanvas *c = fit->getCanvas();
-    DrawSTARInternal();
-
-    outFile->cd();
-    outFile->cd(nameOfEmbeddingJPsiDir);
-    c->SetName("ContinuumFit");
-    c->SetTitle("");
-    c->Write();
-    
-    return;
 }

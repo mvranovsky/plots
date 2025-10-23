@@ -95,16 +95,15 @@ TGraphAsymmErrors* PlotBemcEfficiency::bemcEfficiencyPt(int nBins, double low, d
     cout << "Overall BEMC Efficiency from data " << overallEff << endl;
 
 
-    DrawSTARInternal();
+    DrawSTARInternal(0.82, 0.91, 0.94, 0.94);
     
     
     //fit error function to data
-    TF1 *f = new TF1("f","[0] + [1]*(1 + TMath::Erf( (x-[2])/(sqrt(2.)*[3]) ) )",0.5, 2.5);
+    TF1 *f = new TF1("f","[0]*(1 + TMath::Erf( (x-[1])/(sqrt(2.)*[2]) ) )",0.5, 2.5);
     
     // Set initial parameters (important for convergence!)
-    f->SetParameters(-0.01, 0.4, 0.8, 0.2);
-    f->SetParNames("eps0","n","pT^{thr}","sigma");
-    f->SetParLimits(0, 0, 1); // epsilon0
+    f->SetParameters(0.4, 0.8, 0.2);
+    f->SetParNames("n","pT^{thr}","sigma");
     
     TFitResultPtr r = g->Fit(f, "S R M");
     r->Print("V");
@@ -113,7 +112,7 @@ TGraphAsymmErrors* PlotBemcEfficiency::bemcEfficiencyPt(int nBins, double low, d
     legend->AddEntry(f,"Fit Function", "l");
     legend->Draw("same");
     
-    int NDF = g->GetN() - 4;
+    int NDF = g->GetN() - f->GetNpar();
     
     TPaveText *text = new TPaveText(0.65,0.17,0.85,0.42, "NDC"); //in plot text (x_beggining, y_beggining, x_end, y_end) .
     text->SetTextSize(0.03);
@@ -124,22 +123,22 @@ TGraphAsymmErrors* PlotBemcEfficiency::bemcEfficiencyPt(int nBins, double low, d
     text->SetTextAlign(12);
     text->AddText("f(p_{T}) = #epsilon_{0} + n#left[1 + erf#left( #frac{p_{T} - p_{T}^{thr}}{#sqrt{2} #sigma} #right) #right]");
     text->AddText("");
-    text->AddText(Form("#epsilon_{0} = %.2f #pm %.2f",f->GetParameter(0),f->GetParError(0)));
-    text->AddText(Form("n = %.3f #pm %.3f", f->GetParameter(1),f->GetParError(1)));
-    text->AddText(Form("p_{T}^{thr} = %.3f #pm %.3f", f->GetParameter(2),f->GetParError(2)));
-    text->AddText(Form("#sigma = %.2f #pm %.2f", f->GetParameter(3),f->GetParError(3)));
+    //text->AddText(Form("#epsilon_{0} = %.2f #pm %.2f",f->GetParameter(0),f->GetParError(0)));
+    text->AddText(Form("n = %.3f #pm %.3f", f->GetParameter(0),f->GetParError(0)));
+    text->AddText(Form("p_{T}^{thr} = %.2f #pm %.2f", f->GetParameter(1),f->GetParError(1)));
+    text->AddText(Form("#sigma = %.2f #pm %.2f", f->GetParameter(2),f->GetParError(2)));
     text->AddText(Form("#chi^{2}/NDF = %.2f/%d #approx %.1f",f->GetChisquare(), NDF, f->GetChisquare()/NDF ) );
 
     text->Draw("same hist E");
     
-    setEpsilon(f->GetParameter(0));
-    setEpsilonError(f->GetParError(0));
-    setN(f->GetParameter(1));
-    setNError(f->GetParError(1));
-    setPtThreshold(f->GetParameter(2));
-    setPtThresholdError(f->GetParError(2));
-    setSigma(f->GetParameter(3));
-    setSigmaError(f->GetParError(3));
+    //setEpsilon(f->GetParameter(0));
+    //setEpsilonError(f->GetParError(0));
+    setN(f->GetParameter(0));
+    setNError(f->GetParError(0));
+    setPtThreshold(f->GetParameter(1));
+    setPtThresholdError(f->GetParError(1));
+    setSigma(f->GetParameter(2));
+    setSigmaError(f->GetParError(2));
     setEfficiencyGraph(g);
 
     outFile->cd();

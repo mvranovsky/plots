@@ -313,7 +313,7 @@ double CrossSectionMaker::getYieldCorrection(int spectrumBins, double spectrumLo
 
     // get the efficiency w.r.t. pT from embedding
     mEmbedding->changeBinning(4, spectrumBins, spectrumLow, spectrumTop);  // 4 stands for pT of JPsi
-    TGraphAsymmErrors* recoEff = mEmbedding->reconstructionEfficiency(4, "extrapolatedPtRecoEff", true);
+    TGraphAsymmErrors* recoEff = mEmbedding->reconstructionEfficiency(4, "extrapolatedPtRecoEff", false,true);
     
     if(!recoEff || recoEff->GetN() == 0){
         cerr << "ERROR: Could not load recostruction efficiency from embedding" << endl;

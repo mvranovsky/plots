@@ -67,8 +67,6 @@ class PlotAnaJPsi : public Plot {
 		void saveSysStudyYieldsHists(); // saves the yields of systematic study to histograms
 		void plotRapidityDependence(int nRapBins);
 
-		void plotContinuum(int nBins, double low, double top);
-
 		Double_t lowLimInvMass, topLimInvMass;
 		FitJPsi* fit;
 

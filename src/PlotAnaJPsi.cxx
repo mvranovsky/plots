@@ -7,22 +7,31 @@ PlotAnaJPsi::PlotAnaJPsi(const string mInputList, shared_ptr<TFile> file): Plot(
 void PlotAnaJPsi::Make(){
 
 
-    int nBins = 40;
-    double lowerLim = 2.5;
-    double upperLim = 3.5;
+    int nBins = 100;
+    double lowerLim = 0.0;
+    double upperLim = 5.0;
 
-    TH1D* invMass = loadInvMassHist(nBins, lowerLim, upperLim, getCondition());  // automatically subtracts background if bcg tree is loaded
+    //cout << "Condition for JPsi analysis: " << getCondition("nsigmaproton nsigmakaon") << endl;
+    TH1D* invMass = loadInvMassHist(nBins, lowerLim, upperLim, getCondition("nsigmaproton nsigmakaon") , false);  // automatically subtracts background if bcg tree is loaded
     
     if(!invMass){
         cout << "Could not load invariant mass histogram. Returning." << endl;
         return;
     }
+    //cout << "InvMass number of entries: " << invMass->GetEntries() << endl;
     
-    fit = new FitJPsi(invMass, "Poly1");
+    fit = new FitJPsi(invMass, "Continuum cb 2sg");
+    fit->setAlphaLoose(false);
+    fit->setNLoose(false);
+    fit->setFitRangeLow(0.4);
+    fit->setFitRangeHigh(4.0);
     fit->fitPeak();
+    fit->writeFitResult();
 
+    fit->writeContinuumResult();
     lowLimInvMass = fit->getLowLimitFit();
     topLimInvMass = fit->getHighLimitFit();
+
 
     TCanvas *fitCanvas = fit->getCanvas();
     if(!fitCanvas){
@@ -47,7 +56,6 @@ void PlotAnaJPsi::Make(){
     fitCanvas->Close();
     outFile->cd();
 
-    
     cout << "About to run vertexZStudy()" << endl;
     //vertexZStudy();
     
@@ -59,7 +67,6 @@ void PlotAnaJPsi::Make(){
     handleHistograms(nameOfAnaJPsiDir, "JPsiData");
     
 
-    plotContinuum(60, 1.0, 4.0);
 
     if(noRomanPots){
         plotRapidityDependence(4);
@@ -346,7 +353,7 @@ void PlotAnaJPsi::vertexZStudy(){
 
         CreateCanvas(&canvas, Form("vtxZSysStudy_%d", fillNum), 1200, 800);
         SetHistStyle(hist, kBlue, markerStyleTypical);
-        hist->GetXaxis()->SetTitle("V_{Z} (cm)");
+        hist->GetXaxis()->SetTitle("V_{Z} [cm]");
         hist->GetYaxis()->SetTitle("Counts");
         hist->Draw("hist");
 
@@ -492,6 +499,7 @@ bool PlotAnaJPsi::runStudy(int VAR,TString condition){
     outFile->mkdir(mUtil->nameOfVariable(VAR));
     for(int i = 0; i < 3; i++){
 
+        /*
         // load signal
         tree->Draw(Form("invMass>>histMass(%d,%f,%f)", nBins, lowerLim, upperLim), getCondition(condition + TString(" ") + mUtil->variationName(i)) );
         TH1 *invMassHist = (TH1*)gPad->GetPrimitive("histMass");
@@ -500,7 +508,7 @@ bool PlotAnaJPsi::runStudy(int VAR,TString condition){
             return false;
         }
         TH1D *hSignal = (TH1D*)invMassHist->Clone(Form("hSignal_%d", i));
-
+        
         // load background
         bcgTree->Draw(Form("invMass>>massBcg(%d,%f,%f)", nBins, lowerLim, upperLim), getCondition(condition + TString(" ") + mUtil->variationName(i)) );
         TH1D *hBackground = (TH1D*)gPad->GetPrimitive("massBcg");
@@ -509,9 +517,16 @@ bool PlotAnaJPsi::runStudy(int VAR,TString condition){
             return false;
         }
         hSignal->Add(hBackground, -1);
+        */
+        TH1D *hSignal = loadInvMassHist(350, 0.5, 4.0, getCondition(condition + TString(" nsigmaproton nsigmakaon ") + mUtil->variationName(i)) );
+        if(!hSignal){
+            cout << "Could not load invariant mass histogram. Returning." << endl;
+            continue;
+        }
+
 
         // fit and obtain yield
-        FitJPsi *fit = new FitJPsi(hSignal, "poly1");
+        FitJPsi *fit = new FitJPsi(hSignal, "cb poly1");
         fit->fitPeak();
         DrawSTARpp510JPsi();
         CreateText(mUtil->variationName(i) + TString(" ") + mUtil->variableLatex(VAR), 62,0.7,0.75,0.85,0.77);
@@ -622,25 +637,10 @@ void PlotAnaJPsi::peakFittingStudy(){
         for(auto &top : topLim){
             for(int nBins = 20; nBins <= 80; ++nBins){
                 
-                // load signal and background
-                tree->Draw(Form("invMass>>hist(%d,%f,%f)", nBins, low, top) , getCondition());
-                TH1D *hist = (TH1D*)gPad->GetPrimitive("hist");
-                if(!hist || hist->GetEntries() == 0){
-                    cout << "Empty or no hist when trying to run systematic study. Leaving." << endl;
-                    return;
-                }
-                TH1D *hSignal = (TH1D*)hist->Clone("hSignal");
-                
-                bcgTree->Draw(Form("invMass>>massBcg(%d,%f,%f)", nBins, low, top), getCondition());
-                TH1D *hBackground = (TH1D*)gPad->GetPrimitive("massBcg");
-                if(!hBackground || hBackground->GetEntries() == 0){
-                    cout << "Empty or no background hist when trying to run systematic study. Leaving." << endl;
-                    return;
-                }
-                hSignal->Add(hBackground, -1);
-                delete hBackground;
+
+                TH1D* hSignal = loadInvMassHist(nBins, low, top, getCondition("nsigmaproton nsigmakaon") );  // automatically subtracts background if bcg tree is loaded
             
-                FitJPsi *fit = new FitJPsi(hSignal, "poly1");
+                FitJPsi *fit = new FitJPsi(hSignal, "cb poly1");
                 fit->setAlphaLoose(true);
                 fit->setNLoose(true);
                 fit->fitPeak();
@@ -723,30 +723,6 @@ void PlotAnaJPsi::drawAndFitHist(TH1D *h, TString outName, double min, double ma
 
 }
 
-void PlotAnaJPsi::plotContinuum(int nBins, double low, double top){
-
-    TH1D* h = loadInvMassHist(nBins, low, top, getCondition(), false);
-
-    if(!h || h->GetEntries() == 0){
-        cerr << "ERROR: Could not load histogram for continuum fit." << endl;
-        return;
-    }
-
-    FitJPsi* fit = new FitJPsi(h, "");
-    fit->fitContinuum();
-
-    TCanvas *c = fit->getCanvas();
-    DrawSTARInternal();
-
-    outFile->cd();
-    outFile->cd(nameOfAnaJPsiDir);
-    c->SetName("ContinuumFit");
-    c->SetTitle("");
-    c->Write();
-    
-    return;
-}
-
 
 void PlotAnaJPsi::plotRapidityDependence(int nRapBins){
 
@@ -767,7 +743,7 @@ void PlotAnaJPsi::plotRapidityDependence(int nRapBins){
             return;
         }
         
-        FitJPsi* fit = new FitJPsi(invMass, "Poly1");
+        FitJPsi* fit = new FitJPsi(invMass, "cb Poly1");
         fit->fitPeak();
 
         double yield = fit->getYield();
