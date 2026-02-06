@@ -1,4 +1,11 @@
 //
+// ak chces zmenit na ine osi, musis zmenit co plotujes: whatToDraw, xmax, xmin pre funkcie, bichselZ zmenit pove a zrusit prvy Log10 v returne
+//
+//
+#include "../include/Config.h"
+
+
+
 //root4star [0] .L bichselG10.C 
 //root4star [1] .x bichselG10.C("/gpfs01/star/pwg/truhlar/Run17_P20ic/mainAna0304/merged/StRP_production_0000.root") 
 //
@@ -25,21 +32,40 @@
 #include "TLegend.h"
 #include "TROOT.h"
 #include "TString.h"
+
 #else
 class Bichsel;
 #endif
 
-const TString nameOfAnaBPTree = "recTreeBP";
-const TString nameOfAnaV0Tree = "recTreeAnaV0";
-const TString nameOfAnaV0MultTree = "recTreeAnaV0Mult";
-const TString nameOfTofEffTree = "recTreeTofEff";
-const TString nameOfTofEffMultTree = "recTreeTofEffMult";
-const TString nameOfAnaJPsiTree = "recTreeAnaJPsi";
-const TString nameOfAnaJPSITree = "recTreeAnaJPSI";
-const TString nameOfAnaGoodRunTree = "recAnaGoodRun";
-const TString nameOfEmbeddingJPsiTree = "recTreeEmbeddingJPsi";
+
+// 0. value is the default one, 1. is the tight condition, 2. is the loose condition
+Int_t nHitsDedx[3] = {15, 17, 12};
+TString nHitsDedxDescription[3] = {Form("Nominal (N^{dEdx}_{hits} < %d)", nHitsDedx[0]), Form("Tight (N^{dEdx}_{hits} < %d)", nHitsDedx[1]), Form("Loose (N^{dEdx}_{hits} < %d)", nHitsDedx[2])};
+Int_t nHitsFit[3] = {15, 17, 12};
+TString nHitsFitDescription[3] = {Form("Nominal (N^{fit}_{hits} < %d)", nHitsFit[0]), Form("Tight (N^{fit}_{hits} < %d)", nHitsFit[1]), Form("Loose (N^{fit}_{hits} < %d)", nHitsFit[2])};
+Double_t dcaZInCm[3] = {1, 0.7, 1.2};
+TString dcaZInCmDescription[3] = {Form("Nominal (DCA_{Z} < %.1f)", dcaZInCm[0]), Form("Tight (DCA_{Z} < %.1f)", dcaZInCm[1]), Form("Loose (DCA_{Z} < %.1f)", dcaZInCm[2])};
+Double_t dcaXYInCm[3] = {1.5, 1.2, 1.8};
+TString dcaXYInCmDescription[3] = {Form("Nominal (DCA_{XY} < %.1f)", dcaXYInCm[0]), Form("Tight (DCA_{XY} < %.1f)", dcaXYInCm[1]), Form("Loose (DCA_{XY} < %.1f)", dcaXYInCm[2])};
+
+Int_t chiSquareE[3] = {9, 7, 11};
+TString chiSquareEDescription[3] = {Form("Nominal (chi^{2} < %d)", chiSquareE[0]), Form("Tight (chi^{2} < %d)", chiSquareE[1]), Form("Loose (chi^{2} < %d)", chiSquareE[2])};
+Int_t chiSquarePi[3] = {10, 12, 8};
+TString chiSquarePiDescription[3] = {Form("Nominal (chi^{2} < %d)", chiSquarePi[0]), Form("Tight (chi^{2} < %d)", chiSquarePi[1]), Form("Loose (chi^{2} < %d)", chiSquarePi[2])};
+Int_t chiSquareK[3] = {10, 12, 8};
+TString chiSquareKDescription[3] = {Form("Nominal (chi^{2} < %d)", chiSquareK[0]), Form("Tight (chi^{2} < %d)", chiSquareK[1]), Form("Loose (chi^{2} < %d)", chiSquareK[2])};
+Int_t chiSquareP[3] = {10,12,8};
+TString chiSquarePDescription[3] = {Form("Nominal (chi^{2} < %d)", chiSquareP[0]), Form("Tight (chi^{2} < %d)", chiSquareP[1]), Form("Loose (chi^{2} < %d)", chiSquareP[2])};
+
+Int_t vertexZInCm[3] = {100, 80, 120};
+TString vertexZInCmDescription[3] = {Form("Nominal (|V_{Z}| < %d)", vertexZInCm[0]), Form("Tight (|V_{Z}| < %d)", vertexZInCm[1]), Form("Loose (|V_{Z}| < %d)", vertexZInCm[2])};
+Double_t etaHadron[3] = {0.9, 0.8, 1.0};
+TString etaHadronDescription[3] = {Form("Nominal (|#eta_{e}| < %.1f)", etaHadron[0]), Form("Tight (|#eta_{e}| < %.1f)", etaHadron[1]), Form("Loose (|#eta_{e}| < %.1f)", etaHadron[2])};
+
+double nSigmaH = 1.3; //used for protons and kaons in addition to electrons
 
 
+TFile *outFile;
 
 Bichsel *m_Bichsel = 0;
 const Int_t NMasses = 10;
@@ -66,6 +92,7 @@ const Double_t log2dx[Nlog2dx] = {0,1,2};
 //________________________________________________________________________________
 Double_t bichselZ(Double_t *x,Double_t *par) {
    Double_t pove   = TMath::Power(10.,x[0]);
+   //Double_t pove = x[0];
    Double_t scale = 1;
    Double_t mass = par[0];
    if (mass < 0) {mass = - mass; scale = 2;}
@@ -77,11 +104,13 @@ Double_t bichselZ(Double_t *x,Double_t *par) {
       poverm *= charge;
       dx2 = TMath::Log2(5.);
    }
-   return  TMath::Log10(scale*charge*charge*TMath::Exp(m_Bichsel->GetMostProbableZ(TMath::Log10(poverm),dx2)));//TMath::Exp(7.81779499999999961e-01));
+   return  TMath::Log10(scale*charge*charge*TMath::Exp(m_Bichsel->GetMostProbableZ(TMath::Log10(pove) - TMath::Log10(mass) ,dx2)));//TMath::Exp(7.81779499999999961e-01));
+
    //return charge*charge*TMath::Log10(m_Bichsel->GetI70(TMath::Log10(poverm),1.));
 }
 //________________________________________________________________________________
 Double_t bichselZM(Double_t *x,Double_t *par) {
+   
    Double_t pove   = TMath::Power(10.,x[0]);
    Double_t scale = 1;
    Double_t mass = par[0];
@@ -94,8 +123,8 @@ Double_t bichselZM(Double_t *x,Double_t *par) {
       poverm *= charge;
       dx2 = TMath::Log2(5.);
    }
-   return  TMath::Log10(scale*charge*charge*TMath::Exp(m_Bichsel->GetMostProbableZM(TMath::Log10(poverm),dx2)));//TMath::Exp(7.81779499999999961e-01));
-   //return charge*charge*TMath::Log10(m_Bichsel->GetI70(TMath::Log10(poverm),1.));
+   return  (scale*charge*charge*TMath::Exp(m_Bichsel->GetMostProbableZM(TMath::Log10(poverm),dx2)));//TMath::Exp(7.81779499999999961e-01));
+   
 }
 //________________________________________________________________________________
 Double_t bichsel70(Double_t *x,Double_t *par) {
@@ -224,6 +253,224 @@ Double_t aleph70(Double_t *x,Double_t *par) {
 }
 #endif /* __CINT__ */
 
+TString getCondition(TString var = "", int j = 0 ){
+
+   if(var.Contains("tight") || var.Contains("TIGHT") || var.Contains("Tight") ){
+      j = 1;
+   }else if(var.Contains("loose") || var.Contains("LOOSE") || var.Contains("Loose")){
+      j = 2;
+   }
+
+   TString c = "";
+   if(var.Contains("nHitsFit") || var.Contains("NHITSFIT") || var.Contains("nhitsfit")){
+      c += Form("nHitsFit0 > %d && nHitsFit1 > %d && ", nHitsFit[j], nHitsFit[j]);
+   }else{
+      c += Form("nHitsFit0 > %d && nHitsFit1 > %d && ", nHitsFit[0], nHitsFit[0]);
+   }
+
+   if(var.Contains("nHitsDedx") || var.Contains("NHITSDEDX") || var.Contains("nhitsdedx")){
+      c += Form("nHitsDEdx0 > %d && nHitsDEdx1 > %d && ", nHitsDedx[j], nHitsDedx[j]);
+   }else{
+      c += Form("nHitsDEdx0 > %d && nHitsDEdx1 > %d && ", nHitsDedx[0], nHitsDedx[0]);
+   }
+
+   if(var.Contains("etaHadron") || var.Contains("etahadron") || var.Contains("ETAHADRON") || var.Contains("eta")){
+      c += Form("abs(etaHadron0) < %.1f && abs(etaHadron1) < %.1f && ", etaHadron[j],etaHadron[j]);
+   }else{
+      c += Form("abs(etaHadron0) < %.1f && abs(etaHadron1) < %.1f && ", etaHadron[0], etaHadron[0]);
+   }
+
+   if(var.Contains("chiSquare") || var.Contains("PID") || var.Contains("chiSquareEE") || var.Contains("chiSquareE")){
+      c += Form("chiSquareelectron < %.d && ", chiSquareE[j]);
+   }else{
+      c += Form("chiSquareelectron < %.d && ", chiSquareE[0]);
+   }
+
+   if(var.Contains("nSigmaProton") || var.Contains("NSIGMAPROTON") || var.Contains("nsigmaproton")){
+      c+= Form("abs(nSigmaTPCprotonPlus) > %.1f && abs(nSigmaTPCprotonMinus) > %.1f && ", nSigmaH, nSigmaH);
+   }
+
+   if(var.Contains("nSigmaKaon") || var.Contains("NSIGMAKAON") || var.Contains("nsigmakaon")){
+      c+= Form("abs(nSigmaTPCkaonPlus) > %.1f && abs(nSigmaTPCkaonMinus) > %.1f && ", nSigmaH, nSigmaH);
+   }
+
+   
+   
+   if( !(var.Contains("embedding") || var.Contains("Embedding") || var.Contains("EMBEDDING")) ){  //embedding is not able to reconstruct vertex 
+      
+      //c += Form("chiSquarepion > %.d && chiSquareproton > %.d && chiSquarekaon > %.d && ", chiSquarePi[0], chiSquareP[0], chiSquareK[0]);
+      
+      if(var.Contains("dcaZInCm") || var.Contains("dcazincm") || var.Contains("DCAZINCM")){
+         c += Form("abs(dcaZInCm0) < %.1f && abs(dcaZInCm1) < %.1f && ", dcaZInCm[j], dcaZInCm[j]);
+      }else{
+         c += Form("abs(dcaZInCm0) < %.1f && abs(dcaZInCm1) < %.1f && ", dcaZInCm[0], dcaZInCm[0]);
+      }
+
+      if(var.Contains("dcaXYInCm") || var.Contains("dcaxyincm") || var.Contains("DCAXYINCM")){
+         c += Form("dcaXYInCm0 < %.1f && dcaXYInCm1 < %.1f && ", dcaXYInCm[j], dcaXYInCm[j]);
+      }else{
+         c += Form("dcaXYInCm0 < %.1f && dcaXYInCm1 < %.1f && ", dcaXYInCm[0], dcaXYInCm[0]);
+      }
+
+      if(var.Contains("vertexZInCm") || var.Contains("vertexzincm") || var.Contains("VERTEXZINCM") || var.Contains("Vz")){
+         c += Form("abs(vertexZInCm) < %d && ", vertexZInCm[j]);
+      }else{
+         c += Form("abs(vertexZInCm) < %d && ", vertexZInCm[0]);
+      }
+   }
+
+   //c += Form("isBemcHit0 == 1 && isBemcHit1 == 1 && "); // require both electrons to have matched BEMC hit
+
+   //remove the last " && "
+   if(c.EndsWith("&& ") || c.EndsWith(" &&")){
+      c.Remove(c.Length() - 3, 3);
+   }
+
+   // cout << "Condition for variable " << var << ": " << c << " and j = " << j << endl;
+
+   return c;
+
+}
+
+
+TString getCondition1Track(int i,TString var = "", int j = 0 ){
+
+   if(var.Contains("tight") || var.Contains("TIGHT") || var.Contains("Tight") ){
+      j = 1;
+   }else if(var.Contains("loose") || var.Contains("LOOSE") || var.Contains("Loose")){
+      j = 2;
+   }
+
+   TString c = "";
+   if(i == 0){
+      
+      if(var.Contains("nHitsFit") || var.Contains("NHITSFIT") || var.Contains("nhitsfit")){
+         c += Form("nHitsFit0 > %d && ", nHitsFit[j]);
+      }else{
+         c += Form("nHitsFit0 > %d && ", nHitsFit[0]);
+      }
+
+      if(var.Contains("nHitsDedx") || var.Contains("NHITSDEDX") || var.Contains("nhitsdedx")){
+         c += Form("nHitsDEdx0 > %d && ", nHitsDedx[j]);
+      }else{
+         c += Form("nHitsDEdx0 > %d && ", nHitsDedx[0]);
+      }
+
+      if(var.Contains("etaHadron") || var.Contains("etahadron") || var.Contains("ETAHADRON") || var.Contains("eta")){
+         c += Form("abs(etaHadron0) < %.1f && ", etaHadron[j]);
+      }else{
+         c += Form("abs(etaHadron0) < %.1f && ", etaHadron[0]);
+      }
+
+      if(var.Contains("chiSquare") || var.Contains("PID") || var.Contains("chiSquareEE") || var.Contains("chiSquareE")){
+         c += Form("chiSquareelectron < %.d && ", chiSquareE[j]);
+      }else{
+         c += Form("chiSquareelectron < %.d && ", chiSquareE[0]);
+      }
+
+      if(var.Contains("nSigmaProton") || var.Contains("NSIGMAPROTON") || var.Contains("nsigmaproton")){
+         c+= Form("abs(nSigmaTPCprotonPlus) > %.1f && ", nSigmaH);
+      }
+
+      if(var.Contains("nSigmaKaon") || var.Contains("NSIGMAKAON") || var.Contains("nsigmakaon")){
+         c+= Form("abs(nSigmaTPCkaonPlus) > %.1f && ", nSigmaH);
+      }
+
+      
+      
+      if( !(var.Contains("embedding") || var.Contains("Embedding") || var.Contains("EMBEDDING")) ){  //embedding is not able to reconstruct vertex 
+         
+         //c += Form("chiSquarepion > %.d && chiSquareproton > %.d && chiSquarekaon > %.d && ", chiSquarePi[0], chiSquareP[0], chiSquareK[0]);
+         
+         if(var.Contains("dcaZInCm") || var.Contains("dcazincm") || var.Contains("DCAZINCM")){
+            c += Form("abs(dcaZInCm0) < %.1f && ", dcaZInCm[j]);
+         }else{
+            c += Form("abs(dcaZInCm0) < %.1f && ", dcaZInCm[0]);
+         }
+
+         if(var.Contains("dcaXYInCm") || var.Contains("dcaxyincm") || var.Contains("DCAXYINCM")){
+            c += Form("dcaXYInCm0 < %.1f && ", dcaXYInCm[j]);
+         }else{
+            c += Form("dcaXYInCm0 < %.1f && ", dcaXYInCm[0]);
+         }
+
+         if(var.Contains("vertexZInCm") || var.Contains("vertexzincm") || var.Contains("VERTEXZINCM") || var.Contains("Vz")){
+            c += Form("abs(vertexZInCm) < %d && ", vertexZInCm[j]);
+         }else{
+            c += Form("abs(vertexZInCm) < %d && ", vertexZInCm[0]);
+         }
+      }
+   }else{
+      if(var.Contains("nHitsFit") || var.Contains("NHITSFIT") || var.Contains("nhitsfit")){
+         c += Form("nHitsFit1 > %d && ", nHitsFit[j]);
+      }else{
+         c += Form("nHitsFit1 > %d && ", nHitsFit[0]);
+      }
+
+      if(var.Contains("nHitsDedx") || var.Contains("NHITSDEDX") || var.Contains("nhitsdedx")){
+         c += Form("nHitsDEdx1 > %d && ", nHitsDedx[j]);
+      }else{
+         c += Form("nHitsDEdx1 > %d && ", nHitsDedx[0]);
+      }
+
+      if(var.Contains("etaHadron") || var.Contains("etahadron") || var.Contains("ETAHADRON") || var.Contains("eta")){
+         c += Form("abs(etaHadron1) < %.1f && ", etaHadron[j]);
+      }else{
+         c += Form("abs(etaHadron1) < %.1f && ", etaHadron[0]);
+      }
+
+      if(var.Contains("chiSquare") || var.Contains("PID") || var.Contains("chiSquareEE") || var.Contains("chiSquareE")){
+         c += Form("chiSquareelectron < %.d && ", chiSquareE[j]);
+      }else{
+         c += Form("chiSquareelectron < %.d && ", chiSquareE[0]);
+      }
+
+      if(var.Contains("nSigmaProton") || var.Contains("NSIGMAPROTON") || var.Contains("nsigmaproton")){
+         c+= Form("abs(nSigmaTPCprotonMinus) > %.1f && ", nSigmaH);
+      }
+
+      if(var.Contains("nSigmaKaon") || var.Contains("NSIGMAKAON") || var.Contains("nsigmakaon")){
+         c+= Form("abs(nSigmaTPCkaonMinus) > %.1f && ", nSigmaH);
+      }
+
+      
+      
+      if( !(var.Contains("embedding") || var.Contains("Embedding") || var.Contains("EMBEDDING")) ){  //embedding is not able to reconstruct vertex 
+         
+         //c += Form("chiSquarepion > %.d && chiSquareproton > %.d && chiSquarekaon > %.d && ", chiSquarePi[0], chiSquareP[0], chiSquareK[0]);
+         
+         if(var.Contains("dcaZInCm") || var.Contains("dcazincm") || var.Contains("DCAZINCM")){
+            c += Form("abs(dcaZInCm1) < %.1f && ", dcaZInCm[j]);
+         }else{
+            c += Form("abs(dcaZInCm1) < %.1f && ", dcaZInCm[0]);
+         }
+
+         if(var.Contains("dcaXYInCm") || var.Contains("dcaxyincm") || var.Contains("DCAXYINCM")){
+            c += Form("dcaXYInCm1 < %.1f && ", dcaXYInCm[j]);
+         }else{
+            c += Form("dcaXYInCm1 < %.1f && ", dcaXYInCm[0]);
+         }
+
+         if(var.Contains("vertexZInCm") || var.Contains("vertexzincm") || var.Contains("VERTEXZINCM") || var.Contains("Vz")){
+            c += Form("abs(vertexZInCm) < %d && ", vertexZInCm[j]);
+         }else{
+            c += Form("abs(vertexZInCm) < %d && ", vertexZInCm[0]);
+         }
+      }
+   }
+   //c += Form("isBemcHit0 == 1 && isBemcHit1 == 1 && "); // require both electrons to have matched BEMC hit
+
+   //remove the last " && "
+   if(c.EndsWith("&& ") || c.EndsWith(" &&")){
+      c.Remove(c.Length() - 3, 3);
+   }
+
+   // cout << "Condition for variable " << var << ": " << c << " and j = " << j << endl;
+
+   return c;
+
+}
+
 //________________________________________________________________________________
 TString defineAnalysis(TString inputPosition){
 
@@ -245,14 +492,16 @@ TString defineAnalysis(TString inputPosition){
       return nameOfAnaGoodRunTree;
    } else if( inputPosition.Contains("SysStudy") ){
       return nameOfAnaJPsiTree;
-   } else{
+   } else if(inputPosition.Contains("AnaZeroBias")){
+      return nameOfAnaZeroBiasTree;
+   }else{
       cout << "No analysis to run. Leaving..." << endl;
       return "";
    } 
 }
 
 
-bool drawPIDPlot(TH2D* hdEdx, TString canvasName, TString input){
+bool drawPIDPlot(TH2D* hdEdx, TString canvasName){
 
    TCanvas *cCanvas2D = new TCanvas(canvasName, canvasName, 800, 700);
    gPad->SetMargin(0.12,0.12,0.12,0.02); // (Float_t left, Float_t right, Float_t bottom, Float_t top)
@@ -272,8 +521,10 @@ bool drawPIDPlot(TH2D* hdEdx, TString canvasName, TString input){
    hdEdx->GetXaxis()->SetLabelFont(22);
    hdEdx->GetYaxis()->SetLabelFont(22);
    hdEdx->GetZaxis()->SetLabelFont(22);
-   hdEdx->GetYaxis()->SetRangeUser(0.1,1.7);
-   hdEdx->GetXaxis()->SetRangeUser(-0.8,1.0);
+
+   //hdEdx->GetXaxis()->SetRangeUser(-0.8,1.0);
+   //hdEdx->GetYaxis()->SetRangeUser(0.1,1.7);
+   hdEdx->GetZaxis()->SetRangeUser(1.0, 50);
    hdEdx->GetXaxis()->SetLabelSize(0.05);
    hdEdx->GetYaxis()->SetLabelSize(0.05);
    hdEdx->GetZaxis()->SetLabelSize(0.05);
@@ -285,26 +536,43 @@ bool drawPIDPlot(TH2D* hdEdx, TString canvasName, TString input){
    hdEdx->GetZaxis()->SetTitleOffset(0.50);
    hdEdx->SetStats(0); 
    hdEdx->SetTitle(" ; log_{10} p [GeV/c] ;log_{10} dE/dx [keV/cm] ");
-   hdEdx->Draw("COLZ");
    cCanvas2D->SetLogz(1);
+   //cCanvas2D->SetLogx(1);
+   //cCanvas2D->SetLogy(1);
+   hdEdx->Draw("COLZ");
    
-   TPaveText *textPub = new TPaveText(0.5,0.85,0.8,0.95,"brNDC");
-   textPub -> SetTextSize(0.05);
-   textPub -> SetFillColor(0);
-   textPub -> SetTextFont(22);
-   textPub -> SetTextAlign(12);
-   textPub -> AddText("pp #sqrt{s} = 510 GeV");
-   textPub -> Draw("same");
+   TPaveText *textSTAR;
+   textSTAR = new TPaveText(0.6, 0.9, 0.85, 0.95,"brNDC");
+   textSTAR -> SetTextSize(0.04);
+   textSTAR -> SetFillStyle(0);
+   textSTAR -> SetFillColorAlpha(kWhite,0);
+   textSTAR -> SetBorderSize(0);
+   textSTAR -> SetTextFont(72);
+   textSTAR -> SetTextAlign(33);
+   textSTAR->AddText(plotDescription);
+   textSTAR -> Draw("same");
+
+   TPaveText *textpp510;
+   textpp510 = new TPaveText(0.6, 0.85, 0.85, 0.9,"brNDC");
+   textpp510 -> SetTextSize(0.03);
+   textpp510 -> SetFillStyle(0);
+   textpp510 -> SetFillColorAlpha(kWhite,0);
+   textpp510 -> SetBorderSize(0);
+   textpp510 -> SetTextFont(62);
+   textpp510 -> SetTextAlign(33);
+   textpp510->AddText("p+p #sqrt{s} = 510 GeV");
+   textpp510 -> Draw("same");
 
    const Char_t *type="Bz";
 
    TString Type(type);
-   TLegend *leg = new TLegend(0.65,0.55,0.8,0.8);
+   TLegend *leg = new TLegend(0.65,0.65,0.8,0.8);
    leg->SetFillStyle(0);
    leg->SetBorderSize(0);
-   leg->SetTextSize(0.05);
+   leg->SetTextSize(0.03);
    leg->SetTextFont(22);
    Double_t xmax = 0.9;
+   //Double_t xmax = 10;
    //  for (int h = 0; h < NMasses; h++) { // Masses
    for (int h = 0; h < NF; h++) 
    { // Masses
@@ -319,11 +587,12 @@ bool drawPIDPlot(TH2D* hdEdx, TString canvasName, TString input){
       Int_t dx = 1;
       Char_t *FunName = Form("%s%s%i",FNames[f],Names[h],(int)log2dx[dx]);
       cout << "Make " << FunName << endl;
+      //Double_t xmin = 0.1;
       Double_t xmin = -0.9;
       //    if (h == 0 || h >= 5) xmin = -0.75;
-      if (h == 1) xmin = -0.80;
-      if (h == 2) xmin = -0.60;
-      if (h == 3) xmin = -0.30;
+      if (h == 1) xmin = -0.80;//0.16;
+      if (h == 2) xmin = -0.60;//0.25;
+      if (h == 3) xmin = -0.30;//0.5;
       TF1 *func = 0;
       if      (f == 3) func = new TF1(FunName,bichsel70,xmin, xmax,2);
       else if (f == 2) func = new TF1(FunName,bichselZ ,xmin, xmax,2);
@@ -347,7 +616,7 @@ bool drawPIDPlot(TH2D* hdEdx, TString canvasName, TString input){
          func->SetLineWidth(4);
       #endif
       func->Draw("same");
-      leg->AddEntry(func,Names[h]);
+      leg->AddEntry(func,Names[h], "l");
       #if !defined( __CINT__) && defined(__Aleph__)
          TF1 *fA = new TF1(Form("Aleph%s",Names[h]),aleph70,xmin,xmax, 1);
          fA->SetParameter(0,h);
@@ -361,22 +630,12 @@ bool drawPIDPlot(TH2D* hdEdx, TString canvasName, TString input){
    leg->Draw("same");
 
    cCanvas2D->Update();
-   cCanvas2D->SaveAs("dEdxAll.pdf");
+   //cCanvas2D->SaveAs("dEdxAll.pdf");
 
-
-   TString outFilePath = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + input + "/merged/AnalysisOutput.root";
-   TFile *outFile = TFile::Open(outFilePath, "UPDATE");
-   if (!outFile || outFile->IsZombie()) {
-      cout << "Error opening output file: " << outFilePath << endl;
-      return false;
-   }
 
    // Write histograms to output file
    outFile->cd();
-   hDEdx->Write();
-   cCanvas2D->Write(canvasName);
-   outFile->Close();
-
+   cCanvas2D->Write(canvasName, TObject::kOverwrite);
    return true;
 }
 
@@ -397,6 +656,16 @@ void bichselG10(TString input) {
       return;
    }
 
+
+   TString outFilePath = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + input + "/merged/AnalysisOutput.root";
+   cout << "Outfile path: " << outFilePath << endl;
+
+   outFile = TFile::Open(outFilePath, "UPDATE");
+   if (!outFile || outFile->IsZombie()) {
+      cout << "Error opening output file: " << outFilePath << endl;
+      return;
+   }
+
    cout << "About to run analysis whose tree is called: " << nameOfTree << endl;
 
    TString inputListLocation = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/" + input + "/merged/StRP_production.list";
@@ -410,12 +679,13 @@ void bichselG10(TString input) {
 
    int lineId = 0;
    string line;
+   TFile *inputFile;
    while(getline(instr, line)) {
 
       if(line.empty())
          continue;
 
-      TFile *inputFile = TFile::Open(line.c_str(), "read");
+      inputFile = TFile::Open(line.c_str(), "read");
       if(!inputFile){
          cout << "Couldn't open: " << line.c_str() << endl;
          return;
@@ -457,57 +727,40 @@ void bichselG10(TString input) {
    }
 
 
-   TString condition = "totQ == 0";
-   TString conditionBcg = "totQ != 0";
+   TString condition = getCondition();
+   TString conditionBcg = getCondition();
    if( nameOfTree.Contains("mult") || nameOfTree.Contains("Mult") ){
       condition = "pairID == 0 && totQ == 0"; //momentumChargePlus or Minus
       conditionBcg = "pairID == 0 && totQ != 0"; //momentumChargePlus or Minus
    }
 
+   TString whatToDraw = "TMath::Log10(dEdxInKevCm0):TMath::Log10(momentumInGev0)>>hDEdx(400,-0.8,1,400,0.1,1.7)";
+   TString whatToDraw2 = "TMath::Log10(dEdxInKevCm1):TMath::Log10(momentumInGev1)>>+hDEdx";
+   //TString whatToDraw = "dEdxInKevCm0:momentumInGev0>>hDEdx(400, 0.1, 10, 400, 2, 10 )";
+   //TString whatToDraw2 = "dEdxInKevCm1:momentumInGev1>>+hDEdx";
 
-   tree->Draw("TMath::Log10(dEdxInKevCm0):TMath::Log10(momentumInGev0)>>hDEdx(200,-5,1,100,0.1,2)", condition); //momentumChargePlus or Minus
-   tree->Draw("TMath::Log10(dEdxInKevCm1):TMath::Log10(momentumInGev1)>>+hDEdx", condition); 
-
-   if(isBackground){
-      bcg->Draw("TMath::Log10(dEdxInKevCm0):TMath::Log10(momentumInGev0)>>+hDEdx", conditionBcg); //momentumChargePlus or Minus
-      bcg->Draw("TMath::Log10(dEdxInKevCm1):TMath::Log10(momentumInGev1)>>+hDEdx", conditionBcg); 
-   }
+   tree->Draw(whatToDraw, getCondition1Track(0)); //momentumChargePlus or Minus
+   tree->Draw(whatToDraw2, getCondition1Track(1)); 
+   cout << "Condition for just signal: " << getCondition1Track(0) << endl;
 
 
 
-   TH2D* hdEdx = (TH2D*)gPad->GetPrimitive("hDEdx");
-
-   if(!hdEdx || hdEdx->IsZombie() || hdEdx->GetEntries() == 0){
-      cout << "Empty 2D histogram. Leaving..." << endl;
-      return;
-   }
-
-   if(drawPIDPlot(hdEdx, "BichselCanvas_withBackground", input)){
-      cout << "PID plot drawn successfully." << endl;
-   } else {
-      cout << "Failed to draw PID plot." << endl;
-      return;
-   }
-
-   tree->Draw("TMath::Log10(dEdxInKevCm0):TMath::Log10(momentumInGev0)>>hDEdx(200,-5,1,100,0.1,2)", condition); //momentumChargePlus or Minus
-   tree->Draw("TMath::Log10(dEdxInKevCm1):TMath::Log10(momentumInGev1)>>+hDEdx", condition);
-   
    TH2D* hdEdx = (TH2D*)gPad->GetPrimitive("hDEdx");
    if(!hdEdx || hdEdx->IsZombie() || hdEdx->GetEntries() == 0){
       cout << "Empty 2D histogram. Leaving..." << endl;
       return;
    }
 
-   if(drawPIDPlot(hdEdx, "BichselCanvas_justSignal", input)){
-      cout << "PID plot drawn successfully." << endl;
+   if(drawPIDPlot(hdEdx, "BichselCanvas_justSignal")){
+      cout << "PID plot 2 drawn successfully." << endl;
    } else {
       cout << "Failed to draw PID plot." << endl;
       return;
    }
 
    if(isBackground){
-      bcg->Draw("TMath::Log10(dEdxInKevCm0):TMath::Log10(momentumInGev0)>>hDEdx(200,-5,1,100,0.1,2)", conditionBcg); //momentumChargePlus or Minus
-      bcg->Draw("TMath::Log10(dEdxInKevCm1):TMath::Log10(momentumInGev1)>>+hDEdx", conditionBcg);
+      bcg->Draw(whatToDraw, conditionBcg); //momentumChargePlus or Minus
+      bcg->Draw(whatToDraw2, conditionBcg);
 
       TH2D* hdEdx = (TH2D*)gPad->GetPrimitive("hDEdx");
       if(!hdEdx || hdEdx->IsZombie() || hdEdx->GetEntries() == 0){
@@ -515,14 +768,86 @@ void bichselG10(TString input) {
          return;
       }
 
-      if(drawPIDPlot(hdEdx, "BichselCanvas_justBackground", input)){
-         cout << "PID plot drawn successfully." << endl;
+      if(drawPIDPlot(hdEdx, "BichselCanvas_justBackground")){
+         cout << "PID plot 3 drawn successfully." << endl;
       } else {
          cout << "Failed to draw PID plot." << endl;
          return;
       }
    }
 
+   if(nameOfTree.Contains(nameOfAnaJPsiTree.Data()) ){ // if this is AnaJPsi, create one more plot with cut out k, p
+      condition = getCondition1Track(0, "nsigmaproton nsigmakaon");
+      cout << "Condition for JPsi with k,p cut out: " << condition << endl;
+   
+      tree->Draw(whatToDraw, condition); //momentumChargePlus or Minus
+
+      condition = getCondition1Track(1, "nsigmaproton nsigmakaon");
+      
+      tree->Draw(whatToDraw2, condition);
+
+      TH2D* hdEdx2 = (TH2D*)gPad->GetPrimitive("hDEdx");
+      if(!hdEdx2 || hdEdx2->IsZombie() || hdEdx2->GetEntries() == 0){
+         cout << "Empty 2D histogram. Leaving..." << endl;
+         return;
+      }
+
+      if(drawPIDPlot(hdEdx2, "nsigmaCut")){
+         cout << "PID plot 4 drawn successfully." << endl;
+      } else {
+         cout << "Failed to draw PID plot." << endl;
+         return;
+      }
+
+   }
+
+   if(nameOfTree.Contains(nameOfAnaJPsiTree.Data()) ){ // if this is AnaJPsi, create one more plot with cut out k, p
+      condition = "invMass > 2.88 && invMass < 3.22 && " + getCondition1Track(0, "nsigmaproton nsigmakaon");
+   
+      tree->Draw(whatToDraw, condition); //momentumChargePlus or Minus
+      condition = "invMass > 2.88 && invMass < 3.22 && " + getCondition1Track(1, "nsigmaproton nsigmakaon");
+      tree->Draw(whatToDraw2, condition);
+
+      TH2D* hdEdx2 = (TH2D*)gPad->GetPrimitive("hDEdx");
+      if(!hdEdx2 || hdEdx2->IsZombie() || hdEdx2->GetEntries() == 0){
+         cout << "Empty 2D histogram. Leaving..." << endl;
+         return;
+      }
+
+      if(drawPIDPlot(hdEdx2, "invMassJPsi_only")){
+         cout << "PID plot 5 drawn successfully." << endl;
+      } else {
+         cout << "Failed to draw PID plot." << endl;
+         return;
+      }
+
+   }
+
+
+   // just a test of electron line
+   if(nameOfTree.Contains(nameOfAnaJPsiTree.Data()) ){ // if this is AnaJPsi, create one more plot with cut out k, p
+      condition = getCondition1Track(0, "") + " && abs(nSigmaTPCelectronPlus) > 1.0";
+   
+      tree->Draw(whatToDraw, condition); //momentumChargePlus or Minus
+      condition = getCondition1Track(1, "") + " && abs(nSigmaTPCelectronMinus) > 1.0";
+      tree->Draw(whatToDraw2, condition);
+
+      TH2D* hdEdx2 = (TH2D*)gPad->GetPrimitive("hDEdx");
+      if(!hdEdx2 || hdEdx2->IsZombie() || hdEdx2->GetEntries() == 0){
+         cout << "Empty 2D histogram. Leaving..." << endl;
+         return;
+      }
+
+      if(drawPIDPlot(hdEdx2, "noElectronsPlot")){
+         cout << "PID plot 6 drawn successfully." << endl;
+      } else {
+         cout << "Failed to draw PID plot." << endl;
+         return;
+      }
+
+   }
+
+   outFile->Close();
 
    cout << "Finished all bichselG10 PID plots." << endl;
 

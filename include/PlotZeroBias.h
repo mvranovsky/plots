@@ -3,7 +3,7 @@
 
 
 #include "Plot.h"
-#include "RunDef.h"
+#include "Config.h"
 #include "Libraries.h"
 #include "Util.h"
 #include "ProbRetainEvent.h"
@@ -27,6 +27,8 @@ class PlotZeroBias : public Plot {
 		void Finish() override;
 
 		
+		void calculateTriggerEfficiency(TString var);
+		double triggerEfficiency(TString cond);
 		double getTriggerEfficiency() const {return mTriggerEfficiency;}
 		double getTriggerEfficiencyError() const {return mTriggerEffError;}
 		double getTriggerEfficiencySysError() const {return mTriggerEffSysError; }
@@ -42,12 +44,10 @@ class PlotZeroBias : public Plot {
 		double getDenominatorError() const {return mDenominatorError; }
 		
 	private:
-		void calculateTriggerEfficiency();
-		double triggerEfficiency(TString cond);
+		double getLow(TString var, int i);
+		double getTop(TString var, int i);
 		void invMassDependence();
 		void invMassDependence2();
-
-
 
 
 		double mNumerator, mDenominator, mNumeratorError, mDenominatorError;

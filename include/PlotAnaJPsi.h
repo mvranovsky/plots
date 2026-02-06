@@ -4,10 +4,10 @@
 
 #include "Util.h"
 #include "Plot.h"
-#include "/star/u/mvranovsk/star-upcDst/work/include/RunDef.h"
 #include "FitJPsi.h"
+#include "Config.h"
 
-using namespace RooFit;
+
 using namespace std;
 using namespace UTIL;
 
@@ -23,12 +23,17 @@ class PlotAnaJPsi : public Plot {
       	void Init() override;
 		void Finish() override;
 
+		double fitPeakJPsi(TString c, TString outName, int triggerCondition);
+
 		// methods about Vz study
 		void vertexZStudy(); // function to calculate systematic error of Vz position
 		double getVzStudyFitEff() const { return VzStudyFitEff; }
 		double getVzStudyHistEff() const { return VzStudyHistEff; }
 		double getVzStudyAverageEff() const { return (VzStudyFitEff + VzStudyHistEff) / 2.0; }
 		double getVzStudySysError() const { return abs(VzStudyFitEff - VzStudyHistEff)/2.0; }
+		double getVzStudyEffTight() const { return VzStudyEffTight; }
+		double getVzStudyEffLoose() const { return VzStudyEffLoose; }
+
 
 		// methods about peak fitting study
 		double getPeakFittingMean() const { return mPeakFittingMean; }
@@ -61,33 +66,42 @@ class PlotAnaJPsi : public Plot {
 
 		bool isRomanPots(){return (!noRomanPots); }
 
+		void setInvMassLimitLow(double val){ lowLimInvMass = val; }
+		void setInvMassLimitHigh(double val){ topLimInvMass = val; }
+		double getInvMassLimitLow(){ return lowLimInvMass; }
+		double getInvMassLimitHigh(){ return topLimInvMass; }
+
+		void createDependencePlot(TString option, TString outName);
     private:
 		// control plots for comparison between data and embedding. This function just saves data histograms to a TFile
 		void controlPlotsComparison(bool justJPsi);
 		void saveSysStudyYieldsHists(); // saves the yields of systematic study to histograms
-		void plotRapidityDependence(int nRapBins);
+		void loadRapidityDependence(int nRapBins);
+		void pTMissingPlot();
+		void pTMissingCorrelationPlot();
 
 		Double_t lowLimInvMass, topLimInvMass;
-		FitJPsi* fit;
+		//FitJPsi* fit;
 
 		Util *mUtil;
 
 		// results of fitting
 		double mYieldFinal, mYieldErrFinal;
+	
 
 		// graphs for vertex z study
 		TGraph *VzStudyMeanGraph, *VzStudySigmaGraph, *VzStudyEfficiencyFitGraph, *VzStudyEfficiencyHistGraph;
-		double VzStudyFitEff = 0.0;
-		double VzStudyHistEff = 0.0;
+		double VzStudyFitEff = 0.92;
+		double VzStudyHistEff = 0.93;
 		
+		double VzStudyEffTight = 0.0;
+		double VzStudyEffLoose = 0.0;
 
-		// variables for sys study
-		TH1D *hSysStudyLoose, *hSysStudyTight;
-
-		double mPeakFittingMean = 0.0;
-		double mPeakFittingSigma = 0.0;
-		double mPeakFittingMeanError = 0.0;
-		double mPeakFittingSigmaError = 0.0;
+		// after actually running peak fitting study, fill it in here so even if its commented out, the values are there correct
+		double mPeakFittingMean = 1526.0;
+		double mPeakFittingSigma = 10.0;
+		double mPeakFittingMeanError = 1.0;
+		double mPeakFittingSigmaError = 0.7;
 
 
 		map<TString, vector<int>> yieldResults;
@@ -98,6 +112,9 @@ class PlotAnaJPsi : public Plot {
 
 		vector<double> mRapidityYields, mRapidityYieldsErrors;
 		vector<pair<double,double>> mRapidityBins;
+
+		vector<double> mPtYields, mPtYieldsErrors;
+		vector<pair<double,double>> mPtBins;
 		
 };
 

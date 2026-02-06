@@ -3,7 +3,7 @@
 
 
 #include "Plot.h"
-#include "RunDef.h"
+#include "Config.h"
 #include "Libraries.h"
 #include "Util.h"
 
@@ -25,6 +25,7 @@ class PlotBemcEfficiency : public Plot {
 		void Finish() override;
 
 		inline void setEfficiencyGraph(TGraphAsymmErrors* g) { mEfficiencyGraph = g; }
+		void saveEfficiencyGraph();
 
 		inline TGraphAsymmErrors* getEfficiencyGraph() const { return mEfficiencyGraph; }	
 
@@ -45,6 +46,8 @@ class PlotBemcEfficiency : public Plot {
 		double getPtThresholdError() const { return mPtThresholdError; }
 		double getSigma() const { return mSigma; }
 		double getSigmaError() const { return mSigmaError; }
+
+		void deltaDipAnglePlot();
 
 	private:
 

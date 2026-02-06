@@ -8,10 +8,8 @@ FitJPsi::FitJPsi(TH1D *&h,TString b){
    fitRangeLow = hist->GetXaxis()->GetXmin();
    fitRangeHigh = hist->GetXaxis()->GetXmax();
 
-   //RooMsgService::instance().setSilentMode(true);
+   RooMsgService::instance().setSilentMode(true);
    RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
-
-
 }
 
 void FitJPsi::fitPeak() {
@@ -26,10 +24,12 @@ void FitJPsi::fitPeak() {
    gPad->SetTickx();
    gPad->SetTicky(); 
 
+
+
    gStyle->SetOptStat("");   
 
    if(!hist || hist->GetEntries() == 0){
-      cout << "Empty or no hist when trying to fit. Leaving." << endl;
+      cout << "ERROR in FitJPsi::fitPeak - Empty or no hist when trying to fit. Leaving." << endl;
       return;
    }
 
@@ -50,7 +50,7 @@ void FitJPsi::fitPeak() {
    dh->plotOn(frame, DataError(RooAbsData::SumW2), Name("data"));
 
    // Define the components of the model based on the chosen background function
-   bool fitBcg = false, fitSignal = false, fitSignal2S = false;
+   fitSignal = false, fitSignal2S = false;
    model = buildModel(fitBcg, fitSignal, fitSignal2S);
 
 
@@ -59,30 +59,47 @@ void FitJPsi::fitPeak() {
       std::cerr << "ERROR: FitJPsi::buildModel - Model was not initialized. Check option string: " << bcg << std::endl;
       return;
    }
-
+   if(DEBUGMODE) cout << "Defining fit range..." << endl;
    defineFitRange();
 
    // Fit model to data
+   if(DEBUGMODE) cout << "Starting fit..." << endl;
    fitResult = model->fitTo(*dh, PrintLevel(1), RooFit::Range("fitRange"), RooFit::Minimizer("Minuit2"), Strategy(2)/*, Hesse(true)*/, Save() );
    //fitResult = model->fitTo(*dh, Save(), PrintLevel(-1),RooFit::Verbose(false), RooFit::Warnings(false), RooFit::Range("fitRange"));
 
-   cout << "Fit completed." << endl;
    if (!fitResult) {
       std::cerr << "ERROR: FitJPsi::buildModel - Fit result is null. Check if the model was created successfully." << std::endl;
       return;
    }
+   if(DEBUGMODE) cout << "Fit completed." << endl;
+   if(DEBUGMODE) fitResult->Print("v");
 
+   // Print fit parameters
    // Calculate degrees of freedom
    NDF = hist->GetNbinsX() - (fitResult->floatParsFinal().getSize());
-   mNLoose ? NDF += 0 : NDF += 1;
-   mAlphaLoose ? NDF += 0 : NDF += 1;
 
    //plotting
    model->plotOn(frame, Name("model"));
-   if(fitBcg) model->plotOn(frame, Components("bkg"), LineStyle(kDashed), LineColor(kRed), Name("bkg"));
-   if(fitSignal) model->plotOn(frame, Components("signal1S"), LineStyle(kDashed), LineColor(kGreen), Name("signal"));
-   if(fitSignal2S) model->plotOn(frame, Components("signal2S"), LineStyle(kDashed), LineColor(kMagenta), Name("signal2"));
+   if(fitBcg && visualizeError) {
+      model->plotOn(frame, Name("bkgError"), RooFit::Range("fitRange"),VisualizeError(*fitResult, 1, false), Components("bkg"), FillStyle(3001), FillColor(kRed), DrawOption("F"));
+      model->plotOn(frame, Components("bkg"), RooFit::Range("fitRange"),LineStyle(kDashed), LineColor(kRed), Name("bkg"));
+   }else if(fitBcg ) {
+      model->plotOn(frame, Components("bkg"), RooFit::Range("fitRange"),LineStyle(kDashed), LineColor(kRed), Name("bkg"));
+   }
+\
+   if(fitSignal && visualizeError){
+      model->plotOn(frame, RooFit::Range("fitRange"),Components("signal1S"), DrawOption("F"), LineStyle(kDashed), LineColor(kGreen), Name("signal"));
+      model->plotOn(frame, Name("signalError"), RooFit::Range("fitRange"),VisualizeError(*fitResult, 1, false), Components("signal1S"), FillStyle(3001), FillColor(kGreen), DrawOption("F"));
+   }else if(fitSignal){
+      model->plotOn(frame, RooFit::Range("fitRange"),Components("signal1S"), LineStyle(kDashed), LineColor(kGreen), Name("signal"));
+   }
 
+   if(fitSignal2S && visualizeError){
+      model->plotOn(frame, RooFit::Range("fitRange"),Components("signal2S"), DrawOption("F"), LineStyle(kDashed), LineColor(kMagenta), Name("signal2"));
+      model->plotOn(frame, Name("signal2Error"), RooFit::Range("fitRange"),VisualizeError(*fitResult, 1, false), Components("signal2S"), FillStyle(3001), FillColor(kMagenta), DrawOption("F"));
+   }else if(fitSignal2S){
+      model->plotOn(frame, RooFit::Range("fitRange"),Components("signal2S"), LineStyle(kDashed), LineColor(kMagenta), Name("signal2"));
+   }
 
    frame->Draw("hist E");
    frame->GetXaxis()->SetTitleSize(0.05);
@@ -92,25 +109,33 @@ void FitJPsi::fitPeak() {
    gStyle->SetOptTitle(0);
    gStyle->SetOptStat(0);
 
-   cout << "After fit plotting." << endl;
+   if(DEBUGMODE) cout << "After fit plotting." << endl;
+   
+   leg1 = new TLegend(legPosX1, legPosY1, legPosX2, legPosY2);
+   leg1->SetTextSize(0.03);
+   leg1->SetFillStyle(0);
+   leg1->SetBorderSize(0);
+   if(mIsEmbedding){
+      leg1->AddEntry("data", mEmbeddingDescription, "LEP");
+   }else{
+      leg1->AddEntry("data","Data", "LEP");
+   }
+   if(!(!fitSignal && !fitSignal2S && fitBcg)) leg1->AddEntry("model","Fit Model", "L"); // only add if at least one signal is fitted
+   if(fitSignal) leg1->AddEntry("signal", modelNames[0], "L");
+   if(fitBcg) leg1->AddEntry("bkg", modelNames[1], "L");
+   if(fitSignal2S) leg1->AddEntry("signal2", modelNames[2], "L");
+   //leg1->AddEntry( (TObject*)0, Form("#chi^{2}/NDF = %.2f/%d #approx %.1f",frame->chiSquare(), NDF, frame->chiSquare()/NDF ), "");
+   
+   if(showAdditionalContinuum) loadRooFitResult("fitResultRoofit.root");
+   if(mShowDataPeak) loadDataPeak(mDataMean, mDataSigma);
+   frame->Draw("hist F E");
+   leg1->Draw("same");
    
    if(fitSignal) integrate(bcg);
    
    if(fitSignal)  writeSignalResult(fitSignal2S,0.7,0.58,0.85,0.78);
    
    if(fitSignal) drawLines();
-   
-   leg1 = new TLegend(legPosX1, legPosY1, legPosX2, legPosY2);
-   leg1->SetTextSize(0.03);
-   leg1->SetFillStyle(0);
-   leg1->SetBorderSize(0);
-   leg1->AddEntry("data","Data", "LEP");
-   leg1->AddEntry("model","Model Fit", "L");
-   if(fitSignal) leg1->AddEntry("signal", modelNames[0], "L");
-   if(fitBcg) leg1->AddEntry("bkg", modelNames[1], "L");
-   if(fitSignal2S) leg1->AddEntry("signal2", modelNames[2], "L");
-   //leg1->AddEntry( (TObject*)0, Form("#chi^{2}/NDF = %.2f/%d #approx %.1f",frame->chiSquare(), NDF, frame->chiSquare()/NDF ), "");
-   leg1->Draw("same");
    
 
    c->Update();
@@ -136,7 +161,7 @@ void FitJPsi::defineFitRange(){
 
 RooAddPdf* FitJPsi::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S){
 
-   cout << "Building model with option: " << bcg << endl;
+   if(DEBUGMODE) cout << "Building model with option: " << bcg << endl;
 
    models.clear();
    modelNames.clear();
@@ -145,15 +170,17 @@ RooAddPdf* FitJPsi::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S)
    if(bcg.Contains("cb") || bcg.Contains("CB") || bcg.Contains("CrystalBall") || bcg.Contains("crystalball") ){
       // Define signal model (Crystal Ball)
       cbmean   = new RooRealVar("mean", "mean", 3.0908, 2.8, 3.2);
-      cbsigma  = new RooRealVar("sigma", "sigma", 0.0543, 0.0, 0.065);
+      cbsigma  = new RooRealVar("sigma", "sigma", 0.050, 0.0, 0.0595);
 
       if(mAlphaLoose){  // for fitting alpha
+         cout << "Setting alpha loose for Crystal Ball fit." << endl;
          cbalpha  = new RooRealVar("cb_alpha", "cb_alpha", 1.41, 0.5, 5.0); // loose
       }else{            // for choosing specific alpha
          cbalpha  = new RooRealVar("cb_alpha", "cb_alpha", 1.41); // fixed
          cbalpha->setConstant(true);
       }
       if(mNLoose){      // for fitting n
+         cout << "Setting n loose for Crystal Ball fit." << endl;
          cbn      = new RooRealVar("cb_n", "cb_n", 1.93, 0.5, 5.0);         // loose
       }else{         // for choosing specific n 
          cbn      = new RooRealVar("cb_n", "cb_n", 1.93);
@@ -162,7 +189,7 @@ RooAddPdf* FitJPsi::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S)
 
       cb = new RooCBShape("signal1S", "cb", *x, *cbmean, *cbsigma, *cbalpha, *cbn);
       models.push_back(cb);
-      modelNames.push_back("Crystal Ball ( J/#psi )");
+      modelNames.push_back("Crystal Ball (J/#psi)");
       fitSignal = true;
    }else if(bcg.Contains("gauss") || bcg.Contains("Gauss") || bcg.Contains("Gaussian") || bcg.Contains("gaussian")){
       // Define signal model (Gaussian)
@@ -170,14 +197,14 @@ RooAddPdf* FitJPsi::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S)
       cbsigma  = new RooRealVar("sigma", "sigma", 0.0543, 0.0, 0.065);
       gauss = new RooGaussian("signal1S", "gauss", *x, *cbmean, *cbsigma);
       models.push_back(gauss);
-      modelNames.push_back("Gauss ( J/#psi )");
+      modelNames.push_back("Gauss (J/#psi)");
       fitSignal = true;
    }else{ modelNames.push_back(""); }
    // ----------------------------------------------------------------------------------------------
    if (bcg.Contains("poly1") || bcg.Contains("Poly1")) {
-      a0 = new RooRealVar("a0", "a0", 10, 0, 200);
+      a0 = new RooRealVar("a0", "a0", 5, -10, 200);
       // include observable x in the variable list so expression 'a0' resolves in RooGenericPdf
-      bkg = new RooGenericPdf("bkg", "bkg", "a0", RooArgList(*x, *a0));
+      bkg = new RooGenericPdf("bkg", "bkg", "a0", RooArgList(*a0));
       models.push_back(bkg);
       modelNames.push_back("Polynomial 1");
       fitBcg = true;
@@ -200,8 +227,8 @@ RooAddPdf* FitJPsi::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S)
       fitBcg = true;
    }else if(bcg.Contains("continuum") || bcg.Contains("Continuum") || bcg.Contains("cont") ){ //custom function to fit the gamma+gamma -> e+ e- continuum background
       c1 = new RooRealVar("c1", "c1 parameter", 0.4, 0.0, 0.49);  //0.419
-      c2 = new RooRealVar("c2", "c2 parameter", 0.7, -3.0, 3.0); //-0.01
-      c3 = new RooRealVar("c3", "c3 parameter",-0.7, -3.0, 1.0); //-0.45
+      c2 = new RooRealVar("c2", "c2 parameter", -0.4, -3.0, 3.0); //-0.01
+      c3 = new RooRealVar("c3", "c3 parameter",0.03, -3.0, 1.0); //-0.45
       c4 = new RooRealVar("c4", "c4 parameter",0.00001, 0.0, 0.0001); //-0.45
       c4->setConstant(true);
 
@@ -231,7 +258,7 @@ RooAddPdf* FitJPsi::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S)
 
       cb = new RooCBShape("signal2S", "cb", *x, *mean2S, *sigma2S, *cbalpha2S, *cbn2S);
       models.push_back(cb);
-      modelNames.push_back("Crystal Ball (#psi (2S))");
+      modelNames.push_back("Crystal Ball (#psi(2S))");
       fitSignal2S = true;
    } else{ modelNames.push_back(""); }
 
@@ -254,7 +281,7 @@ RooAddPdf* FitJPsi::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S)
       mod = new RooAddPdf("model", "model", RooArgList(*models[0], *models[1]), RooArgList( *nbkg, *nsig2S));
    } else if (fitSignal && fitBcg) {
       nsig = new RooRealVar("nsig", "signal events", 400, 0, 20000);
-      nbkg = new RooRealVar("nbkg", "background events", 700, 0, 1000000);
+      nbkg = new RooRealVar("nbkg", "background events", 70, 0, 1000000);
       mod = new RooAddPdf("model", "model", RooArgList(*models[0], *models[1]), RooArgList(*nsig, *nbkg));
    } else if(fitSignal){
       nsig = new RooRealVar("nsig", "signal events", 1000, 0, 15000);
@@ -270,65 +297,8 @@ RooAddPdf* FitJPsi::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S)
    return mod;
 }
 
-
-double FitJPsi::getCorrectedYield(TH1D *spectrum, TGraphAsymmErrors* graph, double averageCorrection) { //spectrum should be background subtracted, because so is inv mass
-
-
-   if(netYield <= 0 || errNetYield <= 0) {
-      cerr << "Error: The fit has not been run or failed. Before getting corrected yield, please run the fit to get the raw yield." << endl;
-      return -1;
-   }
-
-   
-   double frac = sOverB <= 0 ? 1 : yieldSignal/(yieldSignal + yieldBackground);
-
-   
-   correctedYield = 0;
-   correctedYieldErrTop = 0;
-   correctedYieldErrLow = 0;
-   for(int i = 1; i <= spectrum->GetNbinsX() + 1 ; ++i){
-      
-      if(i == (spectrum->GetNbinsX() + 1)){  //embedding does not reach beyond 1.5 GeV and neither does spectrum, but there are overflow bins, just use the last value
-         //cout << "Bin " << i << ": spectrum content = " << spectrum->GetBinContent(i) << ", graph y = " << graph->GetY()[graph->GetN()-1] << ", frac = " << frac << endl;
-         correctedYield += spectrum->GetBinContent(i)*frac/graph->GetY()[graph->GetN()-1];
-         correctedYieldErrTop += pow(spectrum->GetBinError(i)/spectrum->GetBinContent(i), 2) + pow(graph->GetEYhigh()[graph->GetN()-1]/graph->GetY()[graph->GetN()-1], 2);
-         correctedYieldErrLow += pow(spectrum->GetBinError(i)/spectrum->GetBinContent(i), 2) + pow(graph->GetEYlow()[graph->GetN()-1]/graph->GetY()[graph->GetN()-1], 2);
-         break;
-      }
-
-      double binCenter = spectrum->GetBinCenter(i);
-      for(int j = 0; j < graph->GetN(); j++){
-
-         
-         if(binCenter > (graph->GetX()[j]- graph->GetEXlow()[j]) && binCenter < (graph->GetX()[j]+ graph->GetEXhigh()[j])){
-            //cout << "Bin " << i << ": spectrum content = " << spectrum->GetBinContent(i) << ", graph y = " << graph->GetY()[j] << ", frac = " << frac << endl;
-            correctedYield += spectrum->GetBinContent(i)*frac/graph->GetY()[j];
-            correctedYieldErrTop += pow(spectrum->GetBinError(i)/spectrum->GetBinContent(i), 2) + pow(graph->GetEYhigh()[j]/graph->GetY()[j], 2);
-            correctedYieldErrLow += pow(spectrum->GetBinError(i)/spectrum->GetBinContent(i), 2) + pow(graph->GetEYlow()[j]/graph->GetY()[j], 2);
-            break;
-         }
-      }
-   }
-   correctedYield = round(correctedYield);
-   correctedYieldErrTop = sqrt(correctedYieldErrTop);
-   correctedYieldErrLow = sqrt(correctedYieldErrLow);
-   
-   /*
-   cout << "The raw yield from fitting: " << yieldSignal << endl;
-   cout << "The corrected yield has been computed. Result is " << correctedYield << endl;
-   cout << "The corrected yield globally: " << yieldSignal << "/" << averageCorrection << " = " << yieldSignal/averageCorrection << endl;
-   */
-   
-   TPaveText *text = new TPaveText(0.7,0.52,0.85,0.49, "NDC"); //in plot text (x_beggining, y_beggining, x_end, y_end) .
-   text->SetTextSize(0.03);
-   text->SetFillColor(0);
-   text->SetTextFont(42);
-   text->SetTextAlign(12);
-   text->AddText(Form("Corrected yield = %.0f^{+%.0f}_{-%.0f}", correctedYield, correctedYieldErrTop, correctedYieldErrLow));
-   text->Draw("same");
-   
-   
-   return correctedYield;
+void FitJPsi::printCovarianceMatrix(){
+   fitResult->covarianceMatrix().Print();
 }
 
 
@@ -339,24 +309,24 @@ void FitJPsi::integrate(TString bcg){
 
 
    x->setRange("signalRange", low, high);
-   cout << "Integration range: " << low << " to " << high << endl;
+   if(DEBUGMODE) cout << "Integration range: " << low << " to " << high << endl;
 
    // 2) Calculate fractions inside the range for signal and background PDFs
-   RooAbsReal* intSignal = cb->createIntegral(*x, NormSet(*x), Range("signalRange"));
+   RooAbsReal* intSignal = cb->createIntegral(*x, NormSet(*x), RooFit::Range("signalRange"));
    double fracBackground = 0.0;
    RooAbsReal* intBackground = nullptr;
-   if(bcg == "poly1" || bcg == "poly2" || bcg == "poly3" || bcg == "Poly1" || bcg == "Poly2" || bcg == "Poly3"){
-      intBackground = bkg->createIntegral(*x, NormSet(*x), Range("signalRange"));
+   if(fitBcg){
+      intBackground = bkg->createIntegral(*x, NormSet(*x), RooFit::Range("signalRange"));
       fracBackground = intBackground->getVal();
       RooFormulaVar bkgYieldFormula("bkgYieldFormula", "@0 * @1", RooArgList(*nbkg, *intBackground));
       errBackground = bkgYieldFormula.getPropagatedError(*fitResult);
    }
 
    double fracSignal = intSignal->getVal();
-   cout << "Signal fraction in range: " << fracSignal << endl;
-   cout << "nsig: " << nsig->getVal() << endl;
+   if(DEBUGMODE) cout << "Signal fraction in range: " << fracSignal << endl;
+   if(DEBUGMODE) cout << "nsig: " << nsig->getVal() << endl;
    
-   // 3) Calculate yields in the range by multiplying by the normalization parameters
+   // 3) Calculate yields in the range (mu -4sigma, mu + 3sigma) by multiplying by the normalization parameters
    yieldSignal = nsig->getVal() * fracSignal;
    yieldBackground = (fracBackground > 0) ? nbkg->getVal() * fracBackground : 0.0;
    
@@ -386,7 +356,7 @@ void FitJPsi::integrate(TString bcg){
 void FitJPsi::saveCanvas(TFile *&file, TString name ,TString dir){
    
    if(!file || file->IsZombie()){
-      cerr << "File is not open or is a zombie. Cannot save canvas." << endl;
+      cerr << "ERROR in FitJPsi::saveCanvas - File is not open or is a zombie. Cannot save canvas." << endl;
       return;
    }
 
@@ -457,16 +427,16 @@ void FitJPsi::writeContinuumResult(double left, double bottom, double right, dou
    // Set text alignment: horizontal=1 (left), vertical=3 (top) => 10*1 + 3 = 13
    cText->SetTextAlign(11);
    cText->AddText("f_{bkg}(x) = (x - c_{1}) exp(c_{2}(x - c_{1})^{2} + c_{3} x^{3})");
-   cText->AddText(Form("c_{1} = %.4f #pm %.4f", c1->getVal(), c1->getError()));
-   cText->AddText(Form("c_{2} = %.4f #pm %.4f", c2->getVal(), c2->getError()));
-   cText->AddText(Form("c_{3} = %.4f #pm %.4f", c3->getVal(), c3->getError()));
+   cText->AddText(Form("c_{1} = %.2f #pm %.2f", c1->getVal(), c1->getError()));
+   cText->AddText(Form("c_{2} = %.2f #pm %.2f", c2->getVal(), c2->getError()));
+   cText->AddText(Form("c_{3} = %.3f #pm %.3f", c3->getVal(), c3->getError()));
    //cText->AddText(Form("c_{4} = %.4f #pm %.4f", c4->getVal(), c4->getError()));
    cText->Draw("same");
 
 }
 
 void FitJPsi::writeFitResult(){
-   leg1->AddEntry( (TObject*)0, Form("#chi^{2}/NDF = %.2f/%d #approx %.1f",frame->chiSquare(), NDF, frame->chiSquare()/NDF ), "");
+   leg1->AddEntry( (TObject*)0, Form("#chi^{2}/NDF = %.2f/%d #approx %.1f",frame->chiSquare()*NDF, NDF, frame->chiSquare() ), "");
 }
 
 
@@ -480,36 +450,124 @@ void FitJPsi::writeSignalResult(bool &fitSignal2S,double left, double bottom, do
    text->SetTextFont(42);
    text->SetTextAlign(12);
    text->AddText("");
-   //text->AddText(Form("#chi^{2}/NDF = %.2f/%d #approx %.1f",frame->chiSquare(), NDF, frame->chiSquare()/NDF ) );
-   text->AddText(Form("#mu_{J/#psi} = %.4f #pm %.4f",cbmean->getVal(),cbmean->getError()));
-   text->AddText(Form("#sigma_{J/#psi} = %.4f #pm %.4f",cbsigma->getVal(),cbsigma->getError()));
-   text->AddText(Form("Raw yield (J/#psi )= %.0f #pm %.0f", round(netYield), round( (errNetYield)) ));
-   if(fitBcg)  text->AddText(Form("S/B (J/#psi ) = %.0f / %.0f #approx %.1f", yieldSignal, yieldBackground, sOverB ) );
-   if(fitSignal2S){
+   if(fitSignal && !fitSignal2S){
+      text->AddText(Form("#mu = %.4f #pm %.4f",cbmean->getVal(),cbmean->getError()));
+      text->AddText(Form("#sigma = %.5f #pm %.5f",cbsigma->getVal(),cbsigma->getError()));
+      text->AddText(Form("Raw yield (J/#psi)= %.0f #pm %.0f", round(netYield), round( (errNetYield)) ));
+   }else if(fitSignal && fitSignal2S){
+      text->AddText(Form("#mu_{J/#psi} = %.4f #pm %.4f",cbmean->getVal(),cbmean->getError()));
+      text->AddText(Form("#sigma_{J/#psi} = %.5f #pm %.5f",cbsigma->getVal(),cbsigma->getError()));
+      text->AddText(Form("Raw yield (J/#psi)= %.0f #pm %.0f", round(netYield), round( (errNetYield)) ));
+      if(fitBcg)  text->AddText(Form("S/B (J/#psi) = %.0f / %.0f #approx %.1f", yieldSignal, yieldBackground, sOverB ) );
       text->AddText(Form("#mu_{#psi(2S)} = %.4f #pm %.4f",mean2S->getVal(),mean2S->getError()));
-      text->AddText(Form("#sigma_{#psi(2S)} = %.4f #pm %.4f",sigma2S->getVal(),sigma2S->getError()));
+      text->AddText(Form("#sigma_{#psi(2S)} = %.5f #pm %.5f",sigma2S->getVal(),sigma2S->getError()));
       text->AddText(Form("Raw yield (#psi (2S))= %.0f #pm %.0f", round(nsig2S->getVal()), round(nsig2S->getError()) ));
    }
+
    text->Draw("same");
 }
 
+void FitJPsi::saveRooFitResult(TString filename){
+   if(!fitResult){
+      cerr << "Fit result is null. Cannot save." << endl;
+      return;
+   }
+   TFile f(filename, "RECREATE");
+   fitResult->Write("fitResult");
+   f.Close();
+   cout << "Fit result saved to " << filename << endl;
+}
 
-void FitJPsi::addContinuumFunction(double c_1, double c_2, double c_3){
-   // Define the custom PDF. Include observable 'x' in the RooArgList so expressions referencing x compile.
-   RooRealVar *c1_const = new RooRealVar("c1_const", "c1 parameter", c_1);
-   RooRealVar *c2_const = new RooRealVar("c2_const", "c2 parameter", c_2);
-   RooRealVar *c3_const = new RooRealVar("c3_const", "c3 parameter", c_3);
-   RooRealVar *c4_const = new RooRealVar("c4_const", "c4 parameter",0.00001, 0.0, 0.0001); //-0.45
+void FitJPsi::loadRooFitResult(TString filename) {
+    TFile f(filename, "READ");
+    if (f.IsZombie()) {
+        cerr << "File " << filename << " is a zombie. Cannot load fit result." << endl;
+        return;
+    }
 
-      // Define the custom PDF. Include observable 'x' in the RooArgList so expressions referencing x compile.
-   RooGenericPdf *continuumFunc = new RooGenericPdf("continuumFunc", "Custom function", "sqrt((x - c1_const)^2 + c4_const) * exp( c2_const *(x - c1_const)^2 + c3_const*x^3)", RooArgList(*x, *c1_const, *c2_const, *c3_const, *c4_const));
-   RooAddPdf *modelWithContinuum = new RooAddPdf("modelWithContinuum", "model with continuum", RooArgList(*continuumFunc), RooArgList(*nbkg));
+    RooFitResult* loadedRes = dynamic_cast<RooFitResult*>(f.Get("fitResult"));
+    if (!loadedRes) {
+        cerr << "No fit result found in " << filename << endl;
+        return;
+    }
+
+    // --- Extract parameter values from RooFitResult ---
+    double c1_val = loadedRes->floatParsFinal().getRealValue("c1");
+    double c2_val = loadedRes->floatParsFinal().getRealValue("c2");
+    double c3_val = loadedRes->floatParsFinal().getRealValue("c3");
+
+    // Define parameters. CRITICAL: These must be RooRealVar, not constants, 
+    // IF you want VisualizeError to work on them. They hold the final values.
+    RooRealVar* c1 = new RooRealVar("c1", "c1 parameter", c1_val);
+    RooRealVar* c2 = new RooRealVar("c2", "c2 parameter", c2_val);
+    RooRealVar* c3 = new RooRealVar("c3", "c3 parameter", c3_val);
+    // c4_const is fine as it was fixed in the fit.
+    RooRealVar* c4_const = new RooRealVar("c4_const", "c4 parameter", 0.00001);
+    c4_const->setConstant(true);
+
+    // --- Build continuum PDF ---
+    // Use the *c1, *c2, *c3 parameters which match the names in the fit result
+    RooGenericPdf* continuumFunc = new RooGenericPdf(
+        "continuumFunc", "Custom function",
+        "sqrt((x - c1)^2 + c4_const) * exp(c2*(x - c1)^2 + c3*x^3)",
+        RooArgList(*x, *c1, *c2, *c3, *c4_const) // Pass the parameters, not the constants
+    );
+
+    // IMPORTANT: nbkg must be a RooRealVar initialized with the final value
+    // If nbkg is globally defined as a RooRealVar, ensure it is set to the final value here
+    double nbkg_val = loadedRes->floatParsFinal().getRealValue("nbkg");
+    nbkg->setVal(nbkg_val); 
+    
+    RooAddPdf* modelWithContinuum = new RooAddPdf(
+        "modelWithContinuum", "model with continuum",
+        RooArgList(*continuumFunc), RooArgList(*nbkg)
+    );
+
+    const char* contRangeName = "contPlotRange";
+    x->setRange(contRangeName, c1->getVal(), fitRangeHigh); // Use c1->getVal() for the lower bound
+
+    // Plot the error band
+    modelWithContinuum->plotOn(frame,
+        RooFit::VisualizeError(*loadedRes, 1),
+        RooFit::Range(contRangeName),
+        RooFit::NormRange(contRangeName),
+        RooFit::FillColor(kMagenta),
+        RooFit::FillStyle(3001),
+        RooFit::DrawOption("F"),
+        RooFit::Name("modelWithContError")
+    );
+
+    // Plot the central line on top (essential for color in legend)
+    modelWithContinuum->plotOn(frame,
+        RooFit::Range(contRangeName),
+        RooFit::NormRange(contRangeName),
+        RooFit::LineColor(kMagenta),
+        RooFit::Name("modelWithCont_line")
+    );
+    leg1->AddEntry("modelWithCont_line", "Fit to data (scaled)", "L");
+
+    f.Close();
+    
+}
+
+void FitJPsi::loadDataPeak(double mean, double sigma){
+
+   datamean   = new RooRealVar("mean", "mean", mean, 2.8, 3.2);
+   datamean->setConstant(true);
+   datasigma  = new RooRealVar("sigma", "sigma", sigma, 0.0, 0.065);
+   datasigma->setConstant(true);
+   dataalpha  = new RooRealVar("cb_alpha", "cb_alpha", 1.41); // fixed
+   dataalpha->setConstant(true);
+   datan      = new RooRealVar("cb_n", "cb_n", 1.93);
+   datan->setConstant(true);
+
+
+   datacb = new RooCBShape("signalData", "cb", *x, *datamean, *datasigma, *dataalpha, *datan);
+   datamodel = new RooAddPdf("adddatamodel", "adddatamodel", RooArgList(*datacb), RooArgList(*nsig));
    
-   x->setRange("fitRange",c_1, fitRangeHigh);
-   modelWithContinuum->plotOn(frame, RooFit::LineColor(kMagenta), Name("modelWithCont"), RooFit::Range("fitRange"));
-   leg1->AddEntry("modelWithCont", "Fit from data (scaled)", "L");
+   datamodel->plotOn(frame,RooFit::Range("fitRange"),Components("signalData"), Name("addedDataPeak"), LineColor(kRed));
+   RooCurve* curve = (RooCurve*)frame->findObject("addedDataPeak");
 
-   frame->Draw("hist E");
-   leg1->Draw("same");
-
+   // Add to legend by pointer, not by string
+   if (curve) leg1->AddEntry(curve, "Data (scaled)", "L");   
 }

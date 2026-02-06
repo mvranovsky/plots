@@ -5,7 +5,8 @@ PlotTofEffMult::PlotTofEffMult(const string mInputList, const char* filePath): P
 
 void PlotTofEffMult::Make(){
 
-	
+	if(DEBUGMODE) cout << "Starting PlotTofEffMult::Make()..." << endl;
+
 	TH1D* h1 = (TH1D*)histFile->Get("hInvMassTof1");
 	TH1D* h2 = (TH1D*)histFile->Get("hInvMassTof2");
 
@@ -14,11 +15,11 @@ void PlotTofEffMult::Make(){
 		h1->Write();
 		h2->Write();
 	}else{
-		cout << "Did not get h1, h2" << endl;
+		cerr << "Did not get h1, h2" << endl;
 	}
-	cout << "input position: " << inputPosition << endl;	
+	if(DEBUGMODE) cout << "input position: " << inputPosition << endl;	
 
-	/*
+	
 		// create invariant mass plots for K0s
 	if( inputPosition.find("MC") != string::npos || inputPosition.find("Control") != string::npos){
 		fitK0s(0.46, 0.53, 35, true);
@@ -28,8 +29,8 @@ void PlotTofEffMult::Make(){
 		fitK0s(0.45, 0.54, 45, false);
 	}
 
-	cout << "Successfully created invariant mass plot and fit of peak for K0S..." << endl;
-	*/
+	if(DEBUGMODE) cout << "Successfully created invariant mass plot and fit of peak for K0S..." << endl;
+	
     
 	efficiency(1,0); //eta
 	efficiency(2,0); //phi
@@ -60,19 +61,20 @@ void PlotTofEffMult::Make(){
 
 	handleHistograms(nameOfTofEffMultDir);
 
-	
+	if(DEBUGMODE) cout << "Successfully created all canvases for TOF efficiency mult..." << endl;
 }
 
 void PlotTofEffMult::Finish(){
 	if(outFile) outFile->Close();
 	if(histFile) histFile->Close();
 	if(MCAna) MCAna->Close();
-	cout << "All histograms successfully saved to canvases..." << endl;
-	cout << "The output file is saved: " << outputPosition << endl;
+	if(DEBUGMODE) cout << "All histograms successfully saved to canvases..." << endl;
+	if(DEBUGMODE) cout << "The output file is saved: " << outputPosition << endl;
 }
 
 void PlotTofEffMult::Init(){
 	//define the output file which will store all the canvases
+	if(DEBUGMODE) cout << "Starting PlotTofEffMult::Init()..." << endl;
 
 	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
@@ -87,16 +89,16 @@ void PlotTofEffMult::Init(){
 		return;
 	}
 
-
+	if(DEBUGMODE) cout << "Connecting input tree for TOF efficiency mult..." << endl;
 	//load the tree chain from the input file
 	if(!ConnectInputTree(inputPosition, nameOfTofEffMultTree, tree, bcgTree) || !tree ){
-		cout << "Could not connect input tree correctly." << endl;
+		cerr << "ERROR in PlotTofEffMult::Init(): Could not connect input tree correctly." << endl;
 		return;
 	}
 
 
     if( inputPosition.find("MC") != string::npos || inputPosition.find("Control") != string::npos ){
-    	cout << "This is an MC simulation or running Control!" << endl;
+    	if(DEBUGMODE) cout << "This is an MC simulation or running Control!" << endl;
 
 	    MCAna = new TFile("MCAnalysis.root", "recreate");
 
@@ -113,7 +115,7 @@ void PlotTofEffMult::Init(){
     }
 
     if(!MCAna){
-    	cout << "Couldn't open MC ana file. Leaving..." << endl;
+    	cerr << "ERROR in PlotTofEffMult::Init(): Couldn't open MC ana file. Leaving..." << endl;
     	return;
     }
 
@@ -121,6 +123,7 @@ void PlotTofEffMult::Init(){
     outFile->mkdir("PLUS");
     outFile->mkdir("MINUS");
 
+	if(DEBUGMODE) cout << "Successfully initialized PlotTofEffMult..." << endl;
 }
 
 

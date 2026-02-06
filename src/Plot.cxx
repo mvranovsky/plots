@@ -168,7 +168,7 @@ void Plot::DrawSTARInternal(double xl, double yl, double xr, double yr)
    textSTAR -> SetBorderSize(0);
    textSTAR -> SetTextFont(72);
    textSTAR -> SetTextAlign(33);
-   textSTAR->AddText("STAR Internal");
+   textSTAR->AddText(plotDescription);
    textSTAR -> Draw("same");
 
    TPaveText *textpp510;
@@ -193,7 +193,7 @@ void Plot::DrawSTARInternalZB(double xl, double yl, double xr, double yr)
    textSTAR -> SetBorderSize(0);
    textSTAR -> SetTextFont(72);
    textSTAR -> SetTextAlign(33);
-   textSTAR->AddText("STAR Internal");
+   textSTAR->AddText(plotDescription);
    textSTAR -> Draw("same");
 
    TPaveText *textpp510;
@@ -235,7 +235,7 @@ void Plot::DrawSTARpp510JPsi(double xl, double yl, double xr, double yr, double 
    textSTAR -> SetFillColorAlpha(kWhite, 0.0);
    textSTAR -> SetTextFont(72);
    textSTAR -> SetTextAlign(33);
-   textSTAR->AddText("STAR Internal");
+   textSTAR->AddText(plotDescription);
    textSTAR -> Draw("same");
  
    TPaveText *textpp510;
@@ -265,7 +265,7 @@ void Plot::DrawEmbeddingpp510JPsi(double xl, double yl, double xr, double yr, do
    textSTAR -> SetFillColorAlpha(kWhite, 0.0);
    textSTAR -> SetTextFont(72);
    textSTAR -> SetTextAlign(33);
-   textSTAR->AddText("STAR Internal");
+   textSTAR->AddText(plotDescription);
    textSTAR -> Draw("same");
 
    TPaveText *textpp510;
@@ -276,7 +276,7 @@ void Plot::DrawEmbeddingpp510JPsi(double xl, double yl, double xr, double yr, do
    textpp510 -> SetFillColorAlpha(kWhite, 0.0);
    textpp510 -> SetBorderSize(0);
    textpp510 -> SetTextFont(42);
-   textpp510->AddText("RP zerobias embedding");
+   textpp510->AddText("Zerobias Embedding");
    textpp510->AddText("MC: p + p #rightarrow J/#psi");
    textpp510 -> Draw("same");
 }
@@ -322,31 +322,31 @@ void Plot::DrawFiducial()
    gr->Draw("same");
 
 
-   TLine *left02 = new TLine(-0.27,-0.4,0.445,-0.4);
+   left02 = new TLine(-0.27,-0.4,0.445,-0.4);
    SetLineStyle(left02);
    left02->Draw("same");
 
 
-   TLine *left01 = new TLine(-0.27,-0.8,-0.27,-0.4);
+   left01 = new TLine(-0.27,-0.8,-0.27,-0.4);
    SetLineStyle(left01);
    left01->Draw("same");
 
-   left01 = new TLine(-0.27,-0.8,0.185,-0.8);
-   SetLineStyle(left01);
-   left01->Draw("same");          
+   left03 = new TLine(-0.27,-0.8,0.185,-0.8);
+   SetLineStyle(left03);
+   left03->Draw("same");          
    // UP
-   left02 = new TLine(-0.27,0.4,0.445,0.4);
-   SetLineStyle(left02);
-   left02->Draw("same");
+   left04 = new TLine(-0.27,0.4,0.445,0.4);
+   SetLineStyle(left04);
+   left04->Draw("same");
 
 
-   left01 = new TLine(-0.27,0.4,-0.27,0.8);
-   SetLineStyle(left01);
-   left01->Draw("same");
+   left05 = new TLine(-0.27,0.4,-0.27,0.8);
+   SetLineStyle(left05);
+   left05->Draw("same");
 
-   left01 = new TLine(-0.27,0.8,0.185,0.8);
-   SetLineStyle(left01);
-   left01->Draw("same");
+   left06 = new TLine(-0.27,0.8,0.185,0.8);
+   SetLineStyle(left06);
+   left06->Draw("same");
 
    for(int i = 0; i < n; ++i){
       x[i] = 0.175 + (0.27*i)/n;
@@ -359,7 +359,7 @@ void Plot::DrawFiducial()
    gr->Draw("same"); 
 }
 
-void Plot::SetLineStyle(TLine* line)
+void Plot::SetLineStyle(TLine*& line)
 {
    line->SetLineStyle(1);
    line->SetLineColor(1);
@@ -374,6 +374,53 @@ void Plot::CreateLine(double xl, double yl, double xr, double yr)
    line->SetLineWidth( lineWidth );
 }//CreateLine
 
+void Plot::CreateDashedLine(double xl, double yl, double xr, double yr)
+{
+   l = new TLine(xl, yl, xr, yr);
+   l->SetLineStyle(2);
+   l->SetLineColor( kBlack );
+   l->SetLineWidth( 3 );
+   l->Draw("same");
+}//CreateLine
+
+void Plot::DrawElipse(double centerX, double centerY, double radius1, double radius2)
+{
+   circle = new TEllipse(centerX, centerY, radius1, radius2);
+   // 3. Set visual style (optional)
+   circle->SetFillStyle(0);   // Important: 0 means no fill (transparent)
+   circle->SetLineColor(2);   // Set the line color (e.g., 2 is red)
+   circle->SetLineWidth(3);   // Set the line thickness 
+   circle->Draw("SAME"); // Use "SAME" to draw it on the same canvas as the histogram
+}
+
+void Plot::DrawEtaVtxZFiducial(){
+
+   l1 = new TLine(-0.9, 100, 0.5, 100);
+   SetLineStyle(l1);
+   l1->Draw("same");
+
+   l2 = new TLine(0.5, 100, 0.9, 0);
+   SetLineStyle(l2);
+   l2->Draw("same");
+
+   l3 = new TLine(0.9, 0, 0.9, -100);
+   SetLineStyle(l3);
+   l3->Draw("same");
+
+   l4 = new TLine(0.9, -100, -0.5, -100);
+   SetLineStyle(l4);
+   l4->Draw("same");
+
+   l5 = new TLine(-0.5, -100, -0.9, 0);
+   SetLineStyle(l5);
+   l5->Draw("same");
+
+   l6 = new TLine(-0.9, 0, -0.9, 100);
+   SetLineStyle(l6);
+   l6->Draw("same");
+
+}
+
 bool Plot::ConnectInputTree(const string& input, TString nameOfTree, TTree *&TREE, TTree *&BCGTREE) {
 
    chain = new TChain(nameOfTree);
@@ -384,10 +431,10 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, TTree *&TRE
    vector<TFile*> inputFiles;
    //cout << "Input file: " << input.c_str() << endl;
    if(input.find(".root") != string::npos){   //!!!! something is wrong
-         cout << "Input from root file: "<< input << endl;
+         if(DEBUGMODE) cout << "Input from root file: "<< input << endl;
       TFile *inputFile = new TFile(input.c_str(), "read");
       if(!inputFile || inputFile->IsZombie() || !inputFile->IsOpen()){
-         cout<< "Couldn't open input root file..."<<endl;
+         cerr << "ERROR in Plot::ConnectInputTree: Couldn't open input root file..."<<endl;
          return false;
       } 
 
@@ -400,10 +447,10 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, TTree *&TRE
       }
    } 
    else if(input.find(".list") != string::npos ){
-      cout << "Input from root list: " << input.c_str() << endl;
+      if(DEBUGMODE) cout << "Input from root list: " << input.c_str() << endl;
       ifstream instr(input.c_str());
       if (!instr.is_open()){
-         cout<< "Couldn't open: "<<input.c_str()<<endl;
+         cerr << "ERROR in Plot::ConnectInputTree: Couldn't open input root list file..."<<endl;
          return false;
       }
       int lineId = 0;
@@ -417,7 +464,7 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, TTree *&TRE
          
          TFile *inputFile = new TFile(line.c_str(), "read");
          if(!inputFile || inputFile->IsZombie() || !inputFile->IsOpen()){
-            cout << "Couldn't open: " << line.c_str() << endl;
+            cerr << "ERROR in Plot::ConnectInputTree: Couldn't open file: " << line.c_str() << endl;
             continue;
          }
          inputFiles.push_back(inputFile);  // Store the file so it doesn't get deleted
@@ -427,8 +474,8 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, TTree *&TRE
             chain->AddFile(line.c_str());
             bcgChain->AddFile(line.c_str());
          } else {
-            cout << "Name of tree: " << nameOfTree << endl;
-            cout << "Couldn't open .root file with name: " << line.c_str() << endl;
+            if(DEBUGMODE) cout << "Name of tree: " << nameOfTree << endl;
+            if(DEBUGMODE) cout << "Couldn't open .root file with name: " << line.c_str() << endl;
          }  
          lineId++;
          //all histograms should be added together from the input files, saved to .root file, and then the .root file should be opened with pointer inFile. So far i am pointing to the last inputFile, because I use only one. Fuck off i will finish this one day ;)
@@ -442,10 +489,10 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, TTree *&TRE
    BCGTREE = dynamic_cast<TTree*>( bcgChain );
 
    if(!BCGTREE || BCGTREE->IsZombie() || BCGTREE->GetEntries() == 0) {
-      cerr << "Did not load background tree. Continuing without it..." << endl;
+      if(DEBUGMODE) cerr << "WARNING in Plot::ConnectInputTree: Did not load background tree. Continuing without it..." << endl;
    }
 
-   cout << "Input from " << inputFiles.size() << " files..." << endl;
+   if(DEBUGMODE) cout << "Input from " << inputFiles.size() << " files..." << endl;
    return true;
 }
 
@@ -458,32 +505,32 @@ bool Plot::handleHistograms(TString dir, TString addOn){
 
    hists1D = GetAllTH1(dir);
    if(hists1D.size() == 0){
-      cerr << "Couldn't load 1D histograms from file in dir "<< dir << ". Leaving..." << endl;
+      cerr << "ERROR in Plot::handleHistograms: Couldn't load 1D histograms from file in dir "<< dir << ". Leaving..." << endl;
       return false;
    }
    for (unsigned int i = 0; i < hists1D.size(); ++i){
       if(!hists1D[i].first){
-         cerr << "Couldn't load histogram " << hists1D[i].second << " in dir "<< dir << ". Leaving..." << endl;
+         cerr << "ERROR in Plot::handleHistograms: Couldn't load histogram " << hists1D[i].second << " in dir "<< dir << ". Leaving..." << endl;
          return false;
       }
       TH1General(hists1D[i].second, hists1D[i].first, dir, addOn);
-      cout << "Created canvas for 1D histogram " << hists1D[i].second << endl;
+      if(DEBUGMODE) cout << "Created canvas for 1D histogram " << hists1D[i].second << endl;
    }
 
    
    // create canvases for all TH2F
    hists2D = GetAllTH2(dir);
    if(hists2D.size() == 0){
-      cerr << "Couldn't load 2D histograms from file. Leaving..." << endl;
+      cerr << "ERROR in Plot::handleHistograms: Couldn't load 2D histograms from file in dir "<< dir << ". Leaving..." << endl;
       return false;
    }
    for (unsigned int i = 0; i < hists2D.size(); ++i){
       if(!hists2D[i].first){
-         cerr << "Couldn't load histogram " << hists2D[i].second << ". Leaving..." << endl;
+         cerr << "ERROR in Plot::handleHistograms: Couldn't load histogram " << hists2D[i].second << " in dir "<< dir << ". Leaving..." << endl;
          return false;
       }
       TH2General(hists2D[i].second, hists2D[i].first, dir, addOn);
-      cout << "Created canvas for 2D histogram " << hists2D[i].second << endl;
+      if(DEBUGMODE) cout << "Created canvas for 2D histogram " << hists2D[i].second << endl;
    }
    
    
@@ -501,7 +548,7 @@ vector<pair<TH2*, TString>> Plot::GetAllTH2(TString dir) {
     if (!dir.IsNull()) {
         targetDir = dynamic_cast<TDirectory*>(histFile->Get(dir));
         if (!targetDir) {
-            cerr << "Directory not found: " << dir << endl;
+            cerr << "ERROR in Plot::GetAllTH2: Directory not found: " << dir << endl;
             return histograms;
         }
     }
@@ -522,10 +569,10 @@ vector<pair<TH2*, TString>> Plot::GetAllTH2(TString dir) {
                   saved[h2->GetName()] = 1;
                   //h2->Write();
                }else{
-                  cout << "Histogram " << h2->GetName() << " already saved. Skipping." << endl;
+                  if(DEBUGMODE) cout << "Histogram " << h2->GetName() << " already saved. Skipping." << endl;
                }
                histograms.push_back(make_pair(h2, h2->GetName()));
-               cout << "Added 2D histogram: " << h2->GetName() << endl;
+               if(DEBUGMODE) cout << "Added 2D histogram: " << h2->GetName() << endl;
             }
         }
 
@@ -545,7 +592,7 @@ vector<pair<TH1*, TString>> Plot::GetAllTH1(TString dir) {
     if (!dir.IsNull()) {
         targetDir = dynamic_cast<TDirectory*>(histFile->Get(dir));
         if (!targetDir) {
-            cerr << "Directory not found: " << dir << endl;
+            cerr << "ERROR in Plot::GetAllTH1(): Directory not found: " << dir << endl;
             return histograms;
         }
     }
@@ -561,8 +608,8 @@ vector<pair<TH1*, TString>> Plot::GetAllTH1(TString dir) {
         if (obj->InheritsFrom(TH1::Class()) && !obj->InheritsFrom(TH2::Class())) { // Ensure it's a 1D histogram
             TH1 *h1 = dynamic_cast<TH1*>(obj);
             if (h1 && h1->GetEntries() > 0) {
-                histograms.push_back(make_pair(h1, h1->GetName()));
-                cout << "Added 1D histogram: " << h1->GetName() << endl;
+               histograms.push_back(make_pair(h1, h1->GetName()));
+               if(DEBUGMODE) cout << "Added 1D histogram: " << h1->GetName() << endl;
             }
         }
 
@@ -575,9 +622,9 @@ vector<pair<TH1*, TString>> Plot::GetAllTH1(TString dir) {
 
 
 void Plot::TH1General(TString nameOfHist,TH1*& hist,TString dir, TString addOn ) {
-
+   
    if (!hist){
-      cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
+      cerr << "ERROR in Plot::TH1General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
       return;
    }
 
@@ -586,43 +633,197 @@ void Plot::TH1General(TString nameOfHist,TH1*& hist,TString dir, TString addOn )
    }else{
       CreateCanvas(&canvas, nameOfHist  + addOn, widthTypical, heightTypical );
    }
-
    canvas->Clear();
-   SetHistStyle(hist, kBlack, markerStyleTypical);
-   hist->Draw("same hist");
-   //canvas->SetLogy();
-
-
-   if(strcmp(hist->GetName(), "hAnalysisFlow") == 0){
-      canvas->SetLogy();
-      SetGPad(false, 0.14, 0.05,0.11,0.06);
-      hist->GetXaxis()->SetLabelOffset(0.01);
-   }else if(strcmp(hist->GetName(), "hNTpcTracks") == 0 || strcmp(hist->GetName(), "hNTofTracks") == 0 || strcmp(hist->GetName(), "hPointingAngle") == 0 ){
-      canvas->SetLogy();
-   }else if(strcmp(hist->GetName(), "hTrackQualityFlow") == 0){
-      canvas->SetLogy();
-      SetGPad(false, 0.14,0.1, 0.11,0.06);
-   }else{
-      SetGPad(false, 0.14, 0.05,0.11,0.06);
-   }
    
-   if(strcmp(hist->GetName(),"hNTracksRP") == 0){
-      canvas->SetLogy();
-   }
+   SetGPad(false, 0.14, 0.05,0.11,0.06);
    
-   //DrawSTARpp510JPsi(0.6,0.85,0.93,0.93, 0.01);
+   SetHistStyle(hist, kBlue, markerStyleTypical);
+   TH1Specifics(nameOfHist, hist, addOn );
+   
    DrawSTARInternal();
-   canvas->Update();
 
+   canvas->Update();
 
    outFile->cd();
    if(dir != ""){
       outFile->cd(dir);
    }
    canvas->Write();
-   //hist->Write();
 }
 
+void Plot::TH1Specifics(TString nameOfHist, TH1*& hist, TString addOn){ // function called for every TH1, set specifics for each plot here
+
+
+   if(strcmp(hist->GetName(), "hAnalysisFlow") == 0 ) {
+      canvas->SetLogy(1);
+      SetGPad(false, 0.14, 0.05,0.11,0.06);
+      hist->GetXaxis()->SetLabelOffset(0.01);
+      hist->SetMarkerSize(1.2);      
+      hist->SetMarkerColor(kBlack);
+      hist->SetLineColor(kBlack);
+      gStyle->SetPaintTextFormat("4.2f"); // Controls text format (e.g., 4 wide, 2 decimals)
+      if(addOn.Contains("NoRP")){
+         hist->GetYaxis()->SetRangeUser( 1e+3, 3e+10); 
+      }else if(addOn.Contains("WithRP")){
+         hist->GetYaxis()->SetRangeUser( 300, 3e+10);
+      }else if(addOn.Contains("ZBData")){
+         hist->GetYaxis()->SetRangeUser( 1e+2, 3e+10);
+         hist->GetXaxis()->SetBinLabel(2, "ZB trigger");
+         hist->GetXaxis()->SetBinLabel(3, "BEMC tracks");
+         hist->GetXaxis()->SetBinLabel(7, "J/#psi trigger");
+      }else if(addOn.Contains("BEData")){
+         gPad->SetBottomMargin(0.14);
+         hist->GetYaxis()->SetRangeUser( 1e+4, 3e+10);
+      }
+      hist->Draw("hist TEXT");
+      return;
+   }
+
+   if(strcmp(hist->GetName(),"hGoodRunListFlow") == 0){
+      SetGPad(false, 0.14, 0.05,0.11,0.06);
+      hist->GetXaxis()->SetLabelOffset(0.01);
+      hist->SetMarkerSize(1.2);      
+      hist->SetMarkerColor(kBlack);
+      hist->SetLineColor(kBlack);
+      gStyle->SetPaintTextFormat("4.2f"); // Controls text format (e.g., 4 wide, 2 decimals)
+      hist->GetYaxis()->SetRangeUser( 1400, 3000);
+      hist->Draw("hist TEXT");
+      return;
+   }
+
+   if(strcmp(hist->GetName(), "hEClusters") == 0){
+      hist->Rebin(2);
+   }
+   
+   hist->Draw("EP");
+   TH1D* hClone = (TH1D*)hist->Clone("hClone");
+   hClone->Draw("same hist"); 
+
+   
+   if(strcmp(hist->GetName(), "hNTpcTracks") == 0 || strcmp(hist->GetName(), "hNTofTracks") == 0 || strcmp(hist->GetName(), "hPointingAngle") == 0 ){
+      canvas->SetLogy(1);
+   }
+   /*
+   if(strcmp(hist->GetName(), "hTrackQualityFlow") == 0){
+      canvas->SetLogy(1);
+      SetGPad(false, 0.14,0.08, 0.13,0.06);
+      hist->GetXaxis()->SetLabelOffset(1.1);
+      DrawSTARInternal( 0.75, 0.89, 0.89,0.93);
+      
+   }
+   */
+   
+   if(strcmp(hist->GetName(), "hDeltaDipAngle") == 0 ){
+      hist->GetXaxis()->SetNdivisions(505);
+      hist->GetYaxis()->SetRangeUser(hist->GetMinimum()*0.9, hist->GetMaximum()*1.2);
+      hist->GetXaxis()->SetBinLabel(6, "V_{Z} - #eta Cut");
+   }
+
+   
+   if(strcmp(hist->GetName(),"hNTracksRP") == 0){
+      canvas->SetLogy(1);
+   }
+
+   if(nameOfHist == "hPosZ"){  // z position of vertex
+      int maxVal  = hist->GetMaximum();
+      CreateDashedLine(-vertexZInCm[0], maxVal*0.5, -vertexZInCm[0], 0);
+      CreateDashedLine(vertexZInCm[0], maxVal*0.5, vertexZInCm[0], 0);
+   }
+   
+   if(strcmp(hist->GetName(),"hDcaZ") == 0){ // dca z
+      canvas->SetLogy(1);
+      int maxVal  = hist->GetMaximum();
+      CreateDashedLine(-dcaZInCm[0], maxVal*0.7, -dcaZInCm[0], 0);
+      CreateDashedLine(dcaZInCm[0], maxVal*0.7, dcaZInCm[0], 0);
+   }
+
+
+   if(strcmp(hist->GetName(),"hDcaXY") == 0){ // dca xy
+      //canvas->SetLogy(1);
+      int maxVal  = hist->GetMaximum();
+      CreateDashedLine(dcaXYInCm[0], maxVal*0.7, dcaXYInCm[0], 0);
+   }
+
+      
+   if(strcmp(hist->GetName(),"hNfitHits") == 0){ // dca z
+      int maxVal  = hist->GetMaximum();
+      CreateDashedLine(nHitsFit[0], maxVal*0.7, nHitsFit[0], 0);
+   }
+      
+   if(strcmp(hist->GetName(),"hNhitsDEdx") == 0){ // dca z
+      int maxVal  = hist->GetMaximum();
+      CreateDashedLine(nHitsDedx[0], maxVal*0.7, nHitsDedx[0], 0);
+   }
+
+   if(nameOfHist.Contains("hDelta")){
+      int maxVal  = hist->GetMaximum();
+      hist->GetYaxis()->SetRangeUser(0, maxVal*1.3);
+   }
+
+
+   if(strcmp(hist->GetName(),"hDeltaPhiAbs") == 0){
+      int maxVal  = hist->GetMaximum();
+
+      CreateDashedLine(TMath::Pi() - TMath::Pi()/6, maxVal*0.7, TMath::Pi() - TMath::Pi()/6 , 0);
+      CreateDashedLine(TMath::Pi() + TMath::Pi()/6, maxVal*0.7, TMath::Pi() + TMath::Pi()/6 , 0);
+
+   }   
+
+   if(strcmp(hist->GetName(),"hPIDChiee") == 0){
+      int maxVal  = hist->GetMaximum();
+      hist->GetYaxis()->SetRangeUser(0, maxVal*1.3);
+      CreateDashedLine( chiSquareE[0], maxVal*0.7, chiSquareE[0], 0);
+   }
+
+   
+   if(strcmp(hist->GetName(),"hBranchRP") == 0){
+      hist->GetYaxis()->SetRangeUser(0, hist->GetMaximum()*1.2);
+   }
+
+
+}
+
+void Plot::TH2Specifics(TString nameOfHist, TH2*& hist, TString addOn){ // function called for every TH2, set specifics for each plot here
+   
+   if(nameOfHist.Contains("hEClusterTrack")){
+      gPad->SetLogz(1);
+   }
+
+
+   hist->Draw("COLZ");
+
+   if(nameOfHist.Contains("hRPcorr") ){
+      DrawFiducial();
+   }
+   
+   if(nameOfHist.Contains("hNSigma")){
+      gPad->SetLogz(1);
+      hist->SetMinimum(0.98);
+   }
+
+   // circle in chi square
+   if(nameOfHist.Contains("hNSigmaEE")){
+      DrawElipse(0,0, 3, 3);
+      gPad->SetLogz(1);
+      hist->SetMinimum(0.98);
+   }
+
+
+   //eta vtx z
+   if(nameOfHist.Contains("hEtaVtxZ")){
+      //gPad->SetLogz(1);
+      hist->SetMinimum(0.98);
+      DrawEtaVtxZFiducial();
+   }
+
+   /*
+   if(strcmp(hist->GetName(),"") == 0){
+      
+   }
+
+   */
+   
+}
 
 void Plot::TH2General(TString nameOfHist , TH2*& hist, TString dir, TString addOn){
    TCanvas* c = nullptr;
@@ -635,27 +836,17 @@ void Plot::TH2General(TString nameOfHist , TH2*& hist, TString dir, TString addO
    c->Clear();
    SetGPad(false,0.12, 0.16,0.11, 0.06 );
    if (!hist){
-      cerr << "Could not open histogram "<< nameOfHist << " from inFile."<< endl;
+      cerr << "ERROR in Plot::TH2General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
       return;
-   }
-
-   if(nameOfHist.Contains("hNSigma")){
-      hist->SetMinimum(0.98);
    }
 
 
    SetTH2Style(hist);
 
-   hist->Draw("COLZ");
+   TH2Specifics(nameOfHist, hist, addOn );
+
    //DrawSTARpp510JPsi(0.53,0.85,0.82,0.93, 0.01);
    DrawSTARInternal(0.7, 0.89, 0.83, 0.93);
-   if(nameOfHist.Contains("hRPcorr") ){
-      DrawFiducial();
-   }
-   else if(nameOfHist.Contains("hNSigma")){
-         gPad->SetLogz();
-         hist->SetMinimum(0.98);
-   }
 
    c->Update();
    outFile->cd();
@@ -731,26 +922,31 @@ void Plot::nSigmaCorrPlot(int particles, TString condition) {
 
 TH1D* Plot::loadInvMassHist(int numBins, Double_t minRange, Double_t maxRange, TString c, bool removeBcg){ 
 
+   TRandom3 randGen(0); // seed with 0 for different results each time
+   int seed = randGen.Integer(100);
+   int seed_c = randGen.Integer(100);
+
    // create a canvas that will hold both fits
-   CreateCanvas(&canvas, "invMassJPsi", widthTypical, heightTypical);
+   CreateCanvas(&canvas, "invMassJPsi" + TString::Format("_%d", seed_c), widthTypical, heightTypical);
    SetGPad();
 
-   TH1D *hSignal = new TH1D("invMassJPsi", "invMassJPsi", numBins, minRange, maxRange);
-   TH1D *hBcg = new TH1D("invMassJPsiBcg", "invMassJPsiBcg", numBins, minRange, maxRange);
+   TString nameSignal = "invMassJPsi" + TString::Format("_%d", seed);;
+   TString nameBcg = "invMassJPsiBcg" + TString::Format("_%d", seed);;
+   TH1D *hSignal = new TH1D(nameSignal, "invMassJPsi", numBins, minRange, maxRange);
+   TH1D *hBcg = new TH1D(nameBcg, "invMassJPsiBcg", numBins, minRange, maxRange);
 
    hSignal->GetXaxis()->SetTitle("m_{ee} [GeV/c^{2}]");
 
    TString cmd;
    tree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), c);
-   hSignal->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
-
+   hSignal->Add((TH1D*)(gPad->GetPrimitive("hist")));
    if(removeBcg){
       bcgTree->Draw(TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange), c);
-      hBcg->Add((TH1D*)gPad->GetPrimitive( TString("hist") ) );
+      hBcg->Add((TH1D*)(gPad->GetPrimitive("hist")));
    }
 
-   if(hSignal->GetEntries() == 0 ){
-      cout << "Could not load signal to histograms" << endl;
+   if(!hSignal || hSignal->GetEntries() == 0 ){
+      cout << "ERROR in Plot::loadInvMassHist - Could not load signal to histograms" << endl;
       return nullptr;
    }
 
@@ -783,7 +979,7 @@ TString Plot::getCondition(TString var, int j ){
    if(var.Contains("nHitsDedx") || var.Contains("NHITSDEDX") || var.Contains("nhitsdedx")){
       c += Form("nHitsDEdx0 > %d && nHitsDEdx1 > %d && ", nHitsDedx[j], nHitsDedx[j]);
    }else{
-      c += Form("nHitsDEdx0 > %d && nHitsDEdx1 > %d &&", nHitsDedx[0], nHitsDedx[0]);
+      c += Form("nHitsDEdx0 > %d && nHitsDEdx1 > %d && ", nHitsDedx[0], nHitsDedx[0]);
    }
 
    if(var.Contains("etaHadron") || var.Contains("etahadron") || var.Contains("ETAHADRON") || var.Contains("eta")){
@@ -797,17 +993,24 @@ TString Plot::getCondition(TString var, int j ){
    }else{
       c += Form("chiSquareelectron < %.d && ", chiSquareE[0]);
    }
-
-   if(var.Contains("nSigmaProton") || var.Contains("NSIGMAPROTON") || var.Contains("nsigmaproton")){
-      c+= Form("abs(nSigmaTPCprotonPlus) > %.1f && abs(nSigmaTPCprotonMinus) > %.1f && ", nSigmaH, nSigmaH);
-   }
-
-   if(var.Contains("nSigmaKaon") || var.Contains("NSIGMAKAON") || var.Contains("nsigmakaon")){
-      c+= Form("abs(nSigmaTPCkaonPlus) > %.1f && abs(nSigmaTPCkaonMinus) > %.1f && ", nSigmaH, nSigmaH);
-   }
-
    
-   
+   if(!var.Contains("nonsigma")){
+
+      if(var.Contains("nSigmaProton") || var.Contains("NSIGMAPROTON") || var.Contains("nsigmaproton")){
+         c+= Form("abs(nSigmaTPCprotonPlus) > %.1f && abs(nSigmaTPCprotonMinus) > %.1f && ", nSigmaP[j], nSigmaP[j]);
+      }else{
+         c+= Form("abs(nSigmaTPCprotonPlus) > %.1f && abs(nSigmaTPCprotonMinus) > %.1f && ", nSigmaP[0], nSigmaP[0]);
+         
+      }
+      
+      if(var.Contains("nSigmaKaon") || var.Contains("NSIGMAKAON") || var.Contains("nsigmakaon")){
+         c+= Form("abs(nSigmaTPCkaonPlus) > %.1f && abs(nSigmaTPCkaonMinus) > %.1f && ", nSigmaK[j], nSigmaK[j]);
+      }else{
+         c+= Form("abs(nSigmaTPCkaonPlus) > %.1f && abs(nSigmaTPCkaonMinus) > %.1f && ", nSigmaK[0], nSigmaK[0]);
+      }
+   }
+      
+
    if( !(var.Contains("embedding") || var.Contains("Embedding") || var.Contains("EMBEDDING")) ){  //embedding is not able to reconstruct vertex 
       
       //c += Form("chiSquarepion > %.d && chiSquareproton > %.d && chiSquarekaon > %.d && ", chiSquarePi[0], chiSquareP[0], chiSquareK[0]);
@@ -841,5 +1044,35 @@ TString Plot::getCondition(TString var, int j ){
    // cout << "Condition for variable " << var << ": " << c << " and j = " << j << endl;
 
    return c;
+
+}
+
+
+void Plot::loadStarlightTree( TString filename, TString treename ){
+
+
+   if(filename == ""){
+      filename = MCFileName;
+      treename = MCTreeName;
+   }
+
+   if(DEBUGMODE) cout << "Connecting starlight file..." << endl;
+
+
+   starlightFile = shared_ptr<TFile>(new TFile(filename, "READ"));
+   if(!starlightFile || starlightFile->IsZombie() || !starlightFile->IsOpen()){
+      cerr << "ERROR in Plot::loadStarlightTree(): Could not get file with starlight data. Returning." << endl;
+      return;
+   }
+   
+   
+   if(DEBUGMODE) cout << "Checking starlight tree..." << endl;
+   starlightTree = (TTree*)starlightFile->Get(treename);
+   if(!starlightTree || starlightTree->IsZombie() || starlightTree->GetEntries() <= 0){
+      cerr << "ERROR in Plot::loadStarlightTree(): Could not get starlight tree. Returning." << endl;
+      return;
+   }
+
+   if(DEBUGMODE) cout << "Successfully connected starlight tree" << endl;
 
 }

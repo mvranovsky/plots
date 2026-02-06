@@ -13,8 +13,10 @@
 #include "PlotZeroBias.h"
 
 
+
 using namespace std;
 using namespace UTIL;
+
 
 class CrossSectionMaker  {
 
@@ -27,7 +29,7 @@ class CrossSectionMaker  {
 
         // Cross section functions
         double CalculateCrossSection();
-        double getYieldCorrection(int spectrumBins, double spectrumLow, double spectrumTop, TString condition);
+        Value getYieldCorrection(int spectrumBins, double spectrumLow, double spectrumTop, TString condition, PlotEmbeddingJPsi *&embedding);
         void setNominalCrossSection(double val) { mNominalCrossSection = val; }
         double getNominalCrossSection() const { return mNominalCrossSection; }
 
@@ -36,13 +38,15 @@ class CrossSectionMaker  {
     
         // hard coded for now
         double getRPEfficiency() const { return isRomanPots ? mRPEfficiency : 1.0; }
-        double getRPEffSysError() const { return isRomanPots ? 0.01 : 0.0; } // hard coded for now, we will change it later
-        double getVertexRecoEfficiency() const { return 0.9; } // hard coded for now, we will change it later
-        double getVertexRecoEffSysError() const { return 0.01; }
+        Value getRPEffSysError() const { return mRpSysError; } // hard coded for now, will change later
 
-        double crossSection(double Y,double eff, double lumi, double deltaRap = 2);
+        double getVertexRecoEfficiency() const {return mVertexRecoEfficiency; }
+        double getVertexRecoSysErrorLow() const { return 0.010; } 
+        double getVertexRecoSysErrorTop() const { return 0.026; }
+
+        double crossSection(double Y,double eff, double lumi, double deltaRap = 1);
         double efficiency(vector<double> effs);
-        double luminosity();
+        double luminosity(bool correctVeto = true,bool correctPileUp = true);
         TGraph* getMcNormalizedPlot(int nBins, double low, double top);
 
         // yield correction saving
@@ -64,26 +68,34 @@ class CrossSectionMaker  {
         double getYieldCorrErrTopFinal() const {return mCorrYieldErrTopFinal;}
         double getYieldCorrErrLowFinal() const {return mCorrYieldErrLowFinal;}
         
-        
+        void setCustomEmbeddingCorrection(TGraphAsymmErrors* g, bool val = true){ useCustomEmbeddingCorrection = val; customEmbeddingRecoEff = g; }
+        TGraphAsymmErrors* getCustomEmbeddingCorrection() const { return customEmbeddingRecoEff; }
         
     private:
+
+        void createSysErrorPlot(TGraph *gLow, TGraph *gTop, vector<TString> sysErrorNames, TString outName);
+        void createSysErrorPlot(TH1 *&gLow, TH1* &gTop, vector<TString> sysErrorNames, TString outName);
         
         // computation and summing of all systematic errors
         pair<double,double> SysError();
+        pair<double,double> SysErrorTPC();
         pair<double,double> CalculateSysErrorCuts(int VAR);
         pair<double,double> CalculateRPEffSysError();
-        pair<double,double> CalculateVertexRecoSysError();
+        pair<double,double> CalculateVzSysError();
         pair<double,double> CalculateYieldExtractionSysError();
         pair<double,double> CalculateBemcSysError();
         pair<double,double> CalculateLumiSysError();
         pair<double,double> CalculateTriggerVetoSysError();
         pair<double,double> CalculateTriggerTopologySysError();
+        pair<double,double> CalculateVertexRecoSysError();
+        pair<double,double> CalculatePileUpSysError();
 
 
+        // for calculating bemc sys error
+        bool useCustomEmbeddingCorrection = false;
+        TGraphAsymmErrors* customEmbeddingRecoEff = nullptr;
 
-
-
-
+        Value mRpSysError; // hard coded for now, will change later
         //vector<double> corrrectedYield();
         shared_ptr<TFile> outFile;
 
@@ -94,14 +106,16 @@ class CrossSectionMaker  {
         PlotGoodRun *mGoodRun;
         PlotZeroBias *mZeroBias;
 
+        PlotEmbeddingJPsi *embMin, *embMax;
+
         TString mAnaDir, mEmbeddingDir, mGoodRunDir, mZeroBiasDir, mOutFileName;
 
         shared_ptr<TFile> mOutFile;
 
         TTree *mGoodRunTree = nullptr;  // tree to store good runs
 
-        double mRPEfficiency = 0.85; // so far hard coded, we will change it later
-
+        double mRPEfficiency = 0.889; // analysis done by T.Truhlar, using his results
+        double mVertexRecoEfficiency = 0.896; // analysis done by T.Truhlar, using his results
         bool isRomanPots = false;
 
         map<int, double> mSysErrorTight;

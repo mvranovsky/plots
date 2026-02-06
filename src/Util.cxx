@@ -253,6 +253,8 @@ Util::Util(): mSpeedOfLight(299792458), mBeamMomentum(254.867), mPi(3.1415926535
    nameOfVar[PID] = TString("PID");
    nameOfVar[VERTEXZ] = TString("vertexZInCm");
    nameOfVar[ETA] = TString("etaHadron");
+   nameOfVar[NSIGMAPROTON] = TString("nSigmaProton");
+   nameOfVar[NSIGMAKAON] = TString("nSigmaKaon");
 
    mVarLatex = new TString[nVariables];
    mVarLatex[NHITSFIT] = TString("N^{Fit}_{Hits}");

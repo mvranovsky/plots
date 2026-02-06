@@ -27,7 +27,7 @@ void PlotTofEff::Make(){
 		fitK0s(0.45, 0.54, 45, false);
 	}
 
-	cout << "Successfully created invariant mass plot and fit of peak for K0S..." << endl;
+	if(DEBUGMODE) cout << "Successfully created invariant mass plot and fit of peak for K0S..." << endl;
 
 
 	efficiency(1,0); //eta
@@ -60,12 +60,13 @@ void PlotTofEff::Finish(){
 	if(outFile) outFile->Close();
 	if(histFile) histFile->Close();
 	if(MCAna) MCAna->Close();
-	cout << "All histograms successfully saved to canvases..." << endl;
-	cout << "The output file is saved: " << outputPosition << endl;
+	if(DEBUGMODE) cout << "All histograms successfully saved to canvases..." << endl;
+	if(DEBUGMODE) cout << "The output file is saved: " << outputPosition << endl;
 }
 
 void PlotTofEff::Init(){
 	//define the output file which will store all the canvases
+	if(DEBUGMODE) cout << "Starting PlotTofEff::Init()..." << endl;
 
 	if(!outFile || outFile->IsZombie()){
 		cerr << "Couldn't open output file with position: " << outputPosition << endl;
@@ -80,7 +81,9 @@ void PlotTofEff::Init(){
 		return;
 	}
 
+	if(DEBUGMODE) cout << "Successfully opened histFile.root" << endl;
 
+	if(DEBUGMODE) cout << "Connecting input tree for TOF efficiency..." << endl;
 	//load the tree chain from the input file
 	ConnectInputTree(inputPosition, nameOfTofEffTree, tree, bcgTree);
 
@@ -89,10 +92,12 @@ void PlotTofEff::Init(){
     	return;
     }
 
+    if(DEBUGMODE) cout << "Successfully connected input tree for TOF efficiency." << endl;
+
     MCAna = new TFile("MCAnalysis.root", "read");
 
     if(!MCAna){
-    	cout << "Couldn't open MC ana file. Leaving..." << endl;
+    	cerr << "ERROR in PlotTofEff::Init(): Couldn't open MC ana file. Leaving..." << endl;
     	return;
     }
 
@@ -124,7 +129,7 @@ void PlotTofEff::fitK0s(Double_t minRange, Double_t maxRange, int numBins, bool 
     signalFinal->GetXaxis()->SetTitle("m_{#pi^{+} #pi^{-}} [GeV/c^{2}]");
     
     TString cmd, condition;
-    cout << "fitting peak for K0S" << endl;
+    if(DEBUGMODE) cout << "fitting peak for K0S" << endl;
 
     //draw the pairs invMasses which satisfy condition
     cmd = TString::Format("invMass>>hist(%d, %f, %f)", numBins, minRange,maxRange);

@@ -2,6 +2,7 @@
 #define PlotsManager_h
 
 
+#include "Config.h"
 #include "PlotAnaV0.h"
 //#include "PlotGeneral.h"
 #include "PlotAnaV0Mult.h"
@@ -93,7 +94,7 @@ vector<TDirectory*> getDirectories(shared_ptr<TFile>& file) {
 }
 
 
-bool connectHists(const char* inputPath, const char* outputFilename) {
+bool connectHists(const char* inputPath, const char* outputFilename, bool keepExistingHists = false) {
    map<string, TH1*> mergedTH1Hists;
    map<string, TH2*> mergedTH2Hists;
 
@@ -165,12 +166,14 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
       }
    }
 
-      // Save merged histograms to new ROOT file
-      std::shared_ptr<TFile> histFile(new TFile(outputFilename, "RECREATE"));
-      if (!histFile || histFile->IsZombie()) {
-         std::cerr << "Error creating output file: " << outputFilename << std::endl;
-         return false;
-      }
+   TString opt = "RECREATE";
+   if(keepExistingHists) opt = "UPDATE";
+   // Save merged histograms to new ROOT file
+   std::shared_ptr<TFile> histFile(new TFile(outputFilename, opt));
+   if (!histFile || histFile->IsZombie()) {
+      std::cerr << "Error creating output file: " << outputFilename << std::endl;
+      return false;
+   }
 
    map<TString,int> saved;
    histFile->cd();
@@ -208,7 +211,7 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
       if(saved.find(entry.first) == saved.end()){
          saved[entry.first] = 1;
          entry.second->Write();
-      }else{
+      }else{   
          cout << "Histogram " << entry.first << " already saved. Skipping." << endl;
       }
       histFile->cd();
@@ -221,20 +224,21 @@ bool connectHists(const char* inputPath, const char* outputFilename) {
 }
 
 void runCrossSection(const char* outputFile) {
-   cout << "Running CrossSectionMaker..." << endl;
+   if(DEBUGMODE) cout << "Running CrossSectionMaker..." << endl;
 
-   TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_noRP_27.8.25/merged/StRP_production.list";
-   TString embedDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/EmbeddingJPsi/merged/StRP_production.list";
-   TString goodRunDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaGoodRun_4.8.25/merged/StRP_production.list";
+   //TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_withRP_1.12.25/merged/StRP_production.list";
+   TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_noRP_sysStudy_2.12.25/merged/StRP_production.list";
+   TString embedDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/EmbeddingJPsi_sysStudy/merged/StRP_production.list";
+   TString goodRunDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaGoodRun_2.12.25/merged/StRP_production.list";
    TString zeroBiasDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaZeroBias_26.8.25/merged/StRP_production.list";
 
-   if(!connectHists(anaDir, "histFile.root"))  return;
+   if(!connectHists(anaDir, "histFile.root", false))  return;
 
-   if(!connectHists(embedDir, "histFile.root"))  return;
+   if(!connectHists(embedDir, "histFile.root", true))  return;
 
-   if(!connectHists(goodRunDir, "histFile.root"))  return;
+   if(!connectHists(goodRunDir, "histFile.root", true))  return;
 
-   if(!connectHists(zeroBiasDir, "histFile.root"))  return;
+   if(!connectHists(zeroBiasDir, "histFile.root", true))  return;
 
    CrossSectionMaker *crossSectionMaker = new CrossSectionMaker(anaDir, embedDir, goodRunDir, zeroBiasDir, TString(outputFile));
    crossSectionMaker->Make();

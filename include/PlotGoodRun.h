@@ -3,7 +3,7 @@
 
 
 #include "Plot.h"
-#include "RunDef.h"
+#include "Config.h"
 #include "Libraries.h"
 #include "Util.h"
 #include "ProbRetainEvent.h"
@@ -30,14 +30,17 @@ class PlotGoodRun : public Plot {
 		vector<int> getGoodRunList() const { return goodRunList; }
 		vector<int> getRpGoodRunList() const { return rpGoodRunList; }
 		
-
-		ProbRetainEvent* mProbRetainEvent;
-    private:
-    	//store variables, which can be accessed only from within this class
-		pair<double,double> FitEtaDistributions(TH1D* hist, int SWITCH);
-		Double_t GetMean(TH1* hist);
 		void createGoodRunList(vector<int> goodRunList, TString outName);
 		vector<int> loadBadEtaPhiRuns(TString nameOfFile);
+		void printBadRunsToFile(vector<int> badRuns, TString outName);
+		void loadGoodRunList(TString fileName, TString option);
+		
+		ProbRetainEvent* mProbRetainEvent;
+		
+	private:
+		pair<double,double> FitEtaDistributions(TH1D* hist, int SWITCH);
+		Double_t GetMean(TH1* hist);
+    	//store variables, which can be accessed only from within this class
 		//void createAverageTrackHists(vector<pair<array<int, 2>, array<double, 10>>> runNumberMap);
 
 		bool inRangeEtaBemc(double average);
@@ -47,15 +50,16 @@ class PlotGoodRun : public Plot {
 
 		TTree *ZBTree;
 
-		TH1* hGoodRunListFlow;
+		TH1* hGoodRunListFlow, *hNEventsJPsiFlow;
 		int mRunNumber;
-		int atLeast1JPsiTrigger, RPsClose, nEventsZBVetoAll, nEventsZBVetoPassed, nEventsTEAll, nEventsTEPassed, nEventsLumiFile, nEventsJPsi;
+		int atLeast1JPsiTrigger, RPsClose, nEventsZBVetoAll, nEventsZBVetoPassed, nEventsTEAll, nEventsTEPassed, nEventsLumiFile;
+		double nEventsJPsi;
 		double luminosity, luminosityError, instLumi;
 		double vetoEfficiency, topologyEfficiency;
 		double nTracksBEMC, nClustersBEMC, nTracksTPC, nTracksTOF, nVertices;
 		double tpcEtaAverage, bemcEtaAverage, tpcPhiAverage, bemcPhiAverage;
-	
-	    vector<int> goodRunList, rpGoodRunList;
+		double nEventsJPsiTrigger0, nEventsJPsiTrigger1, nEventsJPsiTrigger2;
+	    vector<int> goodRunList, rpGoodRunList, goodRunTrigger0, goodRunTrigger1, goodRunTrigger2;
 
 		//trigger efficiency variables
 		TGraph *hTrigEff;

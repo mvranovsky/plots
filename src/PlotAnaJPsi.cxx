@@ -5,92 +5,77 @@ PlotAnaJPsi::PlotAnaJPsi(const string mInputList, const char* filePath): Plot(mI
 PlotAnaJPsi::PlotAnaJPsi(const string mInputList, shared_ptr<TFile> file): Plot(mInputList, file) {}
 
 void PlotAnaJPsi::Make(){
-
-
-    int nBins = 100;
-    double lowerLim = 0.0;
-    double upperLim = 5.0;
-
-    //cout << "Condition for JPsi analysis: " << getCondition("nsigmaproton nsigmakaon") << endl;
-    TH1D* invMass = loadInvMassHist(nBins, lowerLim, upperLim, getCondition("nsigmaproton nsigmakaon") , false);  // automatically subtracts background if bcg tree is loaded
     
-    if(!invMass){
-        cout << "Could not load invariant mass histogram. Returning." << endl;
-        return;
-    }
-    //cout << "InvMass number of entries: " << invMass->GetEntries() << endl;
-    
-    fit = new FitJPsi(invMass, "Continuum cb 2sg");
-    fit->setAlphaLoose(false);
-    fit->setNLoose(false);
-    fit->setFitRangeLow(0.4);
-    fit->setFitRangeHigh(4.0);
-    fit->fitPeak();
-    fit->writeFitResult();
 
-    fit->writeContinuumResult();
-    lowLimInvMass = fit->getLowLimitFit();
-    topLimInvMass = fit->getHighLimitFit();
-
-
-    TCanvas *fitCanvas = fit->getCanvas();
-    if(!fitCanvas){
-        cout << "Could not get fit canvas. Returning." << endl;
-        return;
-    }
-    fitCanvas->SetName("fitJPsiCanvas");
-    fitCanvas->SetTitle("");
-    mYieldFinal = fit->getYield();
-    mYieldErrFinal = fit->getErrYield();
-    DrawSTARpp510JPsi();
     if(noRomanPots){
-        CreateText("No Roman Pots", 62,0.7,0.75,0.85,0.77);
+        handleHistograms(nameOfAnaJPsiDir, "JPsiDataNoRP");
     }else{
-        CreateText("With Roman Pots", 62,0.7,0.75,0.85,0.77);
+        handleHistograms(nameOfAnaJPsiDir, "JPsiDataWithRP");
     }
-
-    outFile->cd(); // Explicitly set our file as current directory
-    outFile->cd(nameOfAnaJPsiDir);
-    invMass->Write();
-    fitCanvas->Write();
-    fitCanvas->Close();
-    outFile->cd();
-
-    cout << "About to run vertexZStudy()" << endl;
-    //vertexZStudy();
     
-    runSysStudy();
-    
-    controlPlotsComparison(true); // true = JPsi, false = all
-    
-    // save all the histograms to canvases into outfile
-    handleHistograms(nameOfAnaJPsiDir, "JPsiData");
-    
+    // main fit of peak for all triggers combined
+    double yieldAll = fitPeakJPsi("", "JPsiPeakFit", 0);
+    cout << "Yield of J/Psi for all triggers combined: " << yieldAll << endl;
 
-
+    
+    if(inputPosition.find("sysStudy") != string::npos)  {
+        
+        if(DEBUGMODE) cout << "About to run systematic study..." << endl;
+        
+        runSysStudy();
+    
+        if(DEBUGMODE) cout << "About to run vertexZStudy()" << endl;
+        
+        vertexZStudy();
+    }
+    
     if(noRomanPots){
-        plotRapidityDependence(4);
+        if(DEBUGMODE) cout << "Creating control plots comparison with embedding..." << endl;
+        controlPlotsComparison(true); // true = JPsi, false = all
     }
 
-    // takes quite long, comment out if running fast
-    //peakFittingStudy();
+    if(!noRomanPots){
+        if(DEBUGMODE) cout << "Creating pT missing plot..." << endl;
+        pTMissingPlot();
+        pTMissingCorrelationPlot();
+    }
+
+    if(DEBUGMODE) cout << "Loading Starlight file..." << endl;
+
+    loadStarlightTree();
+
+    if(DEBUGMODE) cout << "Creating rapidity dependence plot..." << endl;
+
+    createDependencePlot("rapidity", "rapidityDependence");
+
+    if(DEBUGMODE) cout << "Creating pT dependence plot..." << endl;
+
+    createDependencePlot("pT", "pTDependence");
+
+    if(DEBUGMODE) cout << "Finished creating dependence plots." << endl;
+
     
+    if(DEBUGMODE) cout << "About to run peak fitting study..." << endl;
     
+    //peakFittingStudy();   // takes quite long, comment out if running fast
+    
+    if(DEBUGMODE) cout << "Finished PlotAnaJPsi::Make()" << endl;
 }
 
 void PlotAnaJPsi::Finish(){
     
     if(outFile) outFile->Close();
     if(histFile) histFile->Close();
-    cout << "All histograms successfully saved to canvases..." << endl;
-    cout << "The output file is saved: " << outputPosition << endl;
+    if(starlightFile) starlightFile->Close();
+    if(DEBUGMODE) cout << "All histograms successfully saved to canvases..." << endl;
+    if(DEBUGMODE) cout << "The output file is saved: " << outputPosition << endl;
 
 }
 
 void PlotAnaJPsi::Init(){
 
 	if(!outFile || outFile->IsZombie() ){
-		cerr << "Couldn't open output file. Leaving..." << endl;
+		cerr << "ERROR in PlotAnaJPsi::Init():Couldn't open output file. Leaving..." << endl;
         return;
 	}
 
@@ -105,7 +90,7 @@ void PlotAnaJPsi::Init(){
     histFile = shared_ptr<TFile>( new TFile("histFile.root", "read") );
 
     if(!histFile || histFile->IsZombie() || !histFile->IsOpen()){
-        cerr << "Could not get file with histograms. Leaving..." << endl;
+        cerr << "ERROR in PlotAnaJPsi::Init(): Could not get file with histograms. Leaving..." << endl;
         return;
     }
 
@@ -114,7 +99,7 @@ void PlotAnaJPsi::Init(){
 
 
     if(!tree || !bcgTree){
-    	cerr << "Couldn't open tree or background tree with data. Returning." << endl;
+    	cerr << "ERROR in PlotAnaJPsi::Init(): Couldn't open tree or background tree with data. Returning." << endl;
     	return;
     }
 
@@ -123,7 +108,7 @@ void PlotAnaJPsi::Init(){
     }else{
         noRomanPots = false;
     }
-    cout << "Running analysis with Roman Pots: " << !noRomanPots << endl;
+    if(DEBUGMODE) cout << "Running analysis with Roman Pots: " << !noRomanPots << endl;
 
     // print level for RooFit
     RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
@@ -146,37 +131,97 @@ void PlotAnaJPsi::Init(){
     VzStudyEfficiencyHistGraph->SetTitle("Efficiency (Hist) vs Fill Number");
 
 
-    hSysStudyLoose = new TH1D("SystematicStudyLoose", "Systematic Study of J/psi photoproduction (Loose)",nVariables,NHITSFIT,nVariables-1 );
-    hSysStudyLoose->SetTitle("Systematic Study of J/psi photoproduction (Loose)");
-    hSysStudyLoose->GetXaxis()->SetTitle("");
-    hSysStudyLoose->GetYaxis()->SetTitle("Ratio to Nominal");
-    hSysStudyLoose->GetXaxis()->SetBinLabel(1, mUtil->variableLatex(NHITSFIT));
-    hSysStudyLoose->GetXaxis()->SetBinLabel(2, mUtil->variableLatex(NHITSDEDX));
-    hSysStudyLoose->GetXaxis()->SetBinLabel(3, mUtil->variableLatex(PID));
-    hSysStudyLoose->GetXaxis()->SetBinLabel(4, mUtil->variableLatex(ETA));
-    hSysStudyLoose->GetXaxis()->SetBinLabel(5, mUtil->variableLatex(VERTEXZ));
-    hSysStudyLoose->GetXaxis()->SetBinLabel(6, mUtil->variableLatex(DCAZINCM));
-    hSysStudyLoose->GetXaxis()->SetBinLabel(7, mUtil->variableLatex(DCAXYINCM));
-    hSysStudyLoose->GetYaxis()->SetRangeUser(0.9, 1.1);
-    hSysStudyLoose->SetLineColor(kRed);
-    hSysStudyLoose->SetMarkerStyle(21);
-    hSysStudyLoose->SetMarkerColor(kRed);
-    hSysStudyLoose->SetMarkerSize(2);
-
-    hSysStudyTight = (TH1D*)hSysStudyLoose->Clone("SystematicStudyTight");
-    hSysStudyTight->SetLineColor(kBlue);
-    hSysStudyTight->SetMarkerStyle(22);
-    hSysStudyTight->SetMarkerColor(kBlue);
-    hSysStudyTight->SetMarkerSize(2);
-    outFile->cd();
 }
+
+
+double PlotAnaJPsi::fitPeakJPsi(TString c, TString outName, int triggerCondition){
+    
+    // save all the histograms to canvases into outfile
+    int nBins = 100;
+    double lowerLim = 0.0;
+    double upperLim = 5.0;
+
+    TString fitOption = "Continuum cb";
+    if(!noRomanPots){
+        fitOption = "cb";
+        lowerLim = 2.5;
+        upperLim = 3.5;
+        nBins = 40;
+    }
+
+    //cout << "Condition for JPsi analysis: " << getCondition("nsigmaproton nsigmakaon") << endl;
+    c == "" ? c = getCondition() : c = c + " && " + getCondition();
+    if(DEBUGMODE) cout << "Condition for JPsi fitting: " << c << endl;
+    TH1D* invMass = loadInvMassHist(nBins, lowerLim, upperLim, c, true);  // automatically subtracts background if bcg tree is loaded
+
+
+    if(!invMass){
+        cout << "ERROR in PlotAnaJPsi::fitPeakJPsi(): Could not load invariant mass histogram. Returning." << endl;
+        return -1;
+    }
+    invMass->SetName(outName + "_invMass");
+    //cout << "InvMass number of entries: " << invMass->GetEntries() << endl;
+    
+    FitJPsi* fit = new FitJPsi(invMass, fitOption);
+    fit->setAlphaLoose(false);
+    fit->setNLoose(false);
+    fit->setFitRangeLow(0.4);
+    fit->setFitRangeHigh(5.0);
+    fit->fitPeak();
+    fit->writeFitResult();
+    fit->saveRooFitResult("fitResultRoofit.root");
+    
+    if(fitOption.Contains("continuum") || fitOption.Contains("Continuum")) fit->writeContinuumResult();
+    setInvMassLimitLow(fit->getLowLimitFit());
+    setInvMassLimitHigh(fit->getHighLimitFit());
+    
+    //fit->printCovarianceMatrix();
+    fit->saveRooFitResult("fitResult.root");
+    
+    TCanvas *fitCanvas = fit->getCanvas();
+    if(!fitCanvas){
+        cout << "ERROR in PlotAnaJPsi::fitPeakJPsi(): Could not get fit canvas. Returning." << endl;
+        return -1;
+    }
+    
+
+    fitCanvas->SetName(outName);
+    fitCanvas->SetTitle("");
+    if(triggerCondition == 0 ){  // only in the case of all triggers combined
+        mYieldFinal = fit->getYield();
+        mYieldErrFinal = fit->getErrYield();
+    }
+
+    DrawSTARpp510JPsi();
+
+    if(noRomanPots){
+        CreateText("No Roman Pots", 62,0.7,0.75,0.85,0.77);
+    }else{
+        CreateText("With Roman Pots", 62,0.7,0.75,0.85,0.77);
+    }
+
+    if(triggerCondition != 0){
+        CreateText(Form("Trigger: HTTP*JPsi (%d)", triggerCondition), 62,0.7,0.65,0.85,0.72);
+    }
+
+    outFile->cd(); // Explicitly set our file as current directory
+    outFile->cd(nameOfAnaJPsiDir);
+    invMass->Write();
+    fitCanvas->Write();
+    fitCanvas->Close();
+    outFile->cd();
+
+    return fit->getYield();
+}
+
+
 void PlotAnaJPsi::controlPlotsComparison(bool justJPsi){
 
     TString condition = "";
     if(justJPsi){
         condition = Form("invMass > %f && invMass < %f", lowLimInvMass, topLimInvMass);
     }
-    cout << "Condition for control plots: " << condition << endl;
+    if(DEBUGMODE) cout << "Condition for control plots: " << condition << endl;
 
     TFile *controlFile;
     controlFile = new TFile("controlPlots.root", "RECREATE");
@@ -193,7 +238,6 @@ void PlotAnaJPsi::controlPlotsComparison(bool justJPsi){
     tree->Draw("pTInGev1>>+hist3", condition);
     TH1D* pTInGev = (TH1D*)gPad->GetPrimitive("hist3");
 
-    
     tree->Draw("vertexZInCm>>hist4(200,-100,100)", condition);
     TH1D* vertexZ = (TH1D*)gPad->GetPrimitive("hist4");
     
@@ -212,7 +256,6 @@ void PlotAnaJPsi::controlPlotsComparison(bool justJPsi){
     tree->Draw("nHitsDEdx0>>hist8(50,0,50)", condition);
     tree->Draw("nHitsDEdx1>>+hist8", condition);
     TH1D* nHitsDEdx = (TH1D*)gPad->GetPrimitive("hist8");
-    
 
     tree->Draw("pt>>hist9(60,0,1.5)", condition);
     TH1D* pt = (TH1D*)gPad->GetPrimitive("hist9");
@@ -221,60 +264,60 @@ void PlotAnaJPsi::controlPlotsComparison(bool justJPsi){
     if(etaHadron && etaHadron->GetEntries() > 0){
         etaHadron->Write("hEta");
     }else{
-        cout << "Could not get etaHadron histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get etaHadron histogram." << endl;
     }
 
     if(phiHadron && phiHadron->GetEntries() > 0){
         phiHadron->Write("hPhi");
     }else{
-        cout << "Could not get phiHadron histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get phiHadron histogram." << endl;
     }
 
     if(pTInGev && pTInGev->GetEntries() > 0){
         pTInGev->Write("hPt");
     }else{
-        cout << "Could not get pTInGev histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get pTInGev histogram." << endl;
     }
 
     
     if(vertexZ && vertexZ->GetEntries() > 0){
         vertexZ->Write("hVertexZ");
     }else{
-        cout << "Could not get vertexZ histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get vertexZ histogram." << endl;
     }
     
     if(dcaZ && dcaZ->GetEntries() > 0){
         dcaZ->Write("hDCAZ");
     }else{
-        cout << "Could not get dcaZ histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get dcaZ histogram." << endl;
     }
 
     if(dcaXY && dcaXY->GetEntries() > 0){
         dcaXY->Write("hDCAXY");
     }else{
-        cout << "Could not get dcaXY histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get dcaXY histogram." << endl;
     }
     
 
     if(nHitsFit && nHitsFit->GetEntries() > 0){
         nHitsFit->Write("hNHitsFit");
     }else{
-        cout << "Could not get nHitsFit histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get nHitsFit histogram." << endl;
     }
 
     if(nHitsDEdx && nHitsDEdx->GetEntries() > 0){
         nHitsDEdx->Write("hNHitsDEdx");
     }else{
-        cout << "Could not get nHitsDEdx histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get nHitsDEdx histogram." << endl;
     }
 
     if(pt && pt->GetEntries() > 0){
         pt->Write("hPtJPsi");
     }else{
-        cout << "Could not get pt histogram." << endl;
+        cerr << "ERROR in PlotAnaJPsi::controlPlotsComparison(): Could not get pt histogram." << endl;
     }
 
-    cout << "All data plots for comparison have been saved to controlPlots.root file" << endl;
+    if(DEBUGMODE) cout << "All data plots for comparison have been saved to controlPlots.root file" << endl;
     
     controlFile->Close();
 }
@@ -333,10 +376,21 @@ void PlotAnaJPsi::vertexZStudy(){
     efficiencyHistGraph->SetName("efficiencyHistGraph");
     efficiencyHistGraph->SetTitle("Efficiency (Hist) vs Fill Number");
 
+    TGraph *efficiencyFitVzGraphLoose = new TGraph();
+    efficiencyFitVzGraphLoose->SetName("effFitVzLoose");
+
+    TGraph *efficiencyFitVzGraphTight = new TGraph();
+    efficiencyFitVzGraphTight->SetName("effFitVzTight");
+
+    TGraph *efficiencyHistVzGraphLoose = new TGraph();
+    efficiencyHistVzGraphLoose->SetName("effHistVzLoose");
+
+    TGraph *efficiencyHistVzGraphTight = new TGraph();
+    efficiencyHistVzGraphTight->SetName("effHistVzTight");
 
     cout << "Starting to fill graphs for vertex Z study..." << endl;
-    double averageFit = 0.0;
-    double averageHist = 0.0;
+    double averageFit = 0.0, averageFitTight = 0.0, averageFitLoose = 0.0;
+    double averageHist = 0.0, averageHistTight = 0.0, averageHistLoose = 0.0;
     for(auto &histPair : vertexZHistograms){
         int fillNum = histPair.first;
         TH1 *hist = histPair.second;
@@ -355,10 +409,12 @@ void PlotAnaJPsi::vertexZStudy(){
         SetHistStyle(hist, kBlue, markerStyleTypical);
         hist->GetXaxis()->SetTitle("V_{Z} [cm]");
         hist->GetYaxis()->SetTitle("Counts");
-        hist->Draw("hist");
+        hist->Draw("EP");
+        TH1* hClone = (TH1*)hist->Clone("hClone");
+        hClone->SetLineColor(kBlue);
+        hClone->Draw("same hist");
 
-        CreateText(Form("Fill number: %d", fillNum), 62);
-
+        
         // fit the distribution with a Gaussian
         TF1 *gauss = new TF1("gauss", "gaus", hist->GetXaxis()->GetXmin(), hist->GetXaxis()->GetXmax());
         gauss->SetLineColor(kRed);
@@ -366,32 +422,47 @@ void PlotAnaJPsi::vertexZStudy(){
         // fit only in range -120 120
         hist->Fit(gauss, "R", "", -120, 120);
         gauss->Draw("same");
+        // integrate the fit function inside 
+        double integral = gauss->Integral(-vertexZInCm[0],vertexZInCm[0])/ gauss->Integral(gauss->GetXmin(), gauss->GetXmax());
+        double integralTight = gauss->Integral(-vertexZInCm[1],vertexZInCm[1])/ gauss->Integral(gauss->GetXmin(), gauss->GetXmax());
+        double integralLoose = gauss->Integral(-vertexZInCm[2],vertexZInCm[2])/ gauss->Integral(gauss->GetXmin(), gauss->GetXmax());
 
-        //print the fit results onto the canvas
-        CreateText(Form("Mean = %.2f +/- %.2f cm", gauss->GetParameter(1), gauss->GetParError(1)),textFont, 0.72, 0.75, 0.9, 0.72);
-        CreateText(Form("Sigma = %.2f +/- %.2f cm", gauss->GetParameter(2), gauss->GetParError(2)), textFont, 0.72, 0.72, 0.9, 0.69);
-
-        DrawSTARInternal(0.77, 0.89, 0.9, 0.93);
-        
-        // integrate the fit function inside +- 100 cm
-        double minRange = -100;
-        double maxRange = 100;
-
-        double integral = gauss->Integral(minRange, maxRange)/ gauss->Integral(gauss->GetXmin(), gauss->GetXmax());
-        CreateText(Form("#epsilon_{fit} = %.2f", integral), textFont, 0.15, 0.85, 0.4, 0.8);
         averageFit += integral;
+        averageFitTight += integralTight;
+        averageFitLoose += integralLoose;
         
         // integrate the histogram in the same range
         int sum = 0;
+        int sumTight = 0;
+        int sumLoose = 0;
         for(int i = 1; i <= hist->GetNbinsX(); ++i) {
             double binCenter = hist->GetBinCenter(i);
-            if(binCenter >= minRange && binCenter <= maxRange) {
+            if(binCenter >= -vertexZInCm[0] && binCenter <= vertexZInCm[0]) {
                 sum += hist->GetBinContent(i);
             }
+            if(binCenter <= vertexZInCm[1]) {
+                sumTight += hist->GetBinContent(i);
+            }
+            if(binCenter <= vertexZInCm[2]) {
+                sumLoose += hist->GetBinContent(i);
+            }
         }
+        
+        //print the fit results onto the canvas
+        DrawSTARInternal(0.77, 0.89, 0.9, 0.93);
+        CreateText(Form("Fill number: %d", fillNum), 62, 0.7, 0.8, 0.9, 0.77);
+        CreateText("Gaussian fit:", 62, 0.7, 0.74, 0.9, 0.77);
+        CreateText(Form("Mean = %.2f +/- %.2f cm", gauss->GetParameter(1), gauss->GetParError(1)),textFont, 0.7, 0.74, 0.9, 0.71);
+        CreateText(Form("Sigma = %.2f +/- %.2f cm", gauss->GetParameter(2), gauss->GetParError(2)), textFont, 0.7, 0.71, 0.9, 0.68);
+        CreateText(Form("#epsilon_{fit} = %.2f", integral), textFont, 0.72, 0.68, 0.9, 0.65);
+        CreateText("Bin integration:", 62, 0.7, 0.65, 0.9, 0.62);
+        CreateText(Form("#epsilon_{hist} = %.2f", 1.0*sum/hist->GetEntries()),textFont, 0.7, 0.62, 0.9, 0.59);
 
-        CreateText(Form("#epsilon_{hist} = %.2f", 1.0*sum/hist->GetEntries()),textFont, 0.15, 0.8, 0.4, 0.75);
+
         averageHist += 1.0*sum/hist->GetEntries();
+        averageHistLoose += 1.0*sumLoose/hist->GetEntries();
+        averageHistTight += 1.0*sumTight/hist->GetEntries();
+
         canvas->Update();
         
         canvas->Write(Form("vtxZSysStudy_%d", fillNum));
@@ -400,16 +471,41 @@ void PlotAnaJPsi::vertexZStudy(){
         // add the fill number, mean, sigma, efficiency to the graphs
         efficiencyFitGraph->SetPoint(efficiencyFitGraph->GetN(), fillNum, integral);
         efficiencyHistGraph->SetPoint(efficiencyHistGraph->GetN(), fillNum, 1.0*sum/hist->GetEntries());
+
+        efficiencyFitVzGraphTight->SetPoint(efficiencyFitVzGraphTight->GetN(), fillNum, integralTight);
+        efficiencyFitVzGraphLoose->SetPoint(efficiencyFitVzGraphLoose->GetN(), fillNum, integralLoose);
+
+        efficiencyHistVzGraphTight->SetPoint(efficiencyHistVzGraphTight->GetN(), fillNum, 1.0*sumTight/hist->GetEntries());
+        efficiencyHistVzGraphLoose->SetPoint(efficiencyHistVzGraphLoose->GetN(), fillNum, 1.0*sumLoose/hist->GetEntries());
+
         meanGraph->SetPoint(meanGraph->GetN(), fillNum, gauss->GetParameter(1));
         sigmaGraph->SetPoint(sigmaGraph->GetN(), fillNum, gauss->GetParameter(2));
     }
-    cout << "Finished filling graphs for vertex Z study..." << endl;
+    if(DEBUGMODE) cout << "Finished filling graphs for vertex Z study..." << endl;
+
     averageFit /= meanGraph->GetN();
+    averageFitLoose /= meanGraph->GetN();
+    averageFitTight /= meanGraph->GetN();
+
     averageHist /= meanGraph->GetN();
+    averageHistLoose /= meanGraph->GetN();
+    averageHistTight /= meanGraph->GetN();
 
     VzStudyFitEff = averageFit;
     VzStudyHistEff = averageHist;
 
+    // for systematic error calculation
+    VzStudyEffTight = (averageFitTight + averageHistTight) / 2.0;
+	VzStudyEffLoose = (averageFitLoose + averageHistLoose) / 2.0;
+
+    if(DEBUGMODE) {
+        cout << "Average efficiency (fit): " << averageFit << endl;
+        cout << "Average efficiency (hist): " << averageHist << endl;
+        cout << "Average efficiency tight (fit): " << averageFitTight << endl;
+        cout << "Average efficiency tight (hist): " << averageHistTight << endl;
+        cout << "Average efficiency loose (fit): " << averageFitLoose << endl;
+        cout << "Average efficiency loose (hist): " << averageHistLoose << endl;
+    }
 
     CreateCanvas(&canvas, "vtxZSysStudyGraphs", 1200, 800);
     SetGPad();
@@ -468,7 +564,6 @@ void PlotAnaJPsi::vertexZStudy(){
     fit2->Draw("same");
 
 
-
     CreateLegend(&legend, 0.2, 0.2, 0.45, 0.4);
     legend->AddEntry(efficiencyFitGraph, "Fit Integration", "p");
     legend->AddEntry(fit1, Form("Average: %.2f +/- %.2f", round(1000*fit1->GetParameter(0))/10 , 100*fit1->GetParError(0)), "l");
@@ -499,46 +594,31 @@ bool PlotAnaJPsi::runStudy(int VAR,TString condition){
     outFile->mkdir(mUtil->nameOfVariable(VAR));
     for(int i = 0; i < 3; i++){
 
-        /*
-        // load signal
-        tree->Draw(Form("invMass>>histMass(%d,%f,%f)", nBins, lowerLim, upperLim), getCondition(condition + TString(" ") + mUtil->variationName(i)) );
-        TH1 *invMassHist = (TH1*)gPad->GetPrimitive("histMass");
-        if(!invMassHist || invMassHist->GetEntries() == 0){ 
-            cout << "Empty or no hist when trying to run systematic study. Leaving." << endl;
-            return false;
-        }
-        TH1D *hSignal = (TH1D*)invMassHist->Clone(Form("hSignal_%d", i));
-        
-        // load background
-        bcgTree->Draw(Form("invMass>>massBcg(%d,%f,%f)", nBins, lowerLim, upperLim), getCondition(condition + TString(" ") + mUtil->variationName(i)) );
-        TH1D *hBackground = (TH1D*)gPad->GetPrimitive("massBcg");
-        if(!hBackground ){
-            cout << "Empty or no background hist when trying to run systematic study. Leaving." << endl;
-            return false;
-        }
-        hSignal->Add(hBackground, -1);
-        */
-        TH1D *hSignal = loadInvMassHist(350, 0.5, 4.0, getCondition(condition + TString(" nsigmaproton nsigmakaon ") + mUtil->variationName(i)) );
+        TH1D *hSignal = loadInvMassHist(100, 0.0, 5.0, getCondition(condition, i) , true);
         if(!hSignal){
             cout << "Could not load invariant mass histogram. Returning." << endl;
             continue;
         }
 
-
         // fit and obtain yield
-        FitJPsi *fit = new FitJPsi(hSignal, "cb poly1");
+        FitJPsi *fit = new FitJPsi(hSignal, "cb continuum");
         fit->fitPeak();
+        fit->setFitRangeLow(0.4);
+        fit->setFitRangeHigh(5.0);
         DrawSTARpp510JPsi();
+        fit->writeFitResult();
         CreateText(mUtil->variationName(i) + TString(" ") + mUtil->variableLatex(VAR), 62,0.7,0.75,0.85,0.77);
         yields.push_back(fit->getYield());
         fit->saveCanvas(outFile, mUtil->nameOfVariable(VAR) + "_" + mUtil->variationName(i), mUtil->nameOfVariable(VAR));
-
     }
 
+    cout << "Finished systematic study for variable " << mUtil->nameOfVariable(VAR) << ". Yields: ";
+    for(auto &y : yields){
+        cout << y << " ";
+    }
+    cout << endl;
+    
     yieldResults[mUtil->nameOfVariable(VAR)] = yields;
-
-    hSysStudyTight->SetBinContent(VAR+1, 1.0*yields[1]/yields[0] );
-    hSysStudyLoose->SetBinContent(VAR+1, 1.0*yields[2]/yields[0] );
 
     return true;
 
@@ -551,58 +631,15 @@ void PlotAnaJPsi::runSysStudy(){
     TString opt = "";
 
     for(int i = 0; i < nVariables; i++){
-        if(!runStudy(i, opt + mUtil->nameOfVariable(i))){
+        if(!runStudy(i,mUtil->nameOfVariable(i))){
             cout << "Error when running systematic study of " << mUtil->nameOfVariable(i) << endl;
         }
     }
-
-
-    saveSysStudyYieldsHists();
 
     cout << "Finished with systematic study for all variables" << endl;
     
 }
 
-void PlotAnaJPsi::saveSysStudyYieldsHists(){
-    
-    
-    CreateCanvas(&canvas, "SysStudyData", 1200, 800);
-    
-    
-    canvas->Clear();
-    canvas->SetName("SysStudyOverview");
-    canvas->cd();
-    SetGPad();
-
-
-    hSysStudyTight->SetMarkerSize(2);
-    hSysStudyTight->SetMarkerSize(2);
-    hSysStudyTight->Draw("P");
-    hSysStudyLoose->Draw("same P");
-    
-    DrawSTARInternal();
-    // draw the nominal line from the min of the histogram to the max
-    
-    TLine* line = new TLine(hSysStudyTight->GetXaxis()->GetBinCenter(NHITSFIT) - 0.5, 1, hSysStudyTight->GetXaxis()->GetBinCenter(ETA) + 0.5, 1);
-    line->SetLineColor(kBlack);
-    line->SetLineStyle(1);
-    line->SetLineWidth(1.2);
-    line->Draw("same");
-    
-    CreateLegend(&legend, 0.2,0.8, 0.45, 0.92);
-    legend->AddEntry(hSysStudyTight, "Tight Condition", "lp");
-    legend->AddEntry(hSysStudyLoose, "Loose Condition", "lp");
-    legend->AddEntry(line, "Nominal Condition", "lp");
-    legend->Draw("same");
-    
-    
-    canvas->Update();
-    outFile->cd();
-    hSysStudyTight->Write();
-    hSysStudyLoose->Write();
-    canvas->Write("SysStudyOverview");
-    
-}
 
 
 void PlotAnaJPsi::peakFittingStudy(){
@@ -613,8 +650,8 @@ void PlotAnaJPsi::peakFittingStudy(){
     double minYield, maxYield;
     int nBins;
     if(noRomanPots){
-        minYield = 1200;
-        maxYield = 1500;
+        minYield = 1400;
+        maxYield = 1800;
         nBins = 80;
     }else{
         minYield = 50;
@@ -630,19 +667,19 @@ void PlotAnaJPsi::peakFittingStudy(){
     TH1D *hN = new TH1D("hN", "hMeans; N ; counts", 90, minN, maxN);
     TH1D *hAlpha = new TH1D("hAlpha", "hMeans; Alpha ; counts",  90, minAlpha, maxAlpha);
 
-    vector<double> lowLim = { 2.0, 2.1, 2.2, 2.3, 2.4, 2.5};
-    vector<double> topLim = { 3.5, 3.6, 3.7, 3.8, 3.9, 4.0};
+    vector<double> lowLim = {0.0,0.2,0.4,0.6,0.8,1.0};
+    vector<double> topLim = {4.0, 4.2, 4.4, 4.6, 4.8, 5.0};
 
     for(auto &low : lowLim){
         for(auto &top : topLim){
-            for(int nBins = 20; nBins <= 80; ++nBins){
+            for(int nBins = 80; nBins <= 120; nBins += 5){
                 
 
-                TH1D* hSignal = loadInvMassHist(nBins, low, top, getCondition("nsigmaproton nsigmakaon") );  // automatically subtracts background if bcg tree is loaded
+                TH1D* hSignal = loadInvMassHist(nBins, low, top, getCondition(""), true );  // automatically subtracts background if bcg tree is loaded
             
-                FitJPsi *fit = new FitJPsi(hSignal, "cb poly1");
-                fit->setAlphaLoose(true);
-                fit->setNLoose(true);
+                FitJPsi *fit = new FitJPsi(hSignal, "cb continuum");
+                fit->setAlphaLoose(false);
+                fit->setNLoose(false);
                 fit->fitPeak();
                 int yield = fit->getYield();
                 fit->saveCanvas(outFile, Form("PeakFittingStudy_%d_%.1f_%.1f", nBins, low, top), dir);
@@ -664,8 +701,8 @@ void PlotAnaJPsi::peakFittingStudy(){
     }
 
 
-    drawAndFitHist(hN, "FittingStudy_n", minN, maxN );
-    drawAndFitHist(hAlpha, "FittingStudy_alpha", minAlpha, maxAlpha);    
+    //drawAndFitHist(hN, "FittingStudy_n", minN, maxN );
+    //drawAndFitHist(hAlpha, "FittingStudy_alpha", minAlpha, maxAlpha);    
     drawAndFitHist(hYield, "FittingStudy_rawYield", minYield, maxYield);
     
 }
@@ -724,26 +761,29 @@ void PlotAnaJPsi::drawAndFitHist(TH1D *h, TString outName, double min, double ma
 }
 
 
-void PlotAnaJPsi::plotRapidityDependence(int nRapBins){
+void PlotAnaJPsi::loadRapidityDependence(int nRapBins){
 
-    double lowRap = -1.0;
+    double lowRap = 0.0;
     double topRap = 1.0;
 
+
+    TGraphErrors *rapidityGraph = new TGraphErrors();
+    rapidityGraph->SetName("rapidityGraph; y_{J/#psi}; counts");
     for(int bin = 1; bin <= nRapBins; bin++){
 
-        double binLow = lowRap + (topRap - lowRap)/nRapBins * (bin - 1);
-        double binTop = lowRap + (topRap - lowRap)/nRapBins * bin;
+        double binLow = ((topRap - lowRap)/nRapBins) * (bin - 1) ;
+        double binTop = ((topRap - lowRap)/nRapBins) * bin;
 
-        TString condition = Form("pairRapidity > %f && pairRapidity < %f && ", binLow, binTop);
+        TString condition = Form("abs(pairRapidity) > %f && abs(pairRapidity) < %f && ", binLow, binTop);
 
-        TH1D* invMass = loadInvMassHist(40, 2.5, 3.5, condition + getCondition("") );  // automatically subtracts background if bcg tree is loaded
+        TH1D* invMass = loadInvMassHist(40, 2.5, 3.5, condition + getCondition(""), true );  // automatically subtracts background if bcg tree is loaded
         
         if(!invMass){
-            cout << "Could not load invariant mass histogram for rapidity bin " << bin << ". Returning." << endl;
+            cerr << "ERROR in PlotAnaJPsi::plotRapidityDependence: Could not load invariant mass histogram for rapidity bin " << bin << ". Returning." << endl;
             return;
         }
         
-        FitJPsi* fit = new FitJPsi(invMass, "cb Poly1");
+        FitJPsi* fit = new FitJPsi(invMass, "cb + poly2");
         fit->fitPeak();
 
         double yield = fit->getYield();
@@ -751,13 +791,13 @@ void PlotAnaJPsi::plotRapidityDependence(int nRapBins){
 
         TCanvas *fitCanvas = fit->getCanvas();
         if(!fitCanvas){
-            cout << "Could not get fit canvas for rapidity bin " << bin << ". Returning." << endl;
+            cerr << "ERROR in PlotAnaJPsi::plotRapidityDependence: Could not get fit canvas for rapidity bin " << bin << ". Returning." << endl;
             return;
         }
         fitCanvas->SetName(Form("fitJPsiCanvas_rapBin_%d", bin));
         fitCanvas->SetTitle("");
         DrawSTARpp510JPsi();
-        CreateText(Form("Rapidity J/#psi: [%.2f, %.2f]", binLow, binTop), 62,0.7,0.75,0.85,0.77);
+        CreateText(Form("Rapidity J/#psi: [%.1f, %.1f]", binLow, binTop), 62,0.7,0.75,0.85,0.77);
 
         outFile->cd(); // Explicitly set our file as current directory
         outFile->cd(nameOfAnaJPsiDir);
@@ -770,6 +810,162 @@ void PlotAnaJPsi::plotRapidityDependence(int nRapBins){
         mRapidityYields.push_back(yield);
         mRapidityYieldsErrors.push_back(yieldErr);
 
+
     }
+
     return;
+}
+
+
+void PlotAnaJPsi::createDependencePlot(TString option, TString outName){
+
+    if(DEBUGMODE) cout << "Creating dependence plot for option " << option << " ..." << endl;
+    
+
+    TH1* histSignal = nullptr;
+    TH1* histStarlight = nullptr;
+
+    TString invMassCond = TString::Format("invMass > %f && invMass < %f && ",getInvMassLimitLow(), getInvMassLimitHigh());  // JPsi mass window
+    TString starlightCond = "abs(etad1) < 0.9 && abs(etad2) < 0.9";  // starlight condition for both daughters within TPC acceptance
+    TString title = "";
+    if(option.Contains("rapidity") || option.Contains("y")){
+        tree->Draw("pairRapidity>>hist1(20, -1, 1)",invMassCond + getCondition());
+        histSignal = (TH1*)gPad->GetPrimitive("hist1");
+        bcgTree->Draw("pairRapidity>>hist2(20, -1, 1)",invMassCond + getCondition());
+        TH1* histBackground = (TH1*)gPad->GetPrimitive("hist2");
+
+        histSignal->Add(histBackground, -1);  // subtract background
+
+        starlightTree->Draw("rapVM>>hist3(20, -1, 1)", starlightCond);  // no condition for starlight
+        histStarlight = (TH1*)gPad->GetPrimitive("hist3");
+
+        title = ";y_{J/#psi} [-]; counts";
+
+    }else if(option.Contains("pT") || option.Contains("pt")){
+
+        tree->Draw("pt>>hist1(15, 0, 1.5)",invMassCond + getCondition());
+        histSignal = (TH1*)gPad->GetPrimitive("hist1");
+        bcgTree->Draw("pt>>hist2(15, 0, 1.5)",invMassCond + getCondition());
+        TH1* histBackground = (TH1*)gPad->GetPrimitive("hist2");
+
+        histSignal->Add(histBackground, -1);  // subtract background
+
+        starlightTree->Draw("ptVM>>hist3(15, 0, 1.5)", starlightCond);  // no condition for starlight
+        histStarlight = (TH1*)gPad->GetPrimitive("hist3");
+
+        title = ";p_{T}^{J/#psi} [GeV/c]; counts";
+
+    }else{
+        cerr << "ERROR in PlotAnaJPsi::createDependencePlot(): Unknown option " << option << ". Returning." << endl;
+        return; 
+    }
+
+    
+    histStarlight->Scale(1.0 * histSignal->GetEntries() / histStarlight->GetEntries() );  // scale starlight to data entries
+
+    CreateCanvas(&canvas, outName, 1200, 800);
+    SetGPad();
+
+    SetHistStyle(histSignal, kBlue, markerStyleTypical);
+    SetHistStyle(histStarlight, kRed, markerStyleTypical+1);
+    histSignal->SetTitle(title);
+    histSignal->SetName(outName);
+    histSignal->GetYaxis()->SetRangeUser(0.9, histSignal->GetMaximum() > histStarlight->GetMaximum() ? histSignal->GetMaximum()*1.2 : histStarlight->GetMaximum()*1.2 );
+    histSignal->Draw("EP");
+    histStarlight->Draw("same EP");
+    TH1* hS2 = (TH1*)histSignal->Clone("hS2");
+    TH1* hSL2 = (TH1*)histStarlight->Clone("hSL2");
+    SetHistStyle(hS2, kBlue, markerStyleTypical);
+    SetHistStyle(hSL2, kRed, markerStyleTypical+1);
+
+    hS2->Draw("same hist");
+    hSL2->Draw("same hist");
+
+    if(noRomanPots){
+        CreateText("No Roman Pots", 62,0.7,0.75,0.85,0.77);
+    }else{
+        CreateText("With Roman Pots", 62,0.7,0.75,0.85,0.77);
+    }
+
+
+    CreateLegend(&legend,0.7, 0.75, 0.85, 0.67);
+    legend->AddEntry(histSignal, "Data", "lep");
+    legend->AddEntry(histStarlight, "Starlight MC (scaled)", "lep");
+    legend->Draw("same");
+
+    DrawSTARpp510JPsi(0.77, 0.87, 0.9, 0.93);   
+
+    canvas->Update();
+    outFile->cd(nameOfAnaJPsiDir);
+    canvas->Write(outName);
+    canvas->Close();
+
+}
+
+
+void PlotAnaJPsi::pTMissingPlot(){
+
+    CreateCanvas(&canvas, "pTMissingPlot", 1200, 800);
+    SetGPad();
+
+    TString invMassCond = TString::Format("invMass > %f && invMass < %f && ",getInvMassLimitLow(), getInvMassLimitHigh());  // JPsi mass window
+
+    tree->Draw("pTMissing>>hist1(20, 0, 1.5)", invMassCond + getCondition());
+    TH1* histSignal = (TH1*)gPad->GetPrimitive("hist1");
+
+    bcgTree->Draw("pTMissing>>hist2(20, 0, 1.5)", invMassCond + getCondition());
+    TH1* histBackground = (TH1*)gPad->GetPrimitive("hist2");
+
+    histSignal->Add(histBackground, -1);  // subtract background
+
+    SetHistStyle(histSignal, kBlue, markerStyleTypical);
+    TH1* hS2 = (TH1*)histSignal->Clone("hS2");
+    SetHistStyle(hS2, kBlue, markerStyleTypical);
+    histSignal->SetTitle(";p_{T}^{missing} [GeV/c]; counts");
+    histSignal->SetName("pTMissingPlot");
+    histSignal->Draw("EP");
+    hS2->Draw("same hist");
+
+    DrawSTARpp510JPsi(0.77, 0.87, 0.9, 0.93);
+
+    canvas->Update();
+    outFile->cd(nameOfAnaJPsiDir);
+    canvas->Write("pTMissingPlot");
+    canvas->Close(); 
+
+}
+
+
+void PlotAnaJPsi::pTMissingCorrelationPlot(){
+
+    CreateCanvas(&canvas, "pTMissingCorrelationPlot", 1200, 800);
+    SetGPad();
+
+    TString invMassCond = TString::Format("invMass > %f && invMass < %f && ",getInvMassLimitLow(), getInvMassLimitHigh());  // JPsi mass window
+
+    tree->Draw("pt:pTMissing>>hist1(15, 0, 1.5, 15, 0, 1.5)", invMassCond + getCondition());
+    TH2* histSignal = (TH2*)gPad->GetPrimitive("hist1");
+
+    //bcgTree->Draw("pt:pTMissing>>hist2(15, 0, 1.5, 15, 0, 1.5)", invMassCond + getCondition());
+    //TH2* histBackground = (TH2*)gPad->GetPrimitive("hist2");
+
+    if(!histSignal || histSignal->GetEntries() == 0 ){
+        cerr << "ERROR in PlotAnaJPsi::pTMissingCorrelationPlot(): Could not get histograms from trees. Returning." << endl;
+        return;
+    }
+
+    //histSignal->Add(histBackground, -1);  // subtract background
+
+    histSignal->GetZaxis()->SetRangeUser(0.9, histSignal->GetMaximum()*1.1);
+    SetTH2Style(histSignal);
+    histSignal->SetTitle(";p^{J/#psi}_{T} [GeV/c]; p_{T}^{missing} [GeV/c]");
+    histSignal->SetName("pTMissingCorrelationPlot");
+    histSignal->Draw("COLZ");
+
+    DrawSTARpp510JPsi(0.77, 0.87, 0.9, 0.93);
+
+    canvas->Update();
+    outFile->cd(nameOfAnaJPsiDir);
+    canvas->Write("pTMissingCorrelationPlot");
+    canvas->Close();
 }

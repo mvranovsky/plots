@@ -10,16 +10,21 @@ void PlotGoodRun::Make() {
     createAverageTracksPlots();
 
     vector<int> probRetainEventList = getPREList();
-    //cout << "Size of Prob Retain event list in PlotGoodRun: " << probRetainEventList.size() << endl;
-
+    if(DEBUGMODE) cout << "Size of Prob Retain event list in PlotGoodRun: " << probRetainEventList.size() << endl;
 
     vector<int> badEtaPhi = loadBadEtaPhiRuns("badEtaPhiFile.txt");
 
+    vector<int> badRunsAll, badRunsRP;
     goodRunList.clear();
     rpGoodRunList.clear();
+    goodRunTrigger0.clear();
+    goodRunTrigger1.clear();
+    goodRunTrigger2.clear();
 
-    cout << "Starting with run loop in PlotGoodRun" << endl;
     setBranchAddresses();
+    Long64_t lostPREvents = 0;
+
+    if(DEBUGMODE) cout << "Starting with run loop in PlotGoodRun" << endl;
     for(int i = 0; i < tree->GetEntries(); i++){
 
         tree->GetEntry(i);
@@ -28,58 +33,112 @@ void PlotGoodRun::Make() {
             continue;
         }
 
-        if(nEventsJPsi < 0 || nEventsJPsi > 1e+9){
-            cout << "bad nEventsJPsi " << nEventsJPsi << " for run: " << mRunNumber << endl;
+        if(nEventsJPsi < 0 || nEventsJPsi > 1e+6){
+            if(DEBUGMODE) cout << "bad nEventsJPsi " << nEventsJPsi << " for run: " << mRunNumber << endl;
+            badRunsAll.push_back(mRunNumber);
+            continue;
         }
 
         hGoodRunListFlow->Fill(1);
+        hNEventsJPsiFlow->SetBinContent(1, hNEventsJPsiFlow->GetBinContent(1) + nEventsJPsi);
 
-        if( atLeast1JPsiTrigger == 0)  continue;
+        if(atLeast1JPsiTrigger == 0 && nEventsJPsi > 0){
+            if(DEBUGMODE) cout << "Inconsistent JPsi trigger(" << atLeast1JPsiTrigger << ") and nEventsJPsi (" <<  nEventsJPsi <<") for run: " << mRunNumber << endl;
+            badRunsAll.push_back(mRunNumber);
+            continue;
+        }
 
         hGoodRunListFlow->Fill(2);
+        hNEventsJPsiFlow->SetBinContent(2, hNEventsJPsiFlow->GetBinContent(2) + nEventsJPsi);
+
         
-        if(!inRangePhiBemc(bemcPhiAverage)) continue;
-        
+        if(!inRangePhiBemc(bemcPhiAverage)){
+            badRunsAll.push_back(mRunNumber);
+            continue;
+        }
+
         hGoodRunListFlow->Fill(3);
-        
-        if(!inRangeEtaBemc(bemcEtaAverage)) continue;
+        hNEventsJPsiFlow->SetBinContent(3, hNEventsJPsiFlow->GetBinContent(3) + nEventsJPsi);
+
+        if(!inRangeEtaBemc(bemcEtaAverage)){
+            badRunsAll.push_back(mRunNumber);
+            continue;
+        }
 
         //check if it is in badeta phi runs
         if(find(badEtaPhi.begin(), badEtaPhi.end(), mRunNumber) != badEtaPhi.end()){
+            badRunsAll.push_back(mRunNumber);
             continue;
         }
 
         hGoodRunListFlow->Fill(4);
+        hNEventsJPsiFlow->SetBinContent(4, hNEventsJPsiFlow->GetBinContent(4) + nEventsJPsi);
 
+        
         if(find(probRetainEventList.begin(), probRetainEventList.end(), mRunNumber) == probRetainEventList.end()){
+            if(DEBUGMODE) cout << "Run " << mRunNumber << " not in p_retain event list. Number of JPsi events: " << nEventsJPsi << endl;
+            lostPREvents +=nEventsJPsi;
+            badRunsAll.push_back(mRunNumber);
             continue;
         }
         
-        hGoodRunListFlow->Fill(5);
         
-        goodRunList.push_back(mRunNumber);    
+        hGoodRunListFlow->Fill(5);
+        hNEventsJPsiFlow->SetBinContent(5, hNEventsJPsiFlow->GetBinContent(5) + nEventsJPsi);
+        
+        goodRunList.push_back(mRunNumber);  
+        
+        if(nEventsJPsiTrigger0 > 0){
+            goodRunTrigger0.push_back(mRunNumber);
+        }
+        if(nEventsJPsiTrigger1 > 0){
+            goodRunTrigger1.push_back(mRunNumber);
+        }
+        if(nEventsJPsiTrigger2 > 0){
+            goodRunTrigger2.push_back(mRunNumber);
+        }
+
     
         if(RPsClose == 0 ){  
+            badRunsRP.push_back(mRunNumber);
             continue;   
         } 
         rpGoodRunList.push_back(mRunNumber);
 
         hGoodRunListFlow->Fill(6);
+        hNEventsJPsiFlow->SetBinContent(6, hNEventsJPsiFlow->GetBinContent(6) + nEventsJPsi);
     }
+    if(DEBUGMODE) cout << "Finished run loop in PlotGoodRun" << endl;
 
     cout << "Good run list without RPs size: " << goodRunList.size() << endl;
 
     cout << "Good run list with RPs size: " << rpGoodRunList.size() << endl;
 
-    
+    if(DEBUGMODE) cout << "Lost JPsi events due to p_retain cut: " << lostPREvents << endl;
+
+    if(DEBUGMODE) cout << "Creating good run list files..." << endl;
     createGoodRunList(goodRunList, "goodRunNoRP.list");
+
     createGoodRunList(rpGoodRunList, "goodRunWithRP.list");
 
+    createGoodRunList(goodRunTrigger0, "goodRunTrigger570209.list");
+    createGoodRunList(goodRunTrigger1, "goodRunTrigger570219.list");
+    createGoodRunList(goodRunTrigger2, "goodRunTrigger570229.list");
 
 
-    cout << "Corrected luminosity for analysis with RP: " << mProbRetainEvent->getLuminosity(rpGoodRunList, mProbRetainEvent->getA(), mProbRetainEvent->getB()) << " pb^-1" << endl;
-    cout << "Corrected luminosity for analysis without RP: " << mProbRetainEvent->getLuminosity(goodRunList, mProbRetainEvent->getA(), mProbRetainEvent->getB()) << " pb^-1" << endl;
+    cout << "------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << "Luminosity without the correction for analysis with RP: " << mProbRetainEvent->getLuminosity(rpGoodRunList, 1,0, 1,0) << " pb^-1" << endl;
+    cout << "Corrected luminosity for analysis with RP: " << mProbRetainEvent->getLuminosity(rpGoodRunList, mProbRetainEvent->getA(), mProbRetainEvent->getB(), 1,0) << " pb^-1" << endl;
+    cout << "Luminosity with the correction for analysis with RP corrected also to pile-up: " << mProbRetainEvent->getLuminosity(rpGoodRunList, mProbRetainEvent->getA(), mProbRetainEvent->getB(), mProbRetainEvent->getPileUpCorrectionA(), mProbRetainEvent->getPileUpCorrectionB()) << " pb^-1" << endl;
+    cout << "------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << "Luminosity without the correction for analysis without RP: " << mProbRetainEvent->getLuminosity(goodRunList, 1,0, 1,0) << " pb^-1" << endl;
+    cout << "Corrected luminosity for analysis without RP: " << mProbRetainEvent->getLuminosity(goodRunList, mProbRetainEvent->getA(), mProbRetainEvent->getB(), 1,0) << " pb^-1" << endl;
+    cout << "Corrected luminosity for analysis without RP corrected also to pile-up: " << mProbRetainEvent->getLuminosity(goodRunList, mProbRetainEvent->getA(), mProbRetainEvent->getB(), mProbRetainEvent->getPileUpCorrectionA(), mProbRetainEvent->getPileUpCorrectionB()) << " pb^-1" << endl;
+    cout << "------------------------------------------------------------------------------------------------------------------" << endl;
 
+    printBadRunsToFile(badRunsAll, "badRunsAll.list");
+
+    printBadRunsToFile(badRunsRP, "badRunsRP.list");
 
     outFile->cd();
 
@@ -87,6 +146,7 @@ void PlotGoodRun::Make() {
 
     //hGoodRunListFlow->Write("hGoodRunListFlow");
     TH1General("hGoodRunListFlow", hGoodRunListFlow);
+    TH1General("hNEventsJPsiFlow", hNEventsJPsiFlow);
 }
 
 void PlotGoodRun::Finish(){
@@ -94,8 +154,8 @@ void PlotGoodRun::Finish(){
     if(outFile) outFile->Close();
     if(histFile) histFile->Close();
 
-    cout << "All histograms successfully saved to canvases..." << endl;
-    cout << "The output file is saved: " << outputPosition << endl;
+    if(DEBUGMODE) cout << "All histograms successfully saved to canvases..." << endl;
+    if(DEBUGMODE)cout << "The output file is saved: " << outputPosition << endl;
 }
 
 void PlotGoodRun::Init(){
@@ -104,7 +164,7 @@ void PlotGoodRun::Init(){
     gStyle->SetOptTitle(0);
 
 	if(!outFile || outFile->IsZombie() ){
-		cerr << "Couldn't open output file. Leaving..." << endl;
+		cerr << "ERROR in PlotGoodRun::Init(): Couldn't open output file. Leaving..." << endl;
         return;
 	}
 
@@ -112,17 +172,22 @@ void PlotGoodRun::Init(){
     outFile->mkdir(nameOfAnaGoodRunDir);
     outFile->cd();
     
+    if(DEBUGMODE) cout << "Opening histogram file in PlotGoodRun::Init()..." << endl;
     histFile = shared_ptr<TFile>( new TFile("histFile.root", "read") );
     
     if(!histFile || histFile->IsZombie() || !histFile->IsOpen()){
-        cerr << "Could not get file with histograms. Leaving..." << endl;
+        cerr << "ERROR in PlotGoodRun::Init(): Could not get file with histograms. Leaving..." << endl;
         return;
     }
     
-	//load the tree chain from the input file
-	ConnectInputTree(inputPosition, nameOfAnaGoodRunTree, tree, bcgTree);
+    if(DEBUGMODE) cout << "Connecting input tree for good run..." << endl;
+    ConnectInputTree(inputPosition, nameOfAnaGoodRunTree, tree, bcgTree);
+    if(!tree){
+    	cerr << "ERROR in PlotGoodRun::Init(): Couldn't open tree with data. Returning." << endl;
+    	return;
+    }
+    if(DEBUGMODE) cout << "Successfully connected input tree for good run." << endl;
 
-    //ConnectInputTree(inputPosition,nameOfZBTree, ZBTree, bcgTree);
 
     hGoodRunListFlow = new TH1D("hGoodRunListFlow", "Good run list flow", 6, 1, 7);
     hGoodRunListFlow->GetXaxis()->SetBinLabel(1, "All");
@@ -132,31 +197,36 @@ void PlotGoodRun::Init(){
     hGoodRunListFlow->GetXaxis()->SetBinLabel(5, "p_{retain event}");
     hGoodRunListFlow->GetXaxis()->SetBinLabel(6, "RP in range");
 
-    
-    cout << "Finished PlotGoodRun::Init()..." << endl;
+    hNEventsJPsiFlow = new TH1D("hNEventsJPsiFlow", "NEvents JPsi flow", 6, 1, 7);
+    hNEventsJPsiFlow->GetXaxis()->SetBinLabel(1, "All");
+    hNEventsJPsiFlow->GetXaxis()->SetBinLabel(2, "J/#psi trigger");
+    hNEventsJPsiFlow->GetXaxis()->SetBinLabel(3, "<#phi_{BEMC}>");
+    hNEventsJPsiFlow->GetXaxis()->SetBinLabel(4, "<#eta_{BEMC}>");
+    hNEventsJPsiFlow->GetXaxis()->SetBinLabel(5, "p_{retain event}");
+    hNEventsJPsiFlow->GetXaxis()->SetBinLabel(6, "RP in range");
+
+    if(DEBUGMODE) cout << "Finished PlotGoodRun::Init()..." << endl;
 }
 void PlotGoodRun::setBranchAddresses(){
 
     if(!tree){
-        cerr << "Tree not loaded" << endl;
+        cerr << "ERROR in PlotGoodRun::setBranchAddresses(): Tree not loaded" << endl;
         return;
     }
+
     tree->SetBranchAddress("runNumber", &mRunNumber);
     tree->SetBranchAddress("AtLeast1JPsiTrigger", &atLeast1JPsiTrigger);
     tree->SetBranchAddress("RPsClose", &RPsClose);
     tree->SetBranchAddress("nEventsLumiFile", &nEventsLumiFile);
     tree->SetBranchAddress("nEventsJPsi", &nEventsJPsi);
+    tree->SetBranchAddress("nEventsJPsiTrigger0", &nEventsJPsiTrigger0);
+    tree->SetBranchAddress("nEventsJPsiTrigger1", &nEventsJPsiTrigger1);
+    tree->SetBranchAddress("nEventsJPsiTrigger2", &nEventsJPsiTrigger2);
     tree->SetBranchAddress("nEventsZBVetoAll", &nEventsZBVetoAll);
     tree->SetBranchAddress("nEventsZBVetoPassed", &nEventsZBVetoPassed);
-    tree->SetBranchAddress("nEventsTEAll", &nEventsTEAll);
-    tree->SetBranchAddress("nEventsTEPassed", &nEventsTEPassed);
     tree->SetBranchAddress("instLumi", &instLumi);
 
-    tree->SetBranchAddress("nTracksBEMC", &nTracksBEMC);
-    tree->SetBranchAddress("nClustersBEMC", &nClustersBEMC);
-    tree->SetBranchAddress("nTracksTPC", &nTracksTPC);
-    tree->SetBranchAddress("nTracksTOF", &nTracksTOF);
-    tree->SetBranchAddress("nVertices", &nVertices);
+
     tree->SetBranchAddress("tpcEtaAverage", &tpcEtaAverage);
     tree->SetBranchAddress("bemcEtaAverage", &bemcEtaAverage);
     tree->SetBranchAddress("tpcPhiAverage", &tpcPhiAverage);
@@ -164,19 +234,26 @@ void PlotGoodRun::setBranchAddresses(){
 }
 
 vector<int> PlotGoodRun::getPREList(){ // this function has to exist because i need class ProbRetainEvent closed, so getting entries from tree works as i want it to
+    
     // run over all runs and check if the probability of retaining event is in range
     mProbRetainEvent = new ProbRetainEvent(outFile, tree);
 
-    cout << "Running ProbRetainEvent" << endl;
-    mProbRetainEvent->Make();
+    if(DEBUGMODE) cout << "Running ProbRetainEvent" << endl;
+    mProbRetainEvent->Make("linear");
     vector<int> probRetainEventList = mProbRetainEvent->getGoodRunList();
 
     if(probRetainEventList.empty()){
-        cout << "No good runs found. Exiting..." << endl;
+        cerr << "ERROR in PlotGoodRun::getPREList(): No good runs found. Exiting..." << endl;
         return {};
     }
+    if(DEBUGMODE) cout << "Finished running ProbRetainEvent" << endl;
+
+    // create also plots for tof mult veto and bbc e/w veto
+    //mProbRetainEvent->plotTofMultVeto("linear");
+    mProbRetainEvent->plotBbcEVeto("linear");
+    mProbRetainEvent->plotBbcWVeto("linear");
+
     return probRetainEventList;
-    
 }
 
 
@@ -184,7 +261,7 @@ vector<int> PlotGoodRun::loadBadEtaPhiRuns(TString nameOfFile){
 
     ifstream file(nameOfFile);
     if(!file.is_open()){
-        cout << "No file with name " << nameOfFile << endl;
+        cerr << "ERROR in PlotGoodRun::loadBadEtaPhiRuns(): No file with name " << nameOfFile << endl;
         return {};
     }
 
@@ -206,70 +283,22 @@ vector<int> PlotGoodRun::loadBadEtaPhiRuns(TString nameOfFile){
 }
 
 
-/*
+void PlotGoodRun::printBadRunsToFile(vector<int> badRuns, TString outName){
 
-void PlotGoodRun::createAverageTrackHists(vector<pair<array<int, 2>, array<double, 10>>> runNumberMap){
-
-    double minimum = - 0.5;
-    double maximum = runNumberMap.size() - 0.5;
-    int nBins = runNumberMap.size();
-    
-    TH1* hBemcTracksAverage = new TH1D("hBemcTracksAverage", "Number of BEMC tracks per event", nBins, minimum, maximum);
-    hBemcTracksAverage->GetXaxis()->SetTitle("run");
-    hBemcTracksAverage->GetYaxis()->SetTitle("average number of BEMC tracks per event");
-    
-    TH1* hBemcClustersAverage = new TH1D("hBemcClustersAverage", "Number of BEMC clusters per event",nBins, minimum, maximum);
-    hBemcClustersAverage->GetXaxis()->SetTitle("run");
-    hBemcClustersAverage->GetYaxis()->SetTitle("average number of BEMC clusters per event");
-    
-    TH1* hTofTracksAverage = new TH1D("hTofTracksAverage", "Number of Tof tracks per event", nBins, minimum, maximum);
-    hTofTracksAverage->GetXaxis()->SetTitle("run");
-    hTofTracksAverage->GetYaxis()->SetTitle("average number of TOF tracks per event");
-
-    TH1* hTpcTracksAverage = new TH1D("hTpcTracksAverage", "Number of TPC tracks per event", nBins, minimum, maximum);
-    hTpcTracksAverage->GetXaxis()->SetTitle("run");
-    hTpcTracksAverage->GetYaxis()->SetTitle("average number of TPC tracks per event");
-    
-    TH1* hVerticesAverage = new TH1D("hVerticesAverage", "Number of Vertices per event", nBins, minimum, maximum);
-    hVerticesAverage->GetXaxis()->SetTitle("run");
-    hVerticesAverage->GetYaxis()->SetTitle("average number of Vertices per event");
-    
-    // loop over content in runNumberMap
-    int j = 1;
-    for(auto runNumber : runNumberMap){
-        // get the number of BEMC tracks per event
-        double nTracksTpc = runNumber.second[1];
-        double nTracksBemc = runNumber.second[2];
-        double nClustersBemc = runNumber.second[3];
-        double nTracksTof = runNumber.second[4];
-        double nVertices = runNumber.second[5];
-        //int idx = runNumber.first[0];
-
-        if(nTracksTpc < 0 || nTracksBemc < 0 || nClustersBemc < 0 || nTracksTof < 0 || nVertices < 0){
-            cout << "Negative values in line: " << runNumber.first[1] << endl;
-            continue;
-        }
-        hBemcTracksAverage->SetBinContent(j, nTracksBemc);
-        hTpcTracksAverage->SetBinContent(j, nTracksTpc);
-        hBemcClustersAverage->SetBinContent(j, nClustersBemc);
-        hTofTracksAverage->SetBinContent(j, nTracksTof);
-        hVerticesAverage->SetBinContent(j, nVertices);
-        j++;   
-
+    ofstream outFile(outName);
+    if(!outFile.is_open()){
+        cerr << "ERROR in PlotGoodRun::printBadRunsToFile(): Could not open output file to print bad runs. Leaving..." << endl;
+        return;
     }
-    
 
-    outFile->cd();
-    
-    TH1General("hBemcTracksAverage", hBemcTracksAverage, nameOfAnaGoodRunDir);
-    TH1General("hBemcClustersAverage", hBemcClustersAverage, nameOfAnaGoodRunDir);
-    TH1General("hTofTracksAverage", hTofTracksAverage, nameOfAnaGoodRunDir);
-    TH1General("hTpcTracksAverage", hTpcTracksAverage, nameOfAnaGoodRunDir);
-    TH1General("hVerticesAverage", hVerticesAverage, nameOfAnaGoodRunDir);
-    
-    
+    for(auto run : badRuns){
+        outFile << run << endl;
+    }
+
+    outFile.close();
 }
-*/
+
+
 
 void PlotGoodRun::createGoodRunList(vector<int> goodRunList, TString outName){
 
@@ -277,7 +306,7 @@ void PlotGoodRun::createGoodRunList(vector<int> goodRunList, TString outName){
     TString allRuns = "/star/u/mvranovsk/star-upcDst/work/lists/fullRun17.list";
     ifstream runNumbersFile(allRuns);
     if(!runNumbersFile.is_open()){
-        cerr << "Could not open file with run numbers. Leaving..." << endl;
+        cerr << "ERROR in PlotGoodRun::createGoodRunList(): Could not open file with run numbers. Leaving..." << endl;
         return;
     }
 
@@ -298,9 +327,6 @@ void PlotGoodRun::createGoodRunList(vector<int> goodRunList, TString outName){
     }
     goodRunFile.close();
     runNumbersFile.close();
-    
-    cout << "Finished creating fast good run list..." << endl;
-
     
 }
 
@@ -377,8 +403,6 @@ pair<double, double> PlotGoodRun::FitEtaDistributions(TH1D* hist, int SWITCH){
     c->Write(name[SWITCH-1]);
     
     return make_pair(gaus->GetParameter(1), gaus->GetParameter(2));
-
-    
 }
 
 
@@ -417,21 +441,21 @@ void PlotGoodRun::createAverageTracksPlots(){
     if(hEtaBemc->GetEntries() > 0 ){
         bemcFitPars = FitEtaDistributions(hEtaBemc, 2);
     }else{
-        cout << "Empty hEtaBemc histogram" << endl;
+        cerr << "ERROR in PlotGoodRun::createAverageTracksPlots(): Empty hEtaBemc histogram" << endl;
     }
 
     tpcFitPars = make_pair(0,0);
     if(hEtaTpc->GetEntries() > 0){
         tpcFitPars = FitEtaDistributions(hEtaTpc, 1);
     }else{
-        cout << "Empty hEtaTpc histogram" << endl;
+        cerr << "ERROR in PlotGoodRun::createAverageTracksPlots(): Empty hEtaTpc histogram" << endl;
     }
 
     bemcPhiFitPars = make_pair(0,0);
     if(hPhiBemc->GetEntries() >0){
         bemcPhiFitPars = FitEtaDistributions(hPhiBemc, 3);
     }else{
-        cout << "Empty hPhiBemc histogram" << endl;
+        cerr << "ERROR in PlotGoodRun::createAverageTracksPlots(): Empty hPhiBemc histogram" << endl;
     }
     
 }
@@ -452,4 +476,33 @@ bool PlotGoodRun::inRangeEtaBemc(double average){
     }else{
         return true;
     }
+}
+
+// functions below are mainly for running from CrossSectionMaker
+
+void PlotGoodRun::loadGoodRunList(TString fileName, TString option){
+    
+    ifstream file(fileName);
+    if(!file.is_open()){
+        
+        cerr << "ERROR in PlotGoodRun::loadGoodRunList(): Could not open good run list file. Leaving..." << endl;
+        return;
+    }
+
+    string line;
+    goodRunList.clear();
+    rpGoodRunList.clear();
+    while(getline(file, line)){
+        if(line.empty())  continue;
+
+        int runNumber = stoi(line.substr(line.find_last_of("/")+1, line.find_last_of(".") - line.find_last_of("/") - 1));
+        goodRunList.push_back(runNumber);
+        rpGoodRunList.push_back(runNumber);
+    }
+
+    if(DEBUGMODE) cout << "Initializing ProbRetainEvent with custom good run list..." << endl;
+    mProbRetainEvent = new ProbRetainEvent(outFile, tree);
+    if(DEBUGMODE) cout << "Running ProbRetainEvent with custom good run list..." << endl;
+    mProbRetainEvent->runCustomList(goodRunList, option);
+    
 }

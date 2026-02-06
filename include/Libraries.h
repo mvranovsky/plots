@@ -35,6 +35,7 @@
 #include "THashList.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "TEllipse.h"
 #include "TChain.h"
 #include "TH1D.h" 
 #include "TROOT.h"

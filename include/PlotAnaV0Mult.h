@@ -4,7 +4,7 @@
 
 #include "Util.h"
 #include "Plot.h"
-#include "../../star-upcDst/work/include/RunDef.h"
+#include "Config.h"
 
 
 using namespace std;

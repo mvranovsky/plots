@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 3.20)
 project (upc-reader)
 
 #sources for LIB_READER
@@ -34,16 +34,19 @@ set (RUN_DEF /star/u/mvranovsk/star-upcDst/work/include/)
 
 #general compiler options
 set (CMAKE_CXX_COMPILER /usr/bin/g++)
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
+
 #option -Wl,--no-as-needed is necessary only with root5
 set (CMAKE_CXX_FLAGS "-Wall -g -Wl,--no-as-needed")
 include_directories (include ${UPC_INC})
 include_directories (include ${RUN_DEF})
 
-
+set (ROOT630 /star/u/mvranovsk/root630/bin/root-config)
 
 #compiler flags
-execute_process(COMMAND root-config --cflags OUTPUT_VARIABLE ROOT_FLAGS_CMD)
+execute_process(COMMAND ${ROOT630} --cflags OUTPUT_VARIABLE ROOT_FLAGS_CMD)
 string(REPLACE "\n" "" ROOT_FLAGS "${ROOT_FLAGS_CMD}")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_FLAGS}")
 
@@ -52,7 +55,7 @@ set(ROOT_DEPS Core EG Hist Physics RIO Tree MathCore RooFit RooFitCore)
 
 
 #include dir
-execute_process(COMMAND root-config --libdir OUTPUT_VARIABLE ROOT_LIBDIR_CMD)
+execute_process(COMMAND ${ROOT630} --libdir OUTPUT_VARIABLE ROOT_LIBDIR_CMD)
 string(REPLACE "\n" "" ROOT_LIBDIR "${ROOT_LIBDIR_CMD}")
 link_directories (${ROOT_LIBDIR})
 

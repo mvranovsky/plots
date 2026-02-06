@@ -5,9 +5,23 @@
 #include <memory>
 #include "RooGenericPdf.h"
 #include "RooExponential.h"
+#include "TVectorD.h"
+#include "RooFormulaVar.h"
+#include "Config.h"
+
 
 using namespace std;
 using namespace RooFit;
+
+// have to do this, because we are in ROOT 5.34 and setCovarianceMatrix is protected
+class RooFitResultPublic : public RooFitResult {
+public:
+    using RooFitResult::setCovarianceMatrix;
+
+
+    RooFitResultPublic(const char* name, const char* title)
+        : RooFitResult(name, title) {}
+};
 
 
 class FitJPsi {
@@ -27,16 +41,16 @@ class FitJPsi {
 
         RooAddPdf* buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2s);
 
-        double getCorrectedYield(TH1D *spectrum, TGraphAsymmErrors* graph, double averageCorrection);
-        double getCorrectedYieldErrTop() {return correctedYieldErrTop; }
-        double getCorrectedYieldErrLow() {return correctedYieldErrLow; }
-
         void setAlphaLoose(bool value) { mAlphaLoose = value; }
         void setNLoose(bool value) { mNLoose = value; }
         bool isAlphaLoose() const { return mAlphaLoose; }
         bool isNLoose() const { return mNLoose; }
 
-        TCanvas* getCanvas() const { return c; }
+        bool isEmbedding() {return mIsEmbedding; }
+        void setEmbeddingDescription(TString desc) { mEmbeddingDescription = desc; }
+        void setIsEmbedding(bool value) { mIsEmbedding = value; }
+
+        TCanvas* getCanvas() const { c->Update(); return c; }
         void saveCanvas(TFile *&file, TString name = "", TString dir = "");
         void saveCanvas(shared_ptr<TFile> &file, TString name = "", TString dir = "");
         RooFitResult* getFitResult() const { return fitResult; }
@@ -56,13 +70,11 @@ class FitJPsi {
         double getChiSquareNDF() const { return (frame->chiSquare("model", "data")/NDF); }
 
         // variables from JPsi fit integration
-        double getYield() const { if(cb || gauss) return netYield; else return -999; }
-        double getErrYield() const { if(cb || gauss) return errNetYield; else return -999; }
-        double getYieldSignal() const { if(cb || gauss) return yieldSignal; else return -999; }
-        double getYieldBackground() const { if(cb || gauss) return yieldBackground; else return -999; }
-        double getErrSignal() const { if(cb || gauss) return errSignal; else return -999; }
+        double getYield() const { if(cb || gauss) return netYield; else return -999; }  // extracted yield
+        double getErrYield() const { if(cb || gauss) return errNetYield; else return -999; } // error of the extracted yield
+        double getYieldBackground() const { if(cb || gauss) return yieldBackground; else return -999; } // yield of background in the range (mu - 4sigma, mu + 3sigma)
         double getErrBackground() const { if(cb || gauss) return errBackground; else return -999; }
-        double getSOverB() const { if(cb || gauss) return sOverB; else return -999; }
+        double getSOverB() const { if(cb || gauss) return sOverB; else return -999; }  // ratio of signal yield over background in the range (mu - 4sigma, mu + 3sigma)
         double getErrSOverB() const { if(cb || gauss) return errSOverB; else return -999; }
 
         // variables from psi(2S) fit
@@ -78,7 +90,15 @@ class FitJPsi {
         void setFitRangeHigh(double val) { fitRangeHigh = val; }
 
         // for fitting additional function on the canvas
-        void addContinuumFunction(double c_1, double c_2, double c_3);  // for comparison between embedding and data, call only after fitPeak()
+        void showAdditionalContinuumFunction(bool value) { showAdditionalContinuum = value; }
+        void addContinuumFunction(double c_1, double c_2, double c_3, RooFitResultPublic *&fitResCont);  // for comparison between embedding and data, call only after fitPeak()
+        void setVisualizeError(bool value){ visualizeError = value; }
+        void saveRooFitResult(TString filename);
+        void loadRooFitResult(TString filename);
+
+        // for plotting additional CB peak
+        void showDataPeak(double mean = 3.086, double sigma = 0.051) {mShowDataPeak = true; mDataMean = mean; mDataSigma = sigma; }
+        void loadDataPeak(double mean, double sigma);
 
 
         void setLegendPosition(double x1, double y1, double x2, double y2){
@@ -87,6 +107,8 @@ class FitJPsi {
             legPosX2 = x2;
             legPosY2 = y2;
         }
+
+        void printCovarianceMatrix();
 
     private:
 
@@ -115,6 +137,17 @@ class FitJPsi {
 
         RooRealVar *c1, *c2, *c3, *c4, *c5;
 
+        //variables to show additional peak from data
+        double mDataMean = 3.086;
+        double mDataSigma = 0.051;
+        bool mShowDataPeak = false;
+        RooRealVar *datamean, *datasigma, *dataalpha, *datan;
+        RooCBShape *datacb;
+        RooAddPdf *datamodel;
+
+        bool mIsEmbedding = false;
+        TString mEmbeddingDescription = "";
+
         RooRealVar *mean2S, *sigma2S, *cbalpha2S, *cbn2S;
         RooCBShape *cb2S;
         RooGaussian *gauss2S;
@@ -124,22 +157,21 @@ class FitJPsi {
         // variables to define whether to fit crystal ball with set n, alpha or that they are free
         bool mAlphaLoose = false;
         bool mNLoose = false;
+        bool visualizeError = false;
+        bool showAdditionalContinuum = false;
 
         double fitRangeLow, fitRangeHigh;
 
 
         bool fitBcg = false;
+        bool fitSignal = false, fitSignal2S = false;
+        
         // integration variables
         double netYield = 0, errNetYield = 0;
         double yieldSignal, yieldBackground;
         double errSignal;
         double errBackground = 0.0;
         double sOverB, errSOverB;
-
-        // yield correction
-        double correctedYield = 0;
-        double correctedYieldErrTop = 0;
-        double correctedYieldErrLow = 0;
 
         double legPosX1 = 0.2;
         double legPosY1 = 0.68;

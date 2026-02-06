@@ -3,7 +3,7 @@
 
 #include "Util.h"
 #include "Plot.h"
-#include "/star/u/mvranovsk/star-upcDst/work/include/RunDef.h"
+#include "Config.h"
 #include "FitJPsi.h"
 
 using namespace RooFit;
@@ -16,26 +16,36 @@ struct binning {
 	double topLim;
 };
 
+struct Value {
+    double val;
+    double errTop;
+    double errLow;
+};
+
 class PlotEmbeddingJPsi : public Plot {
 	public:
 		//accessible from outside the class
 		PlotEmbeddingJPsi(const string mInputList, const char* filePath);
 		PlotEmbeddingJPsi(const string mInputList, shared_ptr<TFile> file);
       	~PlotEmbeddingJPsi(){};
+
+		Value fitPeakJPsi(TH1D* invMass = nullptr);
+		void fitContinuum();
+	
       
       	//overrides the original Make() from class Plot
       	void Make() override;
       	void Init() override;
 		void Finish() override;
 
-
+		void createBemcEfficiencyPlots();
 		bool runStudy(int VAR, TString condition);
 		void runSysStudy();
 		void peakFittingStudy(); // function where i will be changing binning of the invMass histogram and see how it affects the fit results
 		void plotContinuum(int nBins, double low, double top);
 
 		double getEfficiency(int VARIABLE, int VARIATION) const {
-			return (yieldResults.at(mUtil->nameOfVariable(VARIABLE))[VARIATION]/starlightTree->GetEntries());
+			return (1.0*yieldResults.at(mUtil->nameOfVariable(VARIABLE))[VARIATION]/mGoodStarlightEntries);
 		}
 
 		double getEfficiencyFinal(){ return mEfficiencyFinal; }
@@ -43,30 +53,28 @@ class PlotEmbeddingJPsi : public Plot {
 		TGraphAsymmErrors* reconstructionEfficiency(int SWITCH, TString nameOfOutput = "", bool plotFitFunc = false, bool sumLastBins = false);  // 1 == pair rapidity, 2 == daughter eta, 3 == daughter phi, 4 == pT of JPsi, 5 == pT of daughters
 
 		TGraphAsymmErrors* plotEfficiency(vector<TH1D*> h1,vector<TH1D*> h2, TString nameOfOutput, vector<double> range , TString xAxisDescription,TString yAxisDescription = "reconstruction efficiency", TString dir = "recoEffPlots" , bool plotFitFunc = false, bool sumLastBins = false); // plots efficiency graph from two histograms{
+		TGraphAsymmErrors* plotEfficiency(TGraphAsymmErrors* g1, TGraphAsymmErrors* g2, TString nameOfOutput, vector<double> range, TString xAxisDescription,TString yAxisDescription,  TString dir = "recoEffPlots" , bool plotFitFunc = false, bool sumLastBins = false);
 		TH1D* scanDir(TDirectory *&dir, TString nameOfHist);
+		bool isDir(TString dirPath);
 
 		void changeBinning(int SWITCH, int nBins, double low, double top);
 		bool isJPsiEmbedding(TH1D* h);
 		bool isRunSysStudy();
 
-		TTree *starlightTree;
     private:
     	//store variables, which can be accessed only from within this class
 		void controlPlotsComparison(bool justJPsi);
 		bool plot2Dists(TH1 *hData, TH1* hEmb, TString outName);
 
 
-		void  saveSysStudyYieldsHists();
 		Double_t lowLimInvMass = 0.0, topLimInvMass = 7.0;
 
 		TString bemcEffDir = "BemcEffPlots";
 
 
-		shared_ptr<TFile> starlightFile;
 
 		Util *mUtil;
-		// variables for sys study
-		TH1 *hSysStudyLoose, *hSysStudyTight;
+
 
 		double peakFittingMean = 0.0;
 		double peakFittingSigma = 0.0;
@@ -75,6 +83,7 @@ class PlotEmbeddingJPsi : public Plot {
 
 		double mEfficiencyFinal;
 		double mEfficiencyErrFinal;
+		int mGoodStarlightEntries;
 
 		map<TString, vector<int>> yieldResults;
 		int nBins = 40; // number of bins for invariant mass histogram
