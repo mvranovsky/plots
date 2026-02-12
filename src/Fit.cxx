@@ -5,6 +5,10 @@ Fit::Fit(TH1D *&h,TString b){
    hist = (TH1D*)h->Clone("hSignal");
    bcg = b;
 
+   // setup the drawing style
+   gStyle->SetOptStat(0);
+   gStyle->SetOptTitle(0);
+
    fitRangeLow = hist->GetXaxis()->GetXmin();
    fitRangeHigh = hist->GetXaxis()->GetXmax();
 
@@ -20,7 +24,7 @@ Fit::Fit(TH1D *&h,TString b){
 void Fit::fitPeak() {
 
    // create a canvas that will hold both fits
-   c = new TCanvas("peakFit", "Fit Result", 1200, 800); 
+   c = new TCanvas("peakFit", "", 1200, 800); 
 
    gPad->SetLeftMargin(0.12);
    gPad->SetRightMargin(0.03);
@@ -37,7 +41,7 @@ void Fit::fitPeak() {
    }
 
    // Set axis title
-   hist->GetXaxis()->SetTitle("m [GeV]");
+   hist->GetXaxis()->SetTitle("m [GeV/c^{2}]");
    hist->SetTitle("");
 
 
@@ -55,7 +59,6 @@ void Fit::fitPeak() {
 
    // Define the components of the model based on the chosen background function
    model = buildModel();
-
 
    // Check if model was created successfully before fitting
    if (!model) {
@@ -160,8 +163,8 @@ RooAddPdf* Fit::buildModel(){
    // ----------------------------------------------------------------------------------------------
    if(bcg.Contains("cb") || bcg.Contains("CB") || bcg.Contains("CrystalBall") || bcg.Contains("crystalball") ){
       // Define signal model (Crystal Ball)
-      cbmean   = new RooRealVar("mean", "mean", 3.0908, 2.8, 3.2);
-      cbsigma  = new RooRealVar("sigma", "sigma", 0.050, 0.0, 0.0595);
+      cbmean   = new RooRealVar("mean", "mean", mMeanPar, 1.005, 1.05);
+      cbsigma  = new RooRealVar("sigma", "sigma", mSigmaPar, 0.00001, 0.5);
 
       if(mAlphaLoose){  // for fitting alpha
          cout << "Setting alpha loose for Crystal Ball fit." << endl;
@@ -180,40 +183,33 @@ RooAddPdf* Fit::buildModel(){
 
       cb = new RooCBShape("signal1S", "cb", *x, *cbmean, *cbsigma, *cbalpha, *cbn);
       models.push_back(cb);
-      modelNames.push_back("Crystal Ball (J/#psi)");
+      modelNames.push_back("Crystal Ball");
       fitSignal = true;
    }else if(bcg.Contains("gauss") || bcg.Contains("Gauss") || bcg.Contains("Gaussian") || bcg.Contains("gaussian")){
       // Define signal model (Gaussian)
-      cbmean   = new RooRealVar("mean", "mean", mMeanPar, 2.8, 3.2);
-      cbsigma  = new RooRealVar("sigma", "sigma", mSigmaPar, 0.0, 0.065);
+      cbmean   = new RooRealVar("mean", "mean", mMeanPar, 1.0, 1.05);
+      cbsigma  = new RooRealVar("sigma", "sigma", mSigmaPar, 0.00001, 0.5);
       gauss = new RooGaussian("signal1S", "gauss", *x, *cbmean, *cbsigma);
       models.push_back(gauss);
-      modelNames.push_back("Gauss (J/#psi)");
+      modelNames.push_back("Gauss");
       fitSignal = true;
    }else{ modelNames.push_back(""); }
    
    // ----------------------------------------------------------------------------------------------
-   if (bcg.Contains("poly0") || bcg.Contains("Poly0")) {
-      a0 = new RooRealVar("a0", "a0", mPolynomialPars[0], -10, 200);
-      // include observable x in the variable list so expression 'a0' resolves in RooGenericPdf
-      bkg = new RooGenericPdf("bkg", "bkg", "a0", RooArgList(*a0));
-      models.push_back(bkg);
-      modelNames.push_back("Polynomial 0");
-      fitBcg = true;
-   }else if (bcg.Contains("poly1") || bcg.Contains("Poly1"))  {
-      a0 = new RooRealVar("a0", "a0", mPolynomialPars[0], -20, 200);
-      a1 = new RooRealVar("a1", "a1", mPolynomialPars[1], -20, 20);
+   if (bcg.Contains("poly1") || bcg.Contains("Poly1"))  {
+      a1 = new RooRealVar("a1", "a1", mPolynomialPars[1], -20, 1000);
       // include observable x in variable list so 'x' is recognized
-      bkg = new RooGenericPdf("bkg", "bkg", "a0 + a1*x", RooArgList(*x, *a0, *a1));
+      bkg = new RooPolynomial("bkg", "bkg", *x, RooArgList(*a1));
+
       models.push_back(bkg);
       modelNames.push_back("Polynomial 1");
       fitBcg = true;
    }else if (bcg.Contains("poly2") || bcg.Contains("Poly2"))  {
-      a0 = new RooRealVar("a0", "a0", mPolynomialPars[0], -20, 20);
-      a1 = new RooRealVar("a1", "a1", mPolynomialPars[1], -20, 20);
-      a2 = new RooRealVar("a2", "a2", mPolynomialPars[2], -20, 20);
+      a1 = new RooRealVar("a1", "a1", mPolynomialPars[1], -20, 1000);
+      a2 = new RooRealVar("a2", "a2", mPolynomialPars[2], -20, 1000);
       // include observable x so polynomial terms using x are valid
-      bkg = new RooGenericPdf("bkg", "bkg", "a0 + a1*x + a2*x^2", RooArgList(*x, *a0, *a1, *a2));
+      bkg = new RooPolynomial("bkg", "bkg", *x, RooArgList(*a1, *a2));
+
       models.push_back(bkg);
       modelNames.push_back("Polynomial 2");
       fitBcg = true;
@@ -229,14 +225,14 @@ RooAddPdf* Fit::buildModel(){
    RooAddPdf* mod;
    // Combine signal and background into model
    if (fitSignal && fitBcg) {
-      nsig = new RooRealVar("nsig", "signal events", 400, 0, 20000);
-      nbkg = new RooRealVar("nbkg", "background events", 70, 0, 1000000);
+      nsig = new RooRealVar("nsig", "signal events", 40000, 0, 2000000);
+      nbkg = new RooRealVar("nbkg", "background events", 70000, 0, 10000000);
       mod = new RooAddPdf("model", "model", RooArgList(*models[0], *models[1]), RooArgList(*nsig, *nbkg));
    } else if(fitSignal){
-      nsig = new RooRealVar("nsig", "signal events", 1000, 0, 15000);
+      nsig = new RooRealVar("nsig", "signal events", 1000, 0, 1500000);
       mod = new RooAddPdf("model", "model", RooArgList(*models[0]), RooArgList(*nsig));
    }else if(fitBcg) {   
-      nbkg = new RooRealVar("nbkg", "background events", 10, 0, 15000);
+      nbkg = new RooRealVar("nbkg", "background events", 10, 0, 1500000);
       mod = new RooAddPdf("model", "model", RooArgList(*models[0]), RooArgList(*nbkg));
    }else {
       cerr << "ERROR: Fit::buildModel - No valid model components selected. Please choose at least one signal or background model." << endl;
@@ -257,7 +253,12 @@ void Fit::integrate(TString bcg){
    if(DEBUGMODE) cout << "Integration range: " << low << " to " << high << endl;
 
    // Calculate fractions inside the range for signal and background PDFs
-   RooAbsReal* intSignal = cb->createIntegral(*x, NormSet(*x), RooFit::Range("signalRange"));
+   RooAbsReal* intSignal;
+   if(cb) {
+      intSignal = cb->createIntegral(*x, NormSet(*x), RooFit::Range("signalRange"));
+   }else{
+      intSignal = gauss->createIntegral(*x, NormSet(*x), RooFit::Range("signalRange"));
+   }
    double fracBackground = 0.0;
    RooAbsReal* intBackground = nullptr;
    if(fitBcg){

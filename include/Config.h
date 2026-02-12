@@ -15,7 +15,7 @@ const TString nameOfTree = "T";
 
 // description shown in top right corner of every plot
 //const TString plotDescription = "STAR Internal";
-const TString plotDescription = "THIS THESIS";
+const TString plotDescription = "STAR Workshop";
 
 // process which i am studying (will be shown below description)
 const TString process = "Au + Au #rightarrow #phi (KK)";

@@ -39,230 +39,55 @@ void Plot::CreateCanvas(TCanvas **canvas, TString canvasName, int canvasWidth, i
    gStyle->SetPalette(55);
 }
 
-/*
-void Plot::SetTH1Style(TH1*& hist, Int_t color, Int_t markStyle)
-{
-   hist->GetYaxis()->SetTitle(yAxisTitle);
-   hist->SetStats(false);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetLabelFont(textFont);
-   hist->GetYaxis()->SetLabelFont(textFont);
-   hist->GetXaxis()->SetLabelSize(labelSize);
-   hist->GetYaxis()->SetLabelSize(labelSize);
-   hist->GetXaxis()->SetTitleSize(labelSize);
-   hist->GetYaxis()->SetTitleSize(labelSize);
-   hist->GetXaxis()->SetTitleOffset(1.);
-   hist->GetYaxis()->SetTitleOffset(1.4);
-   //hist->GetYaxis()->SetRangeUser(0, 0.4); 
-   hist->SetLineColor(color);
-   hist->SetLineStyle(1);
-   hist->SetLineWidth(1);  
-   hist->SetMarkerSize(2);
-   hist->SetMarkerColor(color);
-   hist->SetMarkerStyle(markerStyle);
-}//SetTH1Style
 
 
-void Plot::SetTH1Style(TH1D*& hist, Int_t color, Int_t markStyle)
-{
-   hist->GetYaxis()->SetTitle(yAxisTitle);
-   hist->SetStats(false);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetLabelFont(textFont);
-   hist->GetYaxis()->SetLabelFont(textFont);
-   hist->GetXaxis()->SetLabelSize(labelSize);
-   hist->GetYaxis()->SetLabelSize(labelSize);
-   hist->GetXaxis()->SetTitleSize(labelSize);
-   hist->GetYaxis()->SetTitleSize(labelSize);
-   hist->GetXaxis()->SetTitleOffset(1.);
-   hist->GetYaxis()->SetTitleOffset(1.4);
-   //hist->GetYaxis()->SetRangeUser(0, 0.4); 
-   hist->SetLineColor(color);
-   hist->SetLineStyle(1);
-   hist->SetLineWidth(1);  
-   hist->SetMarkerSize(2);
-   hist->SetMarkerColor(color);
-   hist->SetMarkerStyle(markerStyle);
-}//SetTH1Style
+ void Plot::TH2General(TH2*& hist, TString nameOfHist , TString dir){
+   TCanvas* c = nullptr;
+   CreateCanvas(&c, nameOfHist, widthTypical, heightTypical );
+   c->Clear();
+   SetGPad(false,0.12, 0.16,0.11, 0.06 );
+   if (!hist){
+      cerr << "ERROR in Plot::TH2General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
+      return;
+   }
+   SetTH2Style(hist);
+   hist->Draw();
+   DrawSTARTag();
+   c->Update();
+   outFile->cd();
+   if(dir != ""){
+      outFile->cd(dir);
+   }
+   c->Write();
+   c->Close();
+   c->Clear();
+   delete c;
+}
 
-void Plot::SetTH1Style(TH1F*& hist, Int_t color, Int_t markStyle)
-{
-   hist->GetYaxis()->SetTitle(yAxisTitle);
-   hist->SetStats(false);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetLabelFont(textFont);
-   hist->GetYaxis()->SetLabelFont(textFont);
-   hist->GetXaxis()->SetLabelSize(labelSize);
-   hist->GetYaxis()->SetLabelSize(labelSize);
-   hist->GetXaxis()->SetTitleSize(labelSize);
-   hist->GetYaxis()->SetTitleSize(labelSize);
-   hist->GetXaxis()->SetTitleOffset(1.);
-   hist->GetYaxis()->SetTitleOffset(1.4);
-   //hist->GetYaxis()->SetRangeUser(0, 0.4); 
-   hist->SetLineColor(color);
-   hist->SetLineStyle(1);
-   hist->SetLineWidth(1);  
-   hist->SetMarkerSize(2);
-   hist->SetMarkerColor(color);
-   hist->SetMarkerStyle(markerStyle);
-}//SetTH1Style
-
-void Plot::SetTH1Style(TH1I*& hist, Int_t color, Int_t markStyle)
-{
-   hist->GetYaxis()->SetTitle(yAxisTitle);
-   hist->SetStats(false);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetLabelFont(textFont);
-   hist->GetYaxis()->SetLabelFont(textFont);
-   hist->GetXaxis()->SetLabelSize(labelSize);
-   hist->GetYaxis()->SetLabelSize(labelSize);
-   hist->GetXaxis()->SetTitleSize(labelSize);
-   hist->GetYaxis()->SetTitleSize(labelSize);
-   hist->GetXaxis()->SetTitleOffset(1.);
-   hist->GetYaxis()->SetTitleOffset(1.4);
-   //hist->GetYaxis()->SetRangeUser(0, 0.4); 
-   hist->SetLineColor(color);
-   hist->SetLineStyle(1);
-   hist->SetLineWidth(1);  
-   hist->SetMarkerSize(2);
-   hist->SetMarkerColor(color);
-   hist->SetMarkerStyle(markerStyle);
-}//SetTH1Style
-*/
-void Plot::SetTH2Style(TH2*& hist)
+void Plot::TH1General(TH1*& hist,TString nameOfHist,TString dir )
 {
 
-// Define color gradient (blue → green → yellow)
-   const Int_t NRGBs = 3;
-   const Int_t NCont = 255;
-   Double_t stops[NRGBs]  = { 0.00, 0.50, 1.00 };
-   Double_t red[NRGBs]    = { 0.00, 0.00, 1.00 };
-   Double_t green[NRGBs]  = { 0.00, 1.00, 1.00 };
-   Double_t blue[NRGBs]   = { 1.00, 1.00, 0.00 };
-
-   TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
-   gStyle->SetNumberContours(NCont);
-
-   hist->SetStats(false);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetYaxis()->SetTitleFont(textFont);
-   hist->GetZaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetLabelFont(textFont);
-   hist->GetYaxis()->SetLabelFont(textFont);
-   hist->GetZaxis()->SetLabelFont(textFont);
-   hist->GetXaxis()->SetLabelSize(labelSize);
-   hist->GetYaxis()->SetLabelSize(labelSize);
-   hist->GetZaxis()->SetLabelSize(labelSize);
-   hist->GetXaxis()->SetTitleSize(labelSize);
-   hist->GetYaxis()->SetTitleSize(labelSize);
-   hist->GetZaxis()->SetTitleSize(labelSize);
-   hist->GetXaxis()->SetTitleOffset(0.8);
-   hist->GetYaxis()->SetTitleOffset(0.9);
-   hist->GetZaxis()->SetTitleOffset(0.9);
-}//SetTH2Style
-
-
-void Plot::SetTH2Style(TH2D*& hist)
-{
-
-// Define color gradient (blue → green → yellow)
-   const Int_t NRGBs = 3;
-   const Int_t NCont = 255;
-   Double_t stops[NRGBs]  = { 0.00, 0.50, 1.00 };
-   Double_t red[NRGBs]    = { 0.00, 0.00, 1.00 };
-   Double_t green[NRGBs]  = { 0.00, 1.00, 1.00 };
-   Double_t blue[NRGBs]   = { 1.00, 1.00, 0.00 };
-
-   TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
-   gStyle->SetNumberContours(NCont);
-
-   hist->SetStats(false);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetYaxis()->SetTitleFont(textFont);
-   hist->GetZaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetLabelFont(textFont);
-   hist->GetYaxis()->SetLabelFont(textFont);
-   hist->GetZaxis()->SetLabelFont(textFont);
-   hist->GetXaxis()->SetLabelSize(labelSize);
-   hist->GetYaxis()->SetLabelSize(labelSize);
-   hist->GetZaxis()->SetLabelSize(labelSize);
-   hist->GetXaxis()->SetTitleSize(labelSize);
-   hist->GetYaxis()->SetTitleSize(labelSize);
-   hist->GetZaxis()->SetTitleSize(labelSize);
-   hist->GetXaxis()->SetTitleOffset(0.8);
-   hist->GetYaxis()->SetTitleOffset(0.9);
-   hist->GetZaxis()->SetTitleOffset(0.9);
-}//SetTH2Style
-
-
-
-void Plot::SetTH2Style(TH2F*& hist)
-{
-
-// Define color gradient (blue → green → yellow)
-   const Int_t NRGBs = 3;
-   const Int_t NCont = 255;
-   Double_t stops[NRGBs]  = { 0.00, 0.50, 1.00 };
-   Double_t red[NRGBs]    = { 0.00, 0.00, 1.00 };
-   Double_t green[NRGBs]  = { 0.00, 1.00, 1.00 };
-   Double_t blue[NRGBs]   = { 1.00, 1.00, 0.00 };
-
-   TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
-   gStyle->SetNumberContours(NCont);
-
-   hist->SetStats(false);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetYaxis()->SetTitleFont(textFont);
-   hist->GetZaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetLabelFont(textFont);
-   hist->GetYaxis()->SetLabelFont(textFont);
-   hist->GetZaxis()->SetLabelFont(textFont);
-   hist->GetXaxis()->SetLabelSize(labelSize);
-   hist->GetYaxis()->SetLabelSize(labelSize);
-   hist->GetZaxis()->SetLabelSize(labelSize);
-   hist->GetXaxis()->SetTitleSize(labelSize);
-   hist->GetYaxis()->SetTitleSize(labelSize);
-   hist->GetZaxis()->SetTitleSize(labelSize);
-   hist->GetXaxis()->SetTitleOffset(0.8);
-   hist->GetYaxis()->SetTitleOffset(0.9);
-   hist->GetZaxis()->SetTitleOffset(0.9);
-}//SetTH2Style
-
-void Plot::SetTH2Style(TH2I*& hist)
-{
-
-// Define color gradient (blue → green → yellow)
-   const Int_t NRGBs = 3;
-   const Int_t NCont = 255;
-   Double_t stops[NRGBs]  = { 0.00, 0.50, 1.00 };
-   Double_t red[NRGBs]    = { 0.00, 0.00, 1.00 };
-   Double_t green[NRGBs]  = { 0.00, 1.00, 1.00 };
-   Double_t blue[NRGBs]   = { 1.00, 1.00, 0.00 };
-
-   TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
-   gStyle->SetNumberContours(NCont);
-
-   hist->SetStats(false);
-   hist->GetXaxis()->SetTitleFont(textFont);
-   hist->GetYaxis()->SetTitleFont(textFont);
-   hist->GetZaxis()->SetTitleFont(textFont);
-   hist->GetXaxis()->SetLabelFont(textFont);
-   hist->GetYaxis()->SetLabelFont(textFont);
-   hist->GetZaxis()->SetLabelFont(textFont);
-   hist->GetXaxis()->SetLabelSize(labelSize);
-   hist->GetYaxis()->SetLabelSize(labelSize);
-   hist->GetZaxis()->SetLabelSize(labelSize);
-   hist->GetXaxis()->SetTitleSize(labelSize);
-   hist->GetYaxis()->SetTitleSize(labelSize);
-   hist->GetZaxis()->SetTitleSize(labelSize);
-   hist->GetXaxis()->SetTitleOffset(0.8);
-   hist->GetYaxis()->SetTitleOffset(0.9);
-   hist->GetZaxis()->SetTitleOffset(0.9);
-}//SetTH2Style
+   if (!hist){
+      cerr << "ERROR in Plot::TH1General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
+      return;
+   }
+   CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
+   canvas->Clear();
+   SetGPad(false, 0.14, 0.05,0.11,0.06);
+   SetTH1Style(hist, kBlue, markerStyle);
+   
+   hist->Draw("hist");
+   TH1* hClone = (TH1*)hist->Clone("hClone");
+   SetTH1Style(hClone, kBlue, markerStyle);
+   hClone->Draw("same P");
+   DrawSTARTag();
+   canvas->Update();
+   outFile->cd();
+   if(dir != ""){
+      outFile->cd(dir);
+   }
+   canvas->Write();
+}
 
 void Plot::SetTGraphStyle(TGraph*& graph, Int_t color, Int_t markStyle)
 {
@@ -340,7 +165,7 @@ void Plot::DrawSTARTag(double xl, double yl, double xr, double yr, double textSi
    text1 -> Draw("same");
  
    TPaveText *text2;
-   text2 = new TPaveText(xl, yl-0.05, xr, yr-0.05,"brNDC");
+   text2 = new TPaveText(xl, yl-0.02, xr, yr-0.1,"brNDC");
    text2 -> SetTextSize(textSize );
    text2 -> SetTextAlign(33);
    text2 -> SetFillStyle(0);
@@ -351,8 +176,6 @@ void Plot::DrawSTARTag(double xl, double yl, double xr, double yr, double textSi
    text2 -> AddText(energyOfCollision);
    text2 -> Draw("same");
 }
-
-
 
 void Plot::CreateText(TString writtenText, int textF,double xl, double yl, double xr, double yr)
 {
@@ -510,22 +333,8 @@ bool Plot::saveHistograms(TString dir){
    return true;
 }
 
-
-
-
 vector<pair<TH2*, TString>> Plot::GetAllTH2() {
    vector<pair<TH2*, TString>> histograms;
-   /*
-   // Navigate to the directory in the ROOT file
-   TDirectory* targetDir = histFile.get(); // root file is a TDirectory
-   if (!dir.IsNull()) {
-      targetDir = dynamic_cast<TDirectory*>(histFile->Get(dir));
-      if (!targetDir) {
-         cerr << "ERROR in Plot::GetAllTH2: Directory not found: " << dir << endl;
-         return histograms;
-      }
-   }
-   */
 
     map<TString, int> saved;
     // Iterate over all keys in the directory
@@ -560,20 +369,6 @@ vector<pair<TH2*, TString>> Plot::GetAllTH2() {
 
 vector<pair<TH1*, TString>> Plot::GetAllTH1() {
     vector<pair<TH1*, TString>> histograms;
-   /*
-   // Navigate to the directory in the ROOT file
-   TDirectory* targetDir = histFile.get(); // root file is a TDirectory
-   if (!dir.IsNull()) {
-      targetDir = dynamic_cast<TDirectory*>(histFile->Get(dir));
-      if (!targetDir) {
-         cerr << "ERROR in Plot::GetAllTH1(): Directory not found: " << dir << endl;
-         return histograms;
-      }
-   }else{
-      cerr << "ERROR in Plot::GetAllTH1(): Directory name is empty. Please provide a valid directory name. Leaving..." << endl;
-      return histograms;
-   }
-   */
 
     // Iterate over all keys in the directory
     TKey *key;
@@ -596,253 +391,6 @@ vector<pair<TH1*, TString>> Plot::GetAllTH1() {
     }
 
     return histograms;
-}
-
-
-void Plot::TH1General(TH1*& hist,TString nameOfHist,TString dir ) {
-   
-   if (!hist){
-      cerr << "ERROR in Plot::TH1General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-      return;
-   }
-
-   if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName(), widthTypical, heightTypical );
-   }else{
-      CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
-   }
-   canvas->Clear();
-   
-   SetGPad(false, 0.14, 0.05,0.11,0.06);
-   
-   SetTH1Style(hist, kBlue, markerStyle);
-   
-   DrawSTARTag();
-
-   canvas->Update();
-
-   outFile->cd();
-   if(dir != ""){
-      outFile->cd(dir);
-   }
-   canvas->Write();
-}
-
-void Plot::TH1General(TH1D*& hist,TString nameOfHist,TString dir ) {
-   
-   if (!hist){
-      cerr << "ERROR in Plot::TH1General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-      return;
-   }
-
-   if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName(), widthTypical, heightTypical );
-   }else{
-      CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
-   }
-   canvas->Clear();
-   
-   SetGPad(false, 0.14, 0.05,0.11,0.06);
-   
-   SetTH1Style(hist, kBlue, markerStyle);
-   
-   DrawSTARTag();
-
-   canvas->Update();
-
-   outFile->cd();
-   if(dir != ""){
-      outFile->cd(dir);
-   }
-   canvas->Write();
-}
-
-void Plot::TH1General(TH1F*& hist,TString nameOfHist,TString dir ) {
-   
-   if (!hist){
-      cerr << "ERROR in Plot::TH1General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-      return;
-   }
-
-   if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName() , widthTypical, heightTypical );
-   }else{
-      CreateCanvas(&canvas, nameOfHist , widthTypical, heightTypical );
-   }
-   canvas->Clear();
-   
-   SetGPad(false, 0.14, 0.05,0.11,0.06);
-   
-   SetTH1Style(hist, kBlue, markerStyle);
-   
-   DrawSTARTag();
-
-   canvas->Update();
-
-   outFile->cd();
-   if(dir != ""){
-      outFile->cd(dir);
-   }
-   canvas->Write();
-}
-
-void Plot::TH1General(TH1I*& hist,TString nameOfHist,TString dir ) {
-   
-   if (!hist){
-      cerr << "ERROR in Plot::TH1General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-      return;
-   }
-
-   if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName() , widthTypical, heightTypical );
-   }else{
-      CreateCanvas(&canvas, nameOfHist , widthTypical, heightTypical );
-   }
-   canvas->Clear();
-   
-   SetGPad(false, 0.14, 0.05,0.11,0.06);
-   
-   SetTH1Style(hist, kBlue, markerStyle);
-   
-   DrawSTARTag();
-
-   canvas->Update();
-
-   outFile->cd();
-   if(dir != ""){
-      outFile->cd(dir);
-   }
-   canvas->Write();
-}
-
-
-void Plot::TH2General(TH2*& hist, TString nameOfHist , TString dir){
-   TCanvas* c = nullptr;
-   if (nameOfHist == "") {
-      CreateCanvas(&c, hist->GetName(), widthTypical, heightTypical );
-   }else{
-      CreateCanvas(&c, nameOfHist, widthTypical, heightTypical );
-   }
-
-   c->Clear();
-   SetGPad(false,0.12, 0.16,0.11, 0.06 );
-   if (!hist){
-      cerr << "ERROR in Plot::TH2General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-      return;
-   }
-
-
-   SetTH2Style(hist);
-
-   DrawSTARTag();
-
-   c->Update();
-   outFile->cd();
-   if(dir != ""){
-      outFile->cd(dir);
-   }
-   c->Write();
-   //hist->Write();
-   c->Close();
-   c->Clear();
-   delete c;
-}
-
-
-void Plot::TH2General(TH2I*& hist, TString nameOfHist , TString dir){
-   TCanvas* c = nullptr;
-   if (nameOfHist == "") {
-      CreateCanvas(&c, hist->GetName() , widthTypical, heightTypical );
-   }else{
-      CreateCanvas(&c, nameOfHist , widthTypical, heightTypical );
-   }
-
-   c->Clear();
-   SetGPad(false,0.12, 0.16,0.11, 0.06 );
-   if (!hist){
-      cerr << "ERROR in Plot::TH2General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-      return;
-   }
-
-
-   SetTH2Style(hist);
-
-   DrawSTARTag();
-
-   c->Update();
-   outFile->cd();
-   if(dir != ""){
-      outFile->cd(dir);
-   }
-   c->Write();
-   //hist->Write();
-   c->Close();
-   c->Clear();
-   delete c;
-}
-
-void Plot::TH2General(TH2D*& hist, TString nameOfHist , TString dir){
-   TCanvas* c = nullptr;
-   if (nameOfHist == "") {
-      CreateCanvas(&c, hist->GetName() , widthTypical, heightTypical );
-   }else{
-      CreateCanvas(&c, nameOfHist , widthTypical, heightTypical );
-   }
-
-   c->Clear();
-   SetGPad(false,0.12, 0.16,0.11, 0.06 );
-   if (!hist){
-      cerr << "ERROR in Plot::TH2General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-      return;
-   }
-
-
-   SetTH2Style(hist);
-
-   DrawSTARTag();
-
-   c->Update();
-   outFile->cd();
-   if(dir != ""){
-      outFile->cd(dir);
-   }
-   c->Write();
-   //hist->Write();
-   c->Close();
-   c->Clear();
-   delete c;
-}
-
-void Plot::TH2General(TH2F*& hist, TString nameOfHist , TString dir){
-   TCanvas* c = nullptr;
-   if (nameOfHist == "") {
-      CreateCanvas(&c, hist->GetName() , widthTypical, heightTypical );
-   }else{
-      CreateCanvas(&c, nameOfHist, widthTypical, heightTypical );
-   }
-
-   c->Clear();
-   SetGPad(false,0.12, 0.16,0.11, 0.06 );
-   if (!hist){
-      cerr << "ERROR in Plot::TH2General: Could not open histogram "<< nameOfHist << " from inFile."<< endl;
-      return;
-   }
-
-
-   SetTH2Style(hist);
-
-   DrawSTARTag();
-
-   c->Update();
-   outFile->cd();
-   if(dir != ""){
-      outFile->cd(dir);
-   }
-   c->Write();
-   //hist->Write();
-   c->Close();
-   c->Clear();
-   delete c;
 }
 
 

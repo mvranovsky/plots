@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <TString Argument>"
+    echo "Usage: $0 <RCF_absolute_path> <output_dir>"
     exit 1
 fi
 

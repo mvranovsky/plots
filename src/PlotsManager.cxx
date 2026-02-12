@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
     	if(DEBUGMODE)  cout << "Creating plots for Analysis..." << endl;
     	mPlot = new PlotAnalysis(inputPosition, outputPosition);
     }
-    /*// example of another analysis                                              
+    /* // example of another analysis                                              
     else if( strstr(inputPosition, "Embedding") ){  
         cout << "Creating plots for embedding..." << endl;
         mPlot = new PlotEmbedding(inputPosition, outputPosition);

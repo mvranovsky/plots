@@ -35,12 +35,7 @@ class Plot{
 		void CreateDashedLine(double xl, double yl, double xr, double yr);
 		
 		// draw a tag in top right corner (description, process, energy of collision)
-		void DrawSTARTag(double xl = 0.2, double yl = 0.85, double xr = 0.4, double yr = 0.85, double textSizeRel = 0.);
-		
-		
-		//!!! change according to Gabe's analysis !!!
-		TString getCondition(TString var = "", int j = 0);
-		TH1D* loadInvMassHist(int numBins, Double_t minRange, Double_t maxRange, TString c, bool removeBcg = true); // function to load invariant mass histogram from tree with given cuts. If removeBcg is true, background histogram will be subtracted from signal histogram
+		void DrawSTARTag(double xl = 0.7, double yl = 0.9, double xr = 0.9, double yr = 0.9, double textSizeRel = 0.);
 		
 		// set style for TGraph
 		void SetTGraphStyle(TGraph*& graph, Int_t color = kBlue, Int_t markStyle = 20);
@@ -49,30 +44,9 @@ class Plot{
 
 		// create plot for a 1D histogram
 		void TH1General(TH1*& hist,TString nameOfHist, TString dir = "");  
-		void TH1General(TH1D*& hist,TString nameOfHist, TString dir = "");  
-		void TH1General(TH1F*& hist,TString nameOfHist, TString dir = "");  
-		void TH1General(TH1I*& hist,TString nameOfHist, TString dir = ""); 
-		
-		// set style for a 1D histogram
-		
-		/*
-		void SetTH1Style(TH1*& hist, Int_t Color = color, Int_t markStyle = markerStyle);
-		void SetTH1Style(TH1D*& hist, Int_t Color = color, Int_t markStyle = markerStyle);
-		void SetTH1Style(TH1F*& hist, Int_t Color = color, Int_t markStyle = markerStyle);
-		void SetTH1Style(TH1I*& hist, Int_t Color = color, Int_t markStyle = markerStyle);
-		*/
 
-		// create a plot for a 2D hist
+		// create a plot for a 2D histogram
 		void TH2General( TH2*& hist,TString nameOfHist , TString dir = "");
-		void TH2General( TH2D*& hist,TString nameOfHist , TString dir = "");
-		void TH2General( TH2F*& hist,TString nameOfHist , TString dir = "");
-		void TH2General( TH2I*& hist,TString nameOfHist , TString dir = "");
-
-		// set style for a 2D hist
-		void SetTH2Style(TH2*& hist);
-		void SetTH2Style(TH2D*& hist);
-		void SetTH2Style(TH2F*& hist);
-		void SetTH2Style(TH2I*& hist);
 
 		// load Monte Carlo simulation tree
 		void loadMCTree( TString filename, TString treename );
@@ -80,8 +54,8 @@ class Plot{
 		TTree *tree, *bcgTree;
 		TTree *MCTree;
 
-		template <typename T>
-		static void SetTH1Style(T*& hist, Int_t color, Int_t markStyle)
+		template<typename T1>
+		static void SetTH1Style(T1* hist, Int_t color, Int_t markStyle)
 		{
 			hist->GetYaxis()->SetTitle(yAxisTitle);
 			hist->SetStats(false);
@@ -101,8 +75,45 @@ class Plot{
 			hist->SetMarkerSize(2);
 			hist->SetMarkerColor(color);
 			hist->SetMarkerStyle(markerStyle);
-		}//SetHistStyle
+		}//SetTH1Style
 
+
+		template<typename T2>
+		static void SetTH2Style(T2* hist)
+		{
+			// Define color gradient (blue → green → yellow)
+			const Int_t NRGBs = 3;
+			const Int_t NCont = 255;
+			Double_t stops[NRGBs]  = { 0.00, 0.50, 1.00 };
+			Double_t red[NRGBs]    = { 0.00, 0.00, 1.00 };
+			Double_t green[NRGBs]  = { 0.00, 1.00, 1.00 };
+			Double_t blue[NRGBs]   = { 1.00, 1.00, 0.00 };
+
+			TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
+			gStyle->SetNumberContours(NCont);
+
+			hist->SetStats(false);
+			hist->GetXaxis()->SetTitleFont(textFont);
+			hist->GetYaxis()->SetTitleFont(textFont);
+			hist->GetZaxis()->SetTitleFont(textFont);
+			hist->GetXaxis()->SetLabelFont(textFont);
+			hist->GetYaxis()->SetLabelFont(textFont);
+			hist->GetZaxis()->SetLabelFont(textFont);
+			hist->GetXaxis()->SetLabelSize(labelSize);
+			hist->GetYaxis()->SetLabelSize(labelSize);
+			hist->GetZaxis()->SetLabelSize(labelSize);
+			hist->GetXaxis()->SetTitleSize(labelSize);
+			hist->GetYaxis()->SetTitleSize(labelSize);
+			hist->GetZaxis()->SetTitleSize(labelSize);
+			hist->GetXaxis()->SetTitleOffset(0.8);
+			hist->GetYaxis()->SetTitleOffset(0.9);
+			hist->GetZaxis()->SetTitleOffset(0.9);
+		}//SetTH2Style
+
+
+
+		
+		
 	protected:
 		string outputPosition;
 		string inputPosition;

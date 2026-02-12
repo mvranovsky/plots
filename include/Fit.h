@@ -61,7 +61,6 @@ class Fit {
         void setMean(double mean) { mMeanPar = mean; }
         void setSigma(double sigma) { mSigmaPar = sigma; }
 
-
         // setters for fit range
         void defineFitRange();
         void setFitRangeLow(double val) { fitRangeLow = val; }
@@ -96,7 +95,7 @@ class Fit {
         vector<TString> modelNames;
 
         RooRealVar *a0, *a1, *a2;
-        RooGenericPdf *bkg;
+        RooPolynomial *bkg;
         
         RooRealVar *cbmean, *cbsigma, *cbalpha, *cbn;
         RooCBShape *cb;

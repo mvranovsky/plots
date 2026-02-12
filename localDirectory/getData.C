@@ -7,6 +7,7 @@ using namespace std;
 TFile *file;
 
 
+
 vector<TString> ListTCanvasInFile() {
 	vector<TString> canvasName;
    	//TFile file(fileName);
@@ -59,6 +60,9 @@ void ListTDirectoriesInFile() {
 
 void getData(const TString& inputTag) {
 	
+    gStyle->SetOptStat(0);
+    gStyle->SetOptTitle(0);
+    
 	TString inputFile = inputTag + TString("/AnalysisOutput.root");
 
 

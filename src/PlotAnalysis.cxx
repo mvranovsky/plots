@@ -5,42 +5,20 @@ PlotAnalysis::PlotAnalysis(const string mInputList, const char* filePath): Plot(
 PlotAnalysis::PlotAnalysis(const string mInputList, shared_ptr<TFile> file): Plot(mInputList, file) {}
 
 void PlotAnalysis::Make(){
-    
-    cout << "Number of objects in the histogram file: " << histFile->GetListOfKeys()->GetEntries() << endl;
 
-    for(int i = 0; i < histFile->GetListOfKeys()->GetEntries(); ++i){
-        TObject *obj = (TObject*)histFile->GetListOfKeys()->At(i);
-        cout << "Found object: " << obj->GetName() << endl;
-        if(obj->InheritsFrom(TH1::Class())){
-            cout << "This is a 1D histogram." << endl;
-        }
-    }
-    // save the extracted histograms to the output file
-    saveHistograms();
-    
-    // load inv mass histogram
-    TH1D* invMass = (TH1D*) histFile->Get("hSub;2");
+    //EXERCISE
+    // save all histograms to canvases and save them to the output file
 
-    if(!invMass || invMass->IsZombie()){
-        cerr << "ERROR in PlotAnalysis::Make(): Could not load invariant mass histogram. Leaving..." << endl;
-        return;
-    }
 
-    // fit peak with Fit class
-    Fit *fit = new Fit(invMass,"Gauss + Poly1");
+    // load invariant mass histogram with name hSub
 
-    // set initial parameters for the fit
-    fit->setMean(1.02);
-    fit->setSigma(0.05);
-    fit->setPolynomial(10, 1, -0.5);
 
-    fit->fitPeak();
-    fit->writeFitResult();
+    //use Fit class to fit the peak in the invariant mass histogram and extract the yield of phi mesons
 
-    // save the output histogram
-    fit->saveCanvas(outFile,"", "");
 
+    // save the final canvas to the output file
     // output file should contain only final filled canvases ready to be saved as .pdf/.png files
+
 
 }
 
@@ -94,3 +72,60 @@ void PlotAnalysis::Init(){
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    // save the extracted histograms to the output file
+    saveHistograms();
+    
+    // load inv mass histogram
+    TH1D* invMass = (TH1D*) histFile->Get("hSub");
+    
+    if(!invMass || invMass->IsZombie()){
+        cerr << "ERROR in PlotAnalysis::Make(): Could not load invariant mass histogram. Leaving..." << endl;
+        return;
+    }
+
+
+    invMass->SetName("invariantMassFit");
+    invMass->SetTitle("");
+
+    // fit peak with Fit class
+    Fit *fit = new Fit(invMass,"Gauss Poly1");
+    fit->setFitRangeLow(1.005);
+    fit->setFitRangeHigh(1.06);
+
+    // set initial parameters for the fit
+    fit->setMean(1.02);
+    fit->setSigma(0.01);
+    fit->setPolynomial( 0, 10);
+
+    fit->fitPeak();
+    fit->writeFitResult();
+
+    // save the output histogram
+    TCanvas *C = fit->getCanvas();
+    C->SetName("invariantMassFitCanvas");
+    DrawSTARTag();
+    C->Update();
+    outFile->cd();
+    C->Write();
+*/

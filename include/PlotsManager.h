@@ -69,6 +69,7 @@ bool connectHists(const char* inputPath, const char* outputFilename, bool keepEx
 
 
    std::vector<string> filenames = getFilenames(inputPath);
+   if(DEBUGMODE) cout << "Number of files to process: " << filenames.size() << endl;
 
    if(filenames.size() == 0 ){
       cout << "Empty vector of filenames" << endl;
@@ -83,13 +84,19 @@ bool connectHists(const char* inputPath, const char* outputFilename, bool keepEx
       }
       TIter nextKey(file->GetListOfKeys());
       TKey* key;
-
-      for(const auto& dir : getDirectories(file)) {
+      
+      vector<TDirectory*> directories = getDirectories(file);
+      directories.push_back(file.get()); // also include the root directory
+      if(DEBUGMODE) cout << "Number of directories in file " << filename << ": " << directories.size() << endl;
+      for(const auto& dir : directories){ 
+         //cout << "Processing directory: " << dir->GetName() << " in file: " << filename << endl;
          if (!dir) continue;
          // Iterate over all keys in the directory
          TIter nextKey(dir->GetListOfKeys());
          while ((key = (TKey*)nextKey())) {
+            //cout << "Processing key: " << key->GetName() << " of class: " << key->GetClassName() << endl;
             TObject* obj = key->ReadObj();
+
             if (!obj) continue;
 
             // Check if it is a histogram (TH1 base class)
@@ -98,14 +105,9 @@ bool connectHists(const char* inputPath, const char* outputFilename, bool keepEx
             if (cls->InheritsFrom("TH1D") || cls->InheritsFrom("TH1F") || cls->InheritsFrom("TH1I")) {
                TH1* hist = static_cast<TH1*>(obj);
 
-               string histName;
-               if(TString(hist->GetName()).Contains("hVtxZFillNum") ){
-                  histName = ( TString("hVtxZFillNum/") + TString(hist->GetName()) ).Data();
-               }else{
-                  histName = ( TString(dir->GetName()) + TString("/") + TString(hist->GetName()) ).Data();
-               }
 
-
+               string histName = ( TString(hist->GetName()) ).Data();
+               
                // Merge histograms with the same name
                if (mergedTH1Hists.find(histName) == mergedTH1Hists.end()) {
                   // First instance, clone the histogram
@@ -119,7 +121,7 @@ bool connectHists(const char* inputPath, const char* outputFilename, bool keepEx
             // Check if it is a TH2 class
             if (cls->InheritsFrom("TH2D") || cls->InheritsFrom("TH2F") || cls->InheritsFrom("TH2I")) {
                TH2* hist = static_cast<TH2*>(obj);
-               string histName = (TString(dir->GetName()) + TString("/") + TString(hist->GetName()) ).Data();
+               string histName = ( TString(hist->GetName()) ).Data();
 
                // Merge histograms with the same name
                if (mergedTH2Hists.find(histName) == mergedTH2Hists.end()) {
