@@ -14,17 +14,13 @@ int main(int argc, char *argv[]){
 	const char* outputPosition = argv[3]; // absolute path to output position
     const char* histogramFilePath = "histFile.root";
 
-
     
     if( strstr(analysis, "Analysis") ){
-    	if(DEBUGMODE)  << "Creating plots for Analysis..." << endl;
+    	if(DEBUGMODE)  cout << "Creating plots for Analysis..." << endl;
     	mPlot = new PlotAnalysis(inputPosition, outputPosition);
-    }else if( strstr(analysis, "CrossSection")){  // separate class which can run multiple analyses and calculate CS for example
-        if(DEBUGMODE)  cout << "Calculating cross section..." << endl;
-        runCrossSection(outputPosition);
     }
-    /*                                              
-    else if( strstr(inputPosition, "Embedding") ){  // example of another analysis
+    /*// example of another analysis                                              
+    else if( strstr(inputPosition, "Embedding") ){  
         cout << "Creating plots for embedding..." << endl;
         mPlot = new PlotEmbedding(inputPosition, outputPosition);
     }
@@ -49,31 +45,4 @@ int main(int argc, char *argv[]){
 
 }
 
-
-void runCrossSection(const char* outputFile) {. // for running multiple analyses
-    if(DEBUGMODE) cout << "Running CrossSectionMaker..." << endl;
-
-    // paths to main analysis, embedding, good run list analysis, zerobias study
-    TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_noRP_sysStudy_2.12.25/merged/StRP_production.list";
-    TString embedDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/EmbeddingJPsi_sysStudy/merged/StRP_production.list";
-    TString goodRunDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaGoodRun_2.12.25/merged/StRP_production.list";
-    TString zeroBiasDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaZeroBias_26.8.25/merged/StRP_production.list";
-
-    // extract histograms from each separate root file    
-
-    if(!connectHists(anaDir, "histFile.root", false))  return;
-
-    if(!connectHists(embedDir, "histFile.root", true))  return;
-
-    if(!connectHists(goodRunDir, "histFile.root", true))  return;
-
-    if(!connectHists(zeroBiasDir, "histFile.root", true))  return;
-
-    // run the cross section analysis
-    CrossSectionMaker *crossSectionMaker = new CrossSectionMaker(anaDir, embedDir, goodRunDir, zeroBiasDir, TString(outputFile));
-    crossSectionMaker->Make();
-    delete crossSectionMaker;
-
-    if(DEBUGMODE) cout << "Finished running CrossSectionMaker..." << endl;
-}
 

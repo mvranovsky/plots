@@ -1,15 +1,14 @@
 #include "Plot.h"
 
-Plot::Plot(const string mInputList, const char* filePath){
-   outputPosition = filePath;
-   inputPosition = mInputList;
-   outFile = shared_ptr<TFile>(new TFile(outputPosition, "RECREATE"));
+Plot::Plot(const std::string& mInputList, const char* filePath)
+    : outputPosition(filePath), inputPosition(mInputList), outFile(std::make_shared<TFile>(outputPosition.c_str(), "RECREATE"))
+{
 }
 
-Plot::Plot(const string mInputList, shared_ptr<TFile> file) : inputPosition(mInputList), outFile(file) {
-   outputPosition = file->GetName();
+Plot::Plot(const std::string& mInputList, const std::shared_ptr<TFile>& file)
+    : outputPosition(file ? file->GetName() : ""), inputPosition(mInputList),outFile(file)
+{
 }
-
 
 Plot::~Plot(){
    //if(mUtil) delete mUtil;
@@ -62,7 +61,7 @@ void Plot::SetTH1Style(TH1*& hist, Int_t color, Int_t markStyle)
    hist->SetMarkerSize(2);
    hist->SetMarkerColor(color);
    hist->SetMarkerStyle(markerStyle);
-}//SetHistStyle
+}//SetTH1Style
 
 
 void Plot::SetTH1Style(TH1D*& hist, Int_t color, Int_t markStyle)
@@ -86,7 +85,7 @@ void Plot::SetTH1Style(TH1D*& hist, Int_t color, Int_t markStyle)
    hist->SetMarkerSize(2);
    hist->SetMarkerColor(color);
    hist->SetMarkerStyle(markerStyle);
-}//SetHistStyle
+}//SetTH1Style
 
 void Plot::SetTH1Style(TH1F*& hist, Int_t color, Int_t markStyle)
 {
@@ -109,7 +108,7 @@ void Plot::SetTH1Style(TH1F*& hist, Int_t color, Int_t markStyle)
    hist->SetMarkerSize(2);
    hist->SetMarkerColor(color);
    hist->SetMarkerStyle(markerStyle);
-}//SetHistStyle
+}//SetTH1Style
 
 void Plot::SetTH1Style(TH1I*& hist, Int_t color, Int_t markStyle)
 {
@@ -132,7 +131,7 @@ void Plot::SetTH1Style(TH1I*& hist, Int_t color, Int_t markStyle)
    hist->SetMarkerSize(2);
    hist->SetMarkerColor(color);
    hist->SetMarkerStyle(markerStyle);
-}//SetHistStyle
+}//SetTH1Style
 */
 void Plot::SetTH2Style(TH2*& hist)
 {
@@ -366,7 +365,7 @@ void Plot::CreateText(TString writtenText, int textF,double xl, double yl, doubl
    text -> Draw("same");
 }
 
-void Plot::SetGPad(bool isLogY, double left, double right, double bottom, double top). // set standard margins
+void Plot::SetGPad(bool isLogY, double left, double right, double bottom, double top) // set standard margins
 {
    gPad->SetLeftMargin(left);
    gPad->SetRightMargin(right);
@@ -471,39 +470,39 @@ bool Plot::ConnectInputTree(const string& input, TString nameOfTree, TTree *&TRE
 }
 
 
-bool Plot::saveHistograms(TString dir, TString addOn){
+bool Plot::saveHistograms(TString dir){
 
    vector<pair<TH1*,TString>> hists1D;
    vector<pair<TH2*,TString>> hists2D;
 
 
-   hists1D = GetAllTH1(dir);
+   hists1D = GetAllTH1();
    if(hists1D.size() == 0){
-      cerr << "ERROR in Plot::handleHistograms: Couldn't load 1D histograms from file in dir "<< dir << ". Leaving..." << endl;
+      cerr << "ERROR in Plot::saveHistograms: Couldn't load 1D histograms from file. Leaving..." << endl;
       return false;
    }
    for (unsigned int i = 0; i < hists1D.size(); ++i){
       if(!hists1D[i].first){
-         cerr << "ERROR in Plot::handleHistograms: Couldn't load histogram " << hists1D[i].second << " in dir "<< dir << ". Leaving..." << endl;
+         cerr << "ERROR in Plot::saveHistograms: Couldn't load histogram " << hists1D[i].second << " in dir "<< dir << ". Leaving..." << endl;
          return false;
       }
-      TH1General(hists1D[i].second, hists1D[i].first, dir, addOn);
+      TH1General( hists1D[i].first,hists1D[i].second, dir);
       if(DEBUGMODE) cout << "Created canvas for 1D histogram " << hists1D[i].second << endl;
    }
 
    
    // create canvases for all TH2F
-   hists2D = GetAllTH2(dir);
+   hists2D = GetAllTH2();
    if(hists2D.size() == 0){
-      cerr << "ERROR in Plot::handleHistograms: Couldn't load 2D histograms from file in dir "<< dir << ". Leaving..." << endl;
+      cerr << "ERROR in Plot::saveHistograms: Couldn't load 2D histograms from file in dir "<< dir << ". Leaving..." << endl;
       return false;
    }
    for (unsigned int i = 0; i < hists2D.size(); ++i){
       if(!hists2D[i].first){
-         cerr << "ERROR in Plot::handleHistograms: Couldn't load histogram " << hists2D[i].second << " in dir "<< dir << ". Leaving..." << endl;
+         cerr << "ERROR in Plot::saveHistograms: Couldn't load histogram " << hists2D[i].second << " in dir "<< dir << ". Leaving..." << endl;
          return false;
       }
-      TH2General(hists2D[i].second, hists2D[i].first, dir, addOn);
+      TH2General( hists2D[i].first,hists2D[i].second, dir);
       if(DEBUGMODE) cout << "Created canvas for 2D histogram " << hists2D[i].second << endl;
    }
    
@@ -514,23 +513,24 @@ bool Plot::saveHistograms(TString dir, TString addOn){
 
 
 
-vector<pair<TH2*, TString>> Plot::GetAllTH2(TString dir) {
-    vector<pair<TH2*, TString>> histograms;
-
-    // Navigate to the directory in the ROOT file
-    TDirectory* targetDir = histFile.get(); // root file is a TDirectory
-    if (!dir.IsNull()) {
-        targetDir = dynamic_cast<TDirectory*>(histFile->Get(dir));
-        if (!targetDir) {
-            cerr << "ERROR in Plot::GetAllTH2: Directory not found: " << dir << endl;
-            return histograms;
-        }
-    }
+vector<pair<TH2*, TString>> Plot::GetAllTH2() {
+   vector<pair<TH2*, TString>> histograms;
+   /*
+   // Navigate to the directory in the ROOT file
+   TDirectory* targetDir = histFile.get(); // root file is a TDirectory
+   if (!dir.IsNull()) {
+      targetDir = dynamic_cast<TDirectory*>(histFile->Get(dir));
+      if (!targetDir) {
+         cerr << "ERROR in Plot::GetAllTH2: Directory not found: " << dir << endl;
+         return histograms;
+      }
+   }
+   */
 
     map<TString, int> saved;
     // Iterate over all keys in the directory
     TKey *key;
-    TIter next(targetDir->GetListOfKeys());
+    TIter next(histFile->GetListOfKeys());
 
     while ((key = static_cast<TKey*>(next()))) {
         TObject *obj = key->ReadObj();
@@ -558,22 +558,26 @@ vector<pair<TH2*, TString>> Plot::GetAllTH2(TString dir) {
 }
 
 
-vector<pair<TH1*, TString>> Plot::GetAllTH1(TString dir) {
+vector<pair<TH1*, TString>> Plot::GetAllTH1() {
     vector<pair<TH1*, TString>> histograms;
-
-    // Navigate to the directory in the ROOT file
-    TDirectory* targetDir = histFile.get(); // root file is a TDirectory
-    if (!dir.IsNull()) {
-        targetDir = dynamic_cast<TDirectory*>(histFile->Get(dir));
-        if (!targetDir) {
-            cerr << "ERROR in Plot::GetAllTH1(): Directory not found: " << dir << endl;
-            return histograms;
-        }
-    }
+   /*
+   // Navigate to the directory in the ROOT file
+   TDirectory* targetDir = histFile.get(); // root file is a TDirectory
+   if (!dir.IsNull()) {
+      targetDir = dynamic_cast<TDirectory*>(histFile->Get(dir));
+      if (!targetDir) {
+         cerr << "ERROR in Plot::GetAllTH1(): Directory not found: " << dir << endl;
+         return histograms;
+      }
+   }else{
+      cerr << "ERROR in Plot::GetAllTH1(): Directory name is empty. Please provide a valid directory name. Leaving..." << endl;
+      return histograms;
+   }
+   */
 
     // Iterate over all keys in the directory
     TKey *key;
-    TIter next(targetDir->GetListOfKeys());
+    TIter next(histFile->GetListOfKeys());
 
     while ((key = static_cast<TKey*>(next()))) {
         TObject *obj = key->ReadObj();
@@ -603,15 +607,15 @@ void Plot::TH1General(TH1*& hist,TString nameOfHist,TString dir ) {
    }
 
    if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName() + addOn, widthTypical, heightTypical );
+      CreateCanvas(&canvas, hist->GetName(), widthTypical, heightTypical );
    }else{
-      CreateCanvas(&canvas, nameOfHist  + addOn, widthTypical, heightTypical );
+      CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
    }
    canvas->Clear();
    
    SetGPad(false, 0.14, 0.05,0.11,0.06);
    
-   SetHistStyle(hist, kBlue, markerStyleTypical);
+   SetTH1Style(hist, kBlue, markerStyle);
    
    DrawSTARTag();
 
@@ -632,15 +636,15 @@ void Plot::TH1General(TH1D*& hist,TString nameOfHist,TString dir ) {
    }
 
    if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName() + addOn, widthTypical, heightTypical );
+      CreateCanvas(&canvas, hist->GetName(), widthTypical, heightTypical );
    }else{
-      CreateCanvas(&canvas, nameOfHist  + addOn, widthTypical, heightTypical );
+      CreateCanvas(&canvas, nameOfHist, widthTypical, heightTypical );
    }
    canvas->Clear();
    
    SetGPad(false, 0.14, 0.05,0.11,0.06);
    
-   SetHistStyle(hist, kBlue, markerStyleTypical);
+   SetTH1Style(hist, kBlue, markerStyle);
    
    DrawSTARTag();
 
@@ -661,15 +665,15 @@ void Plot::TH1General(TH1F*& hist,TString nameOfHist,TString dir ) {
    }
 
    if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName() + addOn, widthTypical, heightTypical );
+      CreateCanvas(&canvas, hist->GetName() , widthTypical, heightTypical );
    }else{
-      CreateCanvas(&canvas, nameOfHist  + addOn, widthTypical, heightTypical );
+      CreateCanvas(&canvas, nameOfHist , widthTypical, heightTypical );
    }
    canvas->Clear();
    
    SetGPad(false, 0.14, 0.05,0.11,0.06);
    
-   SetHistStyle(hist, kBlue, markerStyleTypical);
+   SetTH1Style(hist, kBlue, markerStyle);
    
    DrawSTARTag();
 
@@ -690,15 +694,15 @@ void Plot::TH1General(TH1I*& hist,TString nameOfHist,TString dir ) {
    }
 
    if (nameOfHist == "") {
-      CreateCanvas(&canvas, hist->GetName() + addOn, widthTypical, heightTypical );
+      CreateCanvas(&canvas, hist->GetName() , widthTypical, heightTypical );
    }else{
-      CreateCanvas(&canvas, nameOfHist  + addOn, widthTypical, heightTypical );
+      CreateCanvas(&canvas, nameOfHist , widthTypical, heightTypical );
    }
    canvas->Clear();
    
    SetGPad(false, 0.14, 0.05,0.11,0.06);
    
-   SetHistStyle(hist, kBlue, markerStyleTypical);
+   SetTH1Style(hist, kBlue, markerStyle);
    
    DrawSTARTag();
 
@@ -715,9 +719,9 @@ void Plot::TH1General(TH1I*& hist,TString nameOfHist,TString dir ) {
 void Plot::TH2General(TH2*& hist, TString nameOfHist , TString dir){
    TCanvas* c = nullptr;
    if (nameOfHist == "") {
-      CreateCanvas(&c, hist->GetName() + addOn, widthTypical, heightTypical );
+      CreateCanvas(&c, hist->GetName(), widthTypical, heightTypical );
    }else{
-      CreateCanvas(&c, nameOfHist + addOn, widthTypical, heightTypical );
+      CreateCanvas(&c, nameOfHist, widthTypical, heightTypical );
    }
 
    c->Clear();
@@ -748,9 +752,9 @@ void Plot::TH2General(TH2*& hist, TString nameOfHist , TString dir){
 void Plot::TH2General(TH2I*& hist, TString nameOfHist , TString dir){
    TCanvas* c = nullptr;
    if (nameOfHist == "") {
-      CreateCanvas(&c, hist->GetName() + addOn, widthTypical, heightTypical );
+      CreateCanvas(&c, hist->GetName() , widthTypical, heightTypical );
    }else{
-      CreateCanvas(&c, nameOfHist + addOn, widthTypical, heightTypical );
+      CreateCanvas(&c, nameOfHist , widthTypical, heightTypical );
    }
 
    c->Clear();
@@ -780,9 +784,9 @@ void Plot::TH2General(TH2I*& hist, TString nameOfHist , TString dir){
 void Plot::TH2General(TH2D*& hist, TString nameOfHist , TString dir){
    TCanvas* c = nullptr;
    if (nameOfHist == "") {
-      CreateCanvas(&c, hist->GetName() + addOn, widthTypical, heightTypical );
+      CreateCanvas(&c, hist->GetName() , widthTypical, heightTypical );
    }else{
-      CreateCanvas(&c, nameOfHist + addOn, widthTypical, heightTypical );
+      CreateCanvas(&c, nameOfHist , widthTypical, heightTypical );
    }
 
    c->Clear();
@@ -812,9 +816,9 @@ void Plot::TH2General(TH2D*& hist, TString nameOfHist , TString dir){
 void Plot::TH2General(TH2F*& hist, TString nameOfHist , TString dir){
    TCanvas* c = nullptr;
    if (nameOfHist == "") {
-      CreateCanvas(&c, hist->GetName() + addOn, widthTypical, heightTypical );
+      CreateCanvas(&c, hist->GetName() , widthTypical, heightTypical );
    }else{
-      CreateCanvas(&c, nameOfHist + addOn, widthTypical, heightTypical );
+      CreateCanvas(&c, nameOfHist, widthTypical, heightTypical );
    }
 
    c->Clear();

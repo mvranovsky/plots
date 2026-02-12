@@ -10,6 +10,9 @@
 
 const bool DEBUGMODE = true; // true = print debug messages
 
+// name of tree with data
+const TString nameOfTree = "T";
+
 // description shown in top right corner of every plot
 //const TString plotDescription = "STAR Internal";
 const TString plotDescription = "THIS THESIS";

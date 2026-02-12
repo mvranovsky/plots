@@ -1,5 +1,5 @@
-#ifndef PlotAnaJPsi_h
-#define PlotAnaJPsi_h
+#ifndef PlotAnalysis_h
+#define PlotAnalysis_h
 
 
 #include "Plot.h"
@@ -8,9 +8,8 @@
 
 
 using namespace std;
-using namespace UTIL;
 
-class PlotAnaJPsi : public Plot {
+class PlotAnalysis : public Plot {
 	public:
 		//accessible from outside the class
 		PlotAnalysis(const string mInputList, const char* filePath);

@@ -21,13 +21,7 @@ class Fit {
 
         // methods to write results on the canvas
         void writeFitResult();
-        void writeSignalResult(bool &fitSignal2S,double left, double bottom, double right, double top);
-
-        // methods for crystal ball fit parameters n, alpha
-        void setAlphaLoose(bool value) { mAlphaLoose = value; }
-        void setNLoose(bool value) { mNLoose = value; }
-        bool isAlphaLoose() const { return mAlphaLoose; }
-        bool isNLoose() const { return mNLoose; }
+        void writeSignalResult(double left, double bottom, double right, double top);
         
         // methods for handling canvas
         TCanvas* getCanvas() const { c->Update(); return c; }
@@ -56,6 +50,17 @@ class Fit {
         double getSOverB() const { if(cb || gauss) return sOverB; else return -999; }  // ratio of signal yield over background in the range (mu - 4sigma, mu + 3sigma)
         double getErrSOverB() const { if(cb || gauss) return errSOverB; else return -999; }
         
+        // methods for crystal ball fit parameters n, alpha
+        void setAlphaLoose(bool value) { mAlphaLoose = value; }
+        void setNLoose(bool value) { mNLoose = value; }
+        bool isAlphaLoose() const { return mAlphaLoose; }
+        bool isNLoose() const { return mNLoose; }
+
+        //initial guesses for fit parameters
+        void setPolynomial(double c0, double c1 = 0, double c2 = 0) {mPolynomialPars[0] = c0; mPolynomialPars[1] = c1; mPolynomialPars[2] = c2;}
+        void setMean(double mean) { mMeanPar = mean; }
+        void setSigma(double sigma) { mSigmaPar = sigma; }
+
 
         // setters for fit range
         void defineFitRange();
@@ -107,6 +112,9 @@ class Fit {
         bool mAlphaLoose = false;
         bool mNLoose = false;
         bool visualizeError = false;
+        Double_t mPolynomialPars[3] = {-2, 2, 1};
+        Double_t mMeanPar = 3.1;
+        Double_t mSigmaPar = 0.05;
 
         double fitRangeLow, fitRangeHigh;
 

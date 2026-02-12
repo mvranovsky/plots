@@ -12,10 +12,11 @@ using namespace std;
 class Plot{
 	//can be accessed from within this class or from derived classes
 	public: 
-		// can be accessed from outside the class
-		Plot(const string mInputList, const char* filePath);
-		Plot(const string mInputList, shared_ptr<TFile> file);
+		Plot(const std::string& mInputList, const char* filePath);
+		Plot(const std::string& mInputList,
+			const std::shared_ptr<TFile>& file);
 
+		Plot(const Plot&) = default;
 		virtual ~Plot();
 		
 		virtual void Make(){cout<<"Hi my name is make"<<endl;};
@@ -103,17 +104,18 @@ class Plot{
 		}//SetHistStyle
 
 	protected:
+		string outputPosition;
+		string inputPosition;
 		shared_ptr<TFile> outFile;  // Shared pointer
 		shared_ptr<TFile> histFile;  // This one can stay shared_ptr if Plot owns it
-		shared_ptr<TFile> starlightFile;
-		const char* outputPosition;
-		string inputPosition;
+		shared_ptr<TFile> MCFile;
+
 		
 
 		// methods to handle TH1 and TH2 histograms
-		bool handleHistograms(TString dir = "");
-		vector<pair<TH1*, TString>> GetAllTH1(TString dir = "");
-		vector<pair<TH2*, TString>> GetAllTH2(TString dir = "");
+		bool saveHistograms(TString dir = "");
+		vector<pair<TH1*, TString>> GetAllTH1();
+		vector<pair<TH2*, TString>> GetAllTH2();
 
 		TCanvas *canvas;
 		TLegend *legend, *legend2;

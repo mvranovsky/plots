@@ -11,7 +11,6 @@ Fit::Fit(TH1D *&h,TString b){
    if(DEBUGMODE){
       RooMsgService::instance().setSilentMode(false);
       RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
-
    }else {
       RooMsgService::instance().setSilentMode(true);
       RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
@@ -125,7 +124,7 @@ void Fit::fitPeak() {
    
    if(fitSignal) integrate(bcg);
    
-   if(fitSignal)  writeSignalResult(fitSignal2S,0.7,0.58,0.85,0.78);
+   if(fitSignal)  writeSignalResult(0.7,0.58,0.85,0.78);
    
    if(fitSignal) drawLines();
    
@@ -151,7 +150,7 @@ void Fit::defineFitRange(){
 
 
 
-RooAddPdf* Fit::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S){
+RooAddPdf* Fit::buildModel(){
 
    if(DEBUGMODE) cout << "Building model with option: " << bcg << endl;
 
@@ -185,8 +184,8 @@ RooAddPdf* Fit::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S){
       fitSignal = true;
    }else if(bcg.Contains("gauss") || bcg.Contains("Gauss") || bcg.Contains("Gaussian") || bcg.Contains("gaussian")){
       // Define signal model (Gaussian)
-      cbmean   = new RooRealVar("mean", "mean", 3.0908, 2.8, 3.2);
-      cbsigma  = new RooRealVar("sigma", "sigma", 0.0543, 0.0, 0.065);
+      cbmean   = new RooRealVar("mean", "mean", mMeanPar, 2.8, 3.2);
+      cbsigma  = new RooRealVar("sigma", "sigma", mSigmaPar, 0.0, 0.065);
       gauss = new RooGaussian("signal1S", "gauss", *x, *cbmean, *cbsigma);
       models.push_back(gauss);
       modelNames.push_back("Gauss (J/#psi)");
@@ -195,24 +194,24 @@ RooAddPdf* Fit::buildModel(bool &fitBcg, bool &fitSignal, bool &fitSignal2S){
    
    // ----------------------------------------------------------------------------------------------
    if (bcg.Contains("poly0") || bcg.Contains("Poly0")) {
-      a0 = new RooRealVar("a0", "a0", 5, -10, 200);
+      a0 = new RooRealVar("a0", "a0", mPolynomialPars[0], -10, 200);
       // include observable x in the variable list so expression 'a0' resolves in RooGenericPdf
       bkg = new RooGenericPdf("bkg", "bkg", "a0", RooArgList(*a0));
       models.push_back(bkg);
       modelNames.push_back("Polynomial 0");
       fitBcg = true;
    }else if (bcg.Contains("poly1") || bcg.Contains("Poly1"))  {
-      a0 = new RooRealVar("a0", "a0", 10, 0, 200);
-      a1 = new RooRealVar("a1", "a1", -1, -200, 200);
+      a0 = new RooRealVar("a0", "a0", mPolynomialPars[0], -20, 200);
+      a1 = new RooRealVar("a1", "a1", mPolynomialPars[1], -20, 20);
       // include observable x in variable list so 'x' is recognized
       bkg = new RooGenericPdf("bkg", "bkg", "a0 + a1*x", RooArgList(*x, *a0, *a1));
       models.push_back(bkg);
       modelNames.push_back("Polynomial 1");
       fitBcg = true;
    }else if (bcg.Contains("poly2") || bcg.Contains("Poly2"))  {
-      a0 = new RooRealVar("a0", "a0", 10, 0, 200);
-      a1 = new RooRealVar("a1", "a1", -1, -200, 200);
-      a2 = new RooRealVar("a2", "a2", 0.5, -200, 200);
+      a0 = new RooRealVar("a0", "a0", mPolynomialPars[0], -20, 20);
+      a1 = new RooRealVar("a1", "a1", mPolynomialPars[1], -20, 20);
+      a2 = new RooRealVar("a2", "a2", mPolynomialPars[2], -20, 20);
       // include observable x so polynomial terms using x are valid
       bkg = new RooGenericPdf("bkg", "bkg", "a0 + a1*x + a2*x^2", RooArgList(*x, *a0, *a1, *a2));
       models.push_back(bkg);
@@ -364,8 +363,8 @@ void Fit::writeFitResult(){
 }
 
 
-void Fit::writeSignalResult(bool &fitSignal2S,double left, double bottom, double right, double top){
-   if(fitSignal2S) bottom -= 0.12;
+void Fit::writeSignalResult(double left, double bottom, double right, double top){
+
    TPaveText *text = new TPaveText(left, bottom, right, top, "NDC"); //in plot text (x_beggining, y_beggining, x_end, y_end) .
    text->SetTextSize(0.03);
    text->SetFillStyle(0);
@@ -374,18 +373,10 @@ void Fit::writeSignalResult(bool &fitSignal2S,double left, double bottom, double
    text->SetTextFont(42);
    text->SetTextAlign(12);
    text->AddText("");
-   if(fitSignal && !fitSignal2S){
+   if(fitSignal){
       text->AddText(Form("#mu = %.4f #pm %.4f",cbmean->getVal(),cbmean->getError()));
       text->AddText(Form("#sigma = %.5f #pm %.5f",cbsigma->getVal(),cbsigma->getError()));
-      text->AddText(Form("Raw yield (J/#psi)= %.0f #pm %.0f", round(netYield), round( (errNetYield)) ));
-   }else if(fitSignal && fitSignal2S){
-      text->AddText(Form("#mu_{J/#psi} = %.4f #pm %.4f",cbmean->getVal(),cbmean->getError()));
-      text->AddText(Form("#sigma_{J/#psi} = %.5f #pm %.5f",cbsigma->getVal(),cbsigma->getError()));
-      text->AddText(Form("Raw yield (J/#psi)= %.0f #pm %.0f", round(netYield), round( (errNetYield)) ));
-      if(fitBcg)  text->AddText(Form("S/B (J/#psi) = %.0f / %.0f #approx %.1f", yieldSignal, yieldBackground, sOverB ) );
-      text->AddText(Form("#mu_{#psi(2S)} = %.4f #pm %.4f",mean2S->getVal(),mean2S->getError()));
-      text->AddText(Form("#sigma_{#psi(2S)} = %.5f #pm %.5f",sigma2S->getVal(),sigma2S->getError()));
-      text->AddText(Form("Raw yield (#psi (2S))= %.0f #pm %.0f", round(nsig2S->getVal()), round(nsig2S->getError()) ));
+      text->AddText(Form("Raw yield = %.0f #pm %.0f", round(netYield), round( (errNetYield)) ));
    }
 
    text->Draw("same");

@@ -4,16 +4,10 @@
 
 #include "Config.h"
 #include "PlotAnalysis.h"
-#include "CrossSectionMaker.h"
 #include "Libraries.h"
 
 
 using namespace std;
-
-
-const char* nameOfTree;
-std::vector<std::pair<TString, bool>> plots;
-
 
 Int_t nInputFiles;
 

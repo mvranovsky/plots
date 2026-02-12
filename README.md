@@ -22,17 +22,3 @@ veci na prerobenie v kode ked skompilujem:
 - Plot::getCondition
 - setTH2Style, TH1General, TH2General na templates
 
-
-
-//#ifdef __CLING__
-#ifdef __CINT__
-
-#pragma link off all globals;
-#pragma link off all classes;
-#pragma link off all functions;
-
-#pragma link C++ class Plot+;
-#pragma link C++ class PlotAnalysis+;
-#pragma link C++ class Fit+;
-
-#endif
