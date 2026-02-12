@@ -87,9 +87,6 @@ void getData(const TString& inputTag) {
 
    		c->SaveAs(inputTag + TString("/") + canvasList[i] + TString(".pdf") );
    	}
-   	cout << "All canvases saved. Leaving." <<endl;
-
-//additionally, can work with histograms in RooFit
-  	
+   	cout << "All canvases saved. Goodbye." <<endl;  	
 
 }

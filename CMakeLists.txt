@@ -4,20 +4,9 @@ project (upc-reader)
 #sources for LIB_READER
 set (SRCS
   src/Plot.cxx
-  src/PlotAnaV0.cxx
-  src/Util.cxx
-  #src/PlotGeneral.cxx
-  src/PlotAnaV0Mult.cxx
-  src/PlotTofEff.cxx
-  src/PlotTofEffMult.cxx
-  src/PlotAnaJPsi.cxx
-  src/PlotGoodRun.cxx
-  src/PlotEmbeddingJPsi.cxx
-  src/ProbRetainEvent.cxx
-  src/FitJPsi.cxx
+  src/PlotAnalysis.cxx
+  src/Fit.cxx
   src/CrossSectionMaker.cxx
-  src/PlotZeroBias.cxx
-  src/PlotBemcEfficiency.cxx
   )
 
 #name of LIB_READER
@@ -27,23 +16,34 @@ set (LIB_READER upc-reader)
 set (BIN PlotsManager)
 
 #UPC picoDsts library
-set (UPC_INC /star/u/mvranovsk/plots/include)
+set (UPC_INC include)
 
-set (RUN_DEF /star/u/mvranovsk/star-upcDst/work/include/)
+# --------------------------------------------------------
+# HERE: possibly declare additional paths to other libraries
 
+#set (OTHER_LIB_INC /path/to/other/library/include)
+
+# --------------------------------------------------------
 
 #general compiler options
-set (CMAKE_CXX_COMPILER /usr/bin/g++)
+set (CMAKE_CXX_COMPILER /usr/bin/g++)   #HERE change according to your compiler
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 #option -Wl,--no-as-needed is necessary only with root5
 set (CMAKE_CXX_FLAGS "-Wall -g -Wl,--no-as-needed")
-include_directories (include ${UPC_INC})
-include_directories (include ${RUN_DEF})
 
-set (ROOT630 /star/u/mvranovsk/root630/bin/root-config)
+include_directories (include ${UPC_INC})
+# --------------------------------------------------------
+# HERE: if declared additional libraries, add them here and link to them in the end of this file
+
+#include_directories (${OTHER_LIB_INC})
+
+# --------------------------------------------------------
+
+
+set (ROOT630 /star/u/mvranovsk/root630/bin/root-config) # HERE change according to your ROOT version installation
 
 #compiler flags
 execute_process(COMMAND ${ROOT630} --cflags OUTPUT_VARIABLE ROOT_FLAGS_CMD)

@@ -63,6 +63,8 @@
 #include <TKey.h>
 #include <TLorentzVector.h>
 #include <TRandom2.h>
+#include "TRandom3.h"
+#include "TVectorD.h"
 #include <TH1.h>
 #include <TVirtualFitter.h>
 #include <TPolyLine3D.h>
@@ -79,7 +81,9 @@
 #include <RooDataHist.h>
 #include <RooCBShape.h>
 #include <RooArgList.h>
-
+#include "RooGenericPdf.h"
+#include "RooExponential.h"
+#include "RooFormulaVar.h"
 
 
 #endif

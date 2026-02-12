@@ -6,67 +6,25 @@ PlotAnaJPsi::PlotAnaJPsi(const string mInputList, shared_ptr<TFile> file): Plot(
 
 void PlotAnaJPsi::Make(){
     
-
-    if(noRomanPots){
-        handleHistograms(nameOfAnaJPsiDir, "JPsiDataNoRP");
-    }else{
-        handleHistograms(nameOfAnaJPsiDir, "JPsiDataWithRP");
-    }
+    // save the extracted histograms to the output file
+    handleHistograms("plots");
     
-    // main fit of peak for all triggers combined
-    double yieldAll = fitPeakJPsi("", "JPsiPeakFit", 0);
-    cout << "Yield of J/Psi for all triggers combined: " << yieldAll << endl;
+    // load inv mass histogram
 
-    
-    if(inputPosition.find("sysStudy") != string::npos)  {
-        
-        if(DEBUGMODE) cout << "About to run systematic study..." << endl;
-        
-        runSysStudy();
-    
-        if(DEBUGMODE) cout << "About to run vertexZStudy()" << endl;
-        
-        vertexZStudy();
-    }
-    
-    if(noRomanPots){
-        if(DEBUGMODE) cout << "Creating control plots comparison with embedding..." << endl;
-        controlPlotsComparison(true); // true = JPsi, false = all
-    }
 
-    if(!noRomanPots){
-        if(DEBUGMODE) cout << "Creating pT missing plot..." << endl;
-        pTMissingPlot();
-        pTMissingCorrelationPlot();
-    }
+    // fit peak with Fit class
 
-    if(DEBUGMODE) cout << "Loading Starlight file..." << endl;
 
-    loadStarlightTree();
+    // save the output histogram
 
-    if(DEBUGMODE) cout << "Creating rapidity dependence plot..." << endl;
 
-    createDependencePlot("rapidity", "rapidityDependence");
-
-    if(DEBUGMODE) cout << "Creating pT dependence plot..." << endl;
-
-    createDependencePlot("pT", "pTDependence");
-
-    if(DEBUGMODE) cout << "Finished creating dependence plots." << endl;
-
-    
-    if(DEBUGMODE) cout << "About to run peak fitting study..." << endl;
-    
-    //peakFittingStudy();   // takes quite long, comment out if running fast
-    
-    if(DEBUGMODE) cout << "Finished PlotAnaJPsi::Make()" << endl;
 }
 
 void PlotAnaJPsi::Finish(){
     
     if(outFile) outFile->Close();
     if(histFile) histFile->Close();
-    if(starlightFile) starlightFile->Close();
+    if(MCFile) MCFile->Close();
     if(DEBUGMODE) cout << "All histograms successfully saved to canvases..." << endl;
     if(DEBUGMODE) cout << "The output file is saved: " << outputPosition << endl;
 
@@ -83,9 +41,7 @@ void PlotAnaJPsi::Init(){
     gStyle->SetOptTitle(0);
 
 
-    mUtil = new Util();
     outFile->cd();
-    outFile->mkdir(nameOfAnaJPsiDir);
 
     histFile = shared_ptr<TFile>( new TFile("histFile.root", "read") );
 
@@ -95,7 +51,7 @@ void PlotAnaJPsi::Init(){
     }
 
 	//load the tree chain from the input file
-	ConnectInputTree(inputPosition, nameOfAnaJPsiTree, tree, bcgTree);
+	ConnectInputTree(inputPosition, nameOfAnaJPsiTree, tree);
 
 
     if(!tree || !bcgTree){

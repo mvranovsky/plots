@@ -3,25 +3,12 @@
 
 
 #include "Config.h"
-#include "PlotAnaV0.h"
-//#include "PlotGeneral.h"
-#include "PlotAnaV0Mult.h"
-#include "PlotTofEff.h"
-#include "PlotTofEffMult.h"
-#include "PlotAnaJPsi.h"
-#include "PlotGoodRun.h"
-#include "PlotEmbeddingJPsi.h"
+#include "PlotAnalysis.h"
 #include "CrossSectionMaker.h"
-#include "PlotZeroBias.h"
 #include "Libraries.h"
-#include "PlotBemcEfficiency.h"
-#include <TFile.h>
-#include <TKey.h>
-#include <TClass.h>
-#include <cstring>
+
 
 using namespace std;
-//using namespace UTIL;
 
 
 const char* nameOfTree;
@@ -30,20 +17,8 @@ std::vector<std::pair<TString, bool>> plots;
 
 Int_t nInputFiles;
 
-TH2F *hDecayLPointingA, *hDecayLPointingACut, *hArmenterosPodolanski, *hInvMassEta;
-TH2F *hNSigmaPiPcorr, *hNSigmaPiKcorr, *hNSigmaPKcorr;
-TH1D *hNPairV0, *hPosZ, *hPosZCut, *hVtxDiff;
-TH1D *hPt, *hEta, *hNhitsDEdx, *hNfitHits, *hAnalysisFlow;
-//topologyCuts
-TH1D *hDcaDaughters, *hDcaBeamline, *hPointingAngle, *hDecayLength;
-TH1D *hDcaDaughtersCut, *hDcaBeamlineCut, *hPointingAngleCut, *hDecayLengthCut;
-TH1D *hNSigmaPi, *hNSigmaP, *hNSigmaK;
-
-vector<TH2F*> PIDplots;
-vector<TH1D*> histograms;
-
 Plot* mPlot;
-
+void runCrossSection(const char* outputFile);
 
 vector<string> getFilenames(const string& input){
 
@@ -221,28 +196,6 @@ bool connectHists(const char* inputPath, const char* outputFilename, bool keepEx
 
    cout << "Merged histograms saved in " << outputFilename << endl;
    return true;
-}
-
-void runCrossSection(const char* outputFile) {
-   if(DEBUGMODE) cout << "Running CrossSectionMaker..." << endl;
-
-   //TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_withRP_1.12.25/merged/StRP_production.list";
-   TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_noRP_sysStudy_2.12.25/merged/StRP_production.list";
-   TString embedDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/EmbeddingJPsi_sysStudy/merged/StRP_production.list";
-   TString goodRunDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaGoodRun_2.12.25/merged/StRP_production.list";
-   TString zeroBiasDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaZeroBias_26.8.25/merged/StRP_production.list";
-
-   if(!connectHists(anaDir, "histFile.root", false))  return;
-
-   if(!connectHists(embedDir, "histFile.root", true))  return;
-
-   if(!connectHists(goodRunDir, "histFile.root", true))  return;
-
-   if(!connectHists(zeroBiasDir, "histFile.root", true))  return;
-
-   CrossSectionMaker *crossSectionMaker = new CrossSectionMaker(anaDir, embedDir, goodRunDir, zeroBiasDir, TString(outputFile));
-   crossSectionMaker->Make();
-   delete crossSectionMaker;
 }
 
 

@@ -1,71 +1,79 @@
 #include "../include/PlotsManager.h"
-//argv[0] = inputSource
-//argv[1] = outputFile
+
 int main(int argc, char *argv[]){ 
-	
 
-
-	cout<<"Starting making plots..."<<endl;
-	if (argc != 3 ){
-		cout << "Incorrect number of arguments. First argument is the input source, second is the outputfile position."<<endl;
+	cout<<"Beginning to make plots..."<<endl;
+	if (argc != 4 ){
+		cerr << "ERROR: main: Incorrect number of arguments. Usage ./PlotsManager <analysis_tag> <input_source> <output_path> "<<endl;
 		return 1;
 	}
-	const char* inputPosition = argv[1];
-	const char* outputPosition = argv[2];
+
+    if(DEBUGMODE) cout << "Extracting arguments..." << endl;
+    const char* analysis = argv[1];       // analysis tag, for now just Analysis, can add stuff like Embedding, Zerobias, TofEfficiency based on which separate class is run
+	const char* inputPosition = argv[2];  // input source can be a single root file or a .list file where each line is an absolute path to a .root file
+	const char* outputPosition = argv[3]; // absolute path to output position
     const char* histogramFilePath = "histFile.root";
 
-    if(strstr(argv[1], "-runCS")){
+
+    
+    if( strstr(analysis, "Analysis") ){
+    	if(DEBUGMODE)  << "Creating plots for Analysis..." << endl;
+    	mPlot = new PlotAnalysis(inputPosition, outputPosition);
+    }else if( strstr(analysis, "CrossSection")){  // separate class which can run multiple analyses and calculate CS for example
+        if(DEBUGMODE)  cout << "Calculating cross section..." << endl;
         runCrossSection(outputPosition);
-        return 0;
     }
-    
-    
-    if( strstr(inputPosition, "AnaV0Mult") ){
-    	cout << "Creating plots from AnaV0Mult..." << endl;
-    	mPlot = new PlotAnaV0Mult(inputPosition, outputPosition);
-    }else if( strstr(inputPosition, "AnaV0" ) ){
-    	cout << "Creating plots from AnaV0..." << endl;
-    	mPlot = new PlotAnaV0(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "TofEffMult") ){
-        cout << "Creating plots from TofEffMult..." << endl;
-        mPlot = new PlotTofEffMult(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "TofEff") ){
-        cout << "Creating plots from TofEff..." << endl;
-    	mPlot = new PlotTofEff(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "AnaJPsi") ){
-        cout << "Creating plots from AnaJPsi..." << endl;
-        mPlot = new PlotAnaJPsi(inputPosition, outputPosition);
-    } else if( strstr(inputPosition, "EmbeddingJPsi") ){
-        cout << "Creating plots from EmbeddingJPsi..." << endl;
-        mPlot = new PlotEmbeddingJPsi(inputPosition, outputPosition);
-    }else if( strstr(inputPosition, "AnaGoodRun") ){
-        cout << "Creating plots from AnaGoodRun" << endl;
-        mPlot = new PlotGoodRun(inputPosition, outputPosition);
-    }else if( strstr(inputPosition, "AnaZeroBias") ){
-        cout << "Creating plots from AnaZeroBias..." << endl;
-        mPlot = new PlotZeroBias(inputPosition, outputPosition);
-    }else if( strstr(inputPosition, "BemcEfficiency") ){
-        cout << "Creating plots from BemcEfficiency..." << endl;
-        mPlot = new PlotBemcEfficiency(inputPosition, outputPosition);
-    }else{
-    	cout << "No plots to run. Leaving..." << endl;
-    	return 1;
+    /*                                              
+    else if( strstr(inputPosition, "Embedding") ){  // example of another analysis
+        cout << "Creating plots for embedding..." << endl;
+        mPlot = new PlotEmbedding(inputPosition, outputPosition);
     }
-    
+    */
+
+    // extract histograms and merge them (if it is a list of separate root files)
     if (!connectHists(inputPosition, histogramFilePath)){
-        cout << "Couldn't connect all histograms." << endl;
+        cerr << "ERROR: main: Couldn't connect all histograms." << endl;
         return 1;
     }
-    cout << "Successfully added all histograms together..." << endl;
+    if(DEBUGMODE) cout << "Successfully added all histograms together..." << endl;
 
-    
     mPlot->Init();
+
     mPlot->Make();
+
     mPlot->Finish();
 
-    cout << "Ending analysis. All plots created. Goodbye..." << endl;
+    if(DEBUGMODE) cout << "Ending analysis. All plots created. Goodbye..." << endl;
 
 	return 0;
 
+}
+
+
+void runCrossSection(const char* outputFile) {. // for running multiple analyses
+    if(DEBUGMODE) cout << "Running CrossSectionMaker..." << endl;
+
+    // paths to main analysis, embedding, good run list analysis, zerobias study
+    TString anaDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaJPsi_noRP_sysStudy_2.12.25/merged/StRP_production.list";
+    TString embedDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/EmbeddingJPsi_sysStudy/merged/StRP_production.list";
+    TString goodRunDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaGoodRun_2.12.25/merged/StRP_production.list";
+    TString zeroBiasDir = "/gpfs01/star/pwg/mvranovsk/Run17_P20ic/AnaZeroBias_26.8.25/merged/StRP_production.list";
+
+    // extract histograms from each separate root file    
+
+    if(!connectHists(anaDir, "histFile.root", false))  return;
+
+    if(!connectHists(embedDir, "histFile.root", true))  return;
+
+    if(!connectHists(goodRunDir, "histFile.root", true))  return;
+
+    if(!connectHists(zeroBiasDir, "histFile.root", true))  return;
+
+    // run the cross section analysis
+    CrossSectionMaker *crossSectionMaker = new CrossSectionMaker(anaDir, embedDir, goodRunDir, zeroBiasDir, TString(outputFile));
+    crossSectionMaker->Make();
+    delete crossSectionMaker;
+
+    if(DEBUGMODE) cout << "Finished running CrossSectionMaker..." << endl;
 }
 
