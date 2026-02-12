@@ -6,7 +6,6 @@ set (SRCS
   src/Plot.cxx
   src/PlotAnalysis.cxx
   src/Fit.cxx
-  src/CrossSectionMaker.cxx
   )
 
 #name of LIB_READER
