@@ -5,3 +5,6 @@
 *.out
 *.tx
 build/
+.DS_Store
+.vscode
+backup/
