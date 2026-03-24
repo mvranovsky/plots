@@ -6,7 +6,7 @@ Plot::Plot(const string mInputList, const char* filePath){
    outFile = shared_ptr<TFile>(new TFile(outputPosition, "RECREATE"));
 }
 
-Plot::Plot(const string mInputList, shared_ptr<TFile> file) : inputPosition(mInputList), outFile(file) {
+Plot::Plot(const string mInputList, shared_ptr<TFile> file) : outFile(file), inputPosition(mInputList) {
    outputPosition = file->GetName();
 }
 

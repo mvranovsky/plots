@@ -29,8 +29,6 @@ set (BIN PlotsManager)
 #UPC picoDsts library
 set (UPC_INC /star/u/mvranovsk/plots/include)
 
-set (RUN_DEF /star/u/mvranovsk/star-upcDst/work/include/)
-
 
 #general compiler options
 set (CMAKE_CXX_COMPILER /usr/bin/g++)
@@ -41,7 +39,6 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 #option -Wl,--no-as-needed is necessary only with root5
 set (CMAKE_CXX_FLAGS "-Wall -g -Wl,--no-as-needed")
 include_directories (include ${UPC_INC})
-include_directories (include ${RUN_DEF})
 
 set (ROOT630 /star/u/mvranovsk/root630/bin/root-config)
 
